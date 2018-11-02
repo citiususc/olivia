@@ -1,6 +1,7 @@
 package Olivia.core.render.hi;
 
 import Olivia.core.VisualisationManager;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -87,7 +88,7 @@ public class AWTMouseListener implements MouseListener, MouseWheelListener, Mous
         if (visualisationManager == null) {
             return;
         }
-        visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+        //visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
         wX = me.getX();
         wY = me.getY();
         if (SwingUtilities.isLeftMouseButton(me)) {
@@ -114,7 +115,8 @@ public class AWTMouseListener implements MouseListener, MouseWheelListener, Mous
         if (visualisationManager == null) {
             return;
         }
-        visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        //visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ((Component)visualisationManager.getRenderScreen().getWindow().getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override

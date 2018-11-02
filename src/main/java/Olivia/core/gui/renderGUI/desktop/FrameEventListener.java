@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Olivia.core.gui;
+package Olivia.core.gui.renderGUI.desktop;
 
 import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
+import Olivia.core.gui.MainFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 

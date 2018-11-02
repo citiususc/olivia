@@ -98,8 +98,8 @@ public class Capture {
      */
     private void updateResolution() {
         if (visualisationManager.getRenderScreen() != null) {
-            width = visualisationManager.getRenderScreen().getFrame().getWidth();
-            height = visualisationManager.getRenderScreen().getFrame().getHeight();
+            width = visualisationManager.getRenderScreen().getWindow().getWidth();
+            height = visualisationManager.getRenderScreen().getWindow().getHeight();
         }
     }
 

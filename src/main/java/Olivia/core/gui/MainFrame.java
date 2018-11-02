@@ -1,5 +1,6 @@
 package Olivia.core.gui;
 
+import Olivia.core.gui.renderGUI.desktop.DesktopPane;
 import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
@@ -47,7 +48,7 @@ public class MainFrame extends JFrame{
     /**
      * The pane holding the render screens
      */
-    protected JDesktopPane renderPane;
+    protected DesktopPane renderPane;
     /**
      * The array containing the different visualisation panels
      */
@@ -77,18 +78,18 @@ public class MainFrame extends JFrame{
      * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
     public void initialize(boolean isStereo3D) {
-        addWindowStateListener(new WindowStateListener() {
+        /*addWindowStateListener(new WindowStateListener() {
             @Override
             public void windowStateChanged(WindowEvent e) {
                 if (activeVisualisationManager != null && e.getNewState() == Frame.MAXIMIZED_BOTH) {
                     try {
-                        MainFrame.this.activeVisualisationManager.getRenderScreen().getFrame().setMaximum(true);
+                        //MainFrame.this.activeVisualisationManager.getRenderScreen().getFrame().setMaximum(true);
                     }
                     catch (PropertyVetoException ex) {
                     }
                 }
             }
-        });
+        });*/
         this.isStereo3D = isStereo3D;
         //this.addKeyListener(keyListener);
         setContentPane(splitPane2);
@@ -123,7 +124,7 @@ public class MainFrame extends JFrame{
         controlPanel = new MainControl(this);
         controlPanel.initialize();
         //visuPanels = new ArrayList();
-        renderPane = new JDesktopPane();
+        renderPane = new DesktopPane(this);
         renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
@@ -176,35 +177,6 @@ public class MainFrame extends JFrame{
         
     }
     
-    /*
-    protected void buildStereoFrame(){
-        stereoFrame = new JFrame();
-        stereoFrame.setContentPane(renderPane);
-        //stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stereoFrame.setTitle(TITLE);
-        stereoFrame.setUndecorated(true);
-        //stereoFrame.setVisible(true);
-        //stereoFrame.setLocationRelativeTo(null);
-    }*/
-
-    /**
-     * Add the visualisation panel
-     *
-     * @param title The title of the pane
-     * @param panel The control pane
-     */
-    /*
-    public void addVisuPanel(String title, JPanel panel) {
-        panel.setPreferredSize(new Dimension(panel.getWidth(), 150));
-        TitledBorder border = new TitledBorder(title);
-        border.setTitleJustification(TitledBorder.CENTER);
-        border.setTitlePosition(TitledBorder.TOP);
-        panel.setBorder(border);
-        visuPanels.add(panel);
-        splitPane2.setBottomComponent(visuPanels.get(visuPanels.size() - 1));
-    }
-    */
-    
     public void initVisualisation(VisualisationManager visuManager) {
         System.out.println("Main Frame inits " + visuManager.getName());
         visuManager.getControlPane().setPreferredSize(new Dimension(visuManager.getControlPane().getWidth(), 150));
@@ -214,7 +186,8 @@ public class MainFrame extends JFrame{
         visuManager.getControlPane().setBorder(border);
         //visuPanels.add(visuManager.getControlPane());
         //splitPane2.setBottomComponent(visuPanels.get(visuPanels.size() - 1));
-        visuManager.getRenderScreen().createRenderFrame();
+        //visuManager.getRenderScreen().createRenderFrame();
+        renderPane.addVisualisation(visuManager);
     }
 
     /**
@@ -238,33 +211,6 @@ public class MainFrame extends JFrame{
     public VisualisationManager getActiveVisualisation() {
         return activeVisualisationManager;
     }
-
-    /**
-     * Set the given visualisation panel as visible
-     *
-     * @param index Position of the visualisation panel in the panel list
-     */
-    /*
-    public void setVisibleVisuPanel(int index) {
-        splitPane2.setBottomComponent(visuPanels.get(index));
-    }
-    */
-
-    /**
-     * Remove the visualisation panel and set the first one as visible
-     *
-     * @param index Position of the visualisation panel in the panel list
-     */
-    /*
-    public void removeVisuPanel(int index) {
-        visuPanels.remove(index);
-        if (!visuPanels.isEmpty()) {
-            splitPane2.setBottomComponent(visuPanels.get(0));
-        } else {
-            splitPane2.setBottomComponent(null);
-        }
-    }
-    */
 
     /**
      * getter
@@ -291,13 +237,7 @@ public class MainFrame extends JFrame{
         if (getLoadedVisualisations().isEmpty()) {
             return;
         }
-        int width = this.getWidth() / getLoadedVisualisations().size();
-        int height = this.getRenderPane().getHeight();
-        for (int i = 0; i < getLoadedVisualisations().size(); i++) {
-            getLoadedVisualisations().get(i).getRenderScreen().getFrame().setSize(width, height);
-            Point pos = getLoadedVisualisations().get(i).getRenderScreen().getFrame().getLocation();
-            getLoadedVisualisations().get(i).getRenderScreen().getFrame().setLocation(i * width, pos.y);
-        }
+        renderPane.updateRenderLayout();
     }
     
      /**
@@ -417,22 +357,6 @@ public class MainFrame extends JFrame{
     }
     
     
-       /**
-     * Iconifies or de-iconifies the inactive render screens
-     *
-     * @param iconify The flag to minimize (true) or de-minize (false) the frame
-     */
-    public void setInactiveScreensIconify(boolean iconify) {
-        for (VisualisationManager visuManager : getLoadedVisualisations()) {
-            if (visuManager != activeVisualisationManager) {
-                try {
-                    visuManager.getRenderScreen().getFrame().setIcon(iconify);
-                }
-                catch (PropertyVetoException ex) {
-                }
-            }
-        }
-    }
     
     public void setOverlayOptionsVisible(boolean visible){
         this.overlayOptionsFrame.setVisible(visible);
