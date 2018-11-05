@@ -64,14 +64,14 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
 
 
     @Override
-    public void moveTo(Point3D point) {
+    public synchronized void moveTo(Point3D point) {
         //System.out.println("Moving " + name + " to " + point + " with center at " + bounds.getCentre());
         vertices.moveTo(point);
         super.moveTo(point);
     }
     
     @Override
-    public void displace(Point3D point) {
+    public synchronized void displace(Point3D point) {
         //System.out.println("Displacing " + name + " to " + point + " with center at " + bounds.getCentre());
         vertices.displace(point);
         super.displace(point); //To change body of generated methods, choose Tools | Templates.

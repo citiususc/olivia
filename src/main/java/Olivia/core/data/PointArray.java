@@ -377,7 +377,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
     }
 
     @Override
-    public void moveTo(Point3D point) {
+    public synchronized void moveTo(Point3D point) {
         //System.out.println("Moving to " + point);
         for (P my_point : this) {
             my_point.setX(my_point.getX() - bounds.getCentre().getX() + point.getX());
@@ -388,7 +388,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
     }
     
     @Override
-    public void displace(Point3D point) {
+    public synchronized void displace(Point3D point) {
         //System.out.println("Displacing with " + point);
         for (P my_point : this) {
             my_point.setX(my_point.getX() - point.getX());

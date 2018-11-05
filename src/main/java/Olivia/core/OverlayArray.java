@@ -665,7 +665,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
      * @param point A Point3D where to move the OverlayArray
      */
     @Override
-    public void moveTo(Point3D point) {
+    public synchronized void moveTo(Point3D point) {
         int i;
         //Point3D disp = new Point3D(point.getX() - this.bounds.getCentre().getX(), point.getY() - this.bounds.getCentre().getY(), point.getZ() - this.bounds.getCentre().getZ() );     
         Point3D disp = new Point3D(this.bounds.getCentre().getX() - point.getX(), this.bounds.getCentre().getY() - point.getY(), this.bounds.getCentre().getZ() - point.getZ());
@@ -681,7 +681,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
      * @param point A Point3D whose (x,y,z) coordinates will be substracted from all the 3D components of the Overlay
      */
     @Override
-    public void displace(Point3D point) {
+    public synchronized void displace(Point3D point) {
         int i;
         for(i=0;i<overlays.size();i++){
            overlays.get(i).displace(point);

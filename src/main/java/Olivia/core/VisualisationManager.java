@@ -345,7 +345,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      * It is a different method from setDisplacement because there may be a need in the future of just setting the displacement and not moving everething, for now no
      * @param newDisplacement The new displacement
      */
-    public void changeDisplacement(Point3D newDisplacement){
+    protected synchronized void changeDisplacement(Point3D newDisplacement){
         if(newDisplacement.equals(displacement)) return;
         System.out.println("CAUTION: Redisplacing " + this.name +", original data coordinates of the points may be lost");
         Point3D undo_displacement = new Point3D(newDisplacement.getX()-displacement.getX(),newDisplacement.getY()-displacement.getY(),+newDisplacement.getZ()-displacement.getZ());
