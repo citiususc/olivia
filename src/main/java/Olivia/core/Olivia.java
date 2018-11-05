@@ -103,7 +103,8 @@ public class Olivia {
         //activeVisualisation.getRenderScreen().setVisualisation(visu);
         //mainFrame.addVisuPanel(visuManager.getName(), visuManager.getControlPane());
         if(visuManager.checkCorrectness()){
-            System.out.println("Adding " + visuManager.getName() + " to loaded visualisations");
+            System.out.println("Adding " + visuManager.getName() + " to loaded visualisations"
+                    + "\n\tDisplacement:" + visuManager.getDisplacement().toString());
             visualisationManagers.add(visuManager);
             mainFrame.initVisualisation(visuManager);
             mainFrame.setActiveVisualisationManager(visuManager);
