@@ -347,13 +347,14 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      */
     public void changeDisplacement(Point3D newDisplacement){
         if(newDisplacement.equals(displacement)) return;
-        System.out.println("CAUTION: Redisplacing a visualisation, original data coordinates of the points may be lost");
+        System.out.println("CAUTION: Redisplacing " + this.name +", original data coordinates of the points may be lost");
         Point3D undo_displacement = new Point3D(newDisplacement.getX()-displacement.getX(),newDisplacement.getY()-displacement.getY(),+newDisplacement.getZ()-displacement.getZ());
+        this.displacement = newDisplacement;
         for(int i=0; i<overlays.size();i++){
             overlays.get(i).displace(undo_displacement);     
         }
         this.pointCloud.displace(undo_displacement);
-        this.displacement = newDisplacement;
+        //this.displacement = newDisplacement; //If this is here sometimes it is executed twice, race condition???
         displacementSet = true;
         this.repack();
     }

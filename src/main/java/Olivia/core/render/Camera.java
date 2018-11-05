@@ -543,6 +543,7 @@ public class Camera extends Transformations{
      */
     public void copyActiveCamera() {
         this.copyActiveCameraTotalDisp();
+        //this.copyActiveCameraNoDisp();
     }
     
     /**

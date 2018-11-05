@@ -102,7 +102,7 @@ public class NEWTMouseListener implements MouseListener{
         }
         
         //visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-        ((Component)visualisationManager.getRenderScreen().getWindow().getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+        //((Component)visualisationManager.getRenderScreen().getWindow().getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
         wX = me.getX();
         wY = me.getY();
         if (MouseButtonCodes.isMouseLeft(me)) {
@@ -131,7 +131,7 @@ public class NEWTMouseListener implements MouseListener{
             return;
         }
         //visualisationManager.getRenderScreen().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ((Component)visualisationManager.getRenderScreen().getWindow().getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        //((Component)visualisationManager.getRenderScreen().getWindow().getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override
