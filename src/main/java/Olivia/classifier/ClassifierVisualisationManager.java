@@ -118,6 +118,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
             return;
         }
         selectedGroupPoints.clear();
+        selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(selectedGroup.getPoints());
         selectedGroupColours = new ColourArray(selectedGroupPoints) {
         };

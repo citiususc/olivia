@@ -86,6 +86,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
             return;
         }
         selectedGroupPoints.clear();
+        selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(groups.get(selectedGroup.getId()).getPoints());
         selectedGroupColours = new ColourArray(selectedGroupPoints) {
         };
@@ -93,7 +94,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         for (int i = 0; i < selectedGroupPoints.size(); i++) {
             selectedGroupColours.add(groupColour);
         }
-        selectedGroupPoints.repack();
+        selectedGroupPoints.repack();       
     }
 
     public void flagSelectedPoints(boolean[] selectedFlags) {

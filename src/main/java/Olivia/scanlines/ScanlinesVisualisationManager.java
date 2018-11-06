@@ -71,6 +71,7 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
             return;
         }
         selectedScanPoints.clear();
+        selectedScanPoints.freeVBO(renderScreen);
         selectedScanPoints.addAll(selectedScan.getPoints());
         selectedScanColours = new ColourArray(selectedScanPoints) {
         };
