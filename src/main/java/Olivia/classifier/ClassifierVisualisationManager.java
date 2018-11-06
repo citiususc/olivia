@@ -117,6 +117,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (selectedGroup == null) {
             return;
         }
+        renderScreen.animatorPause();
         selectedGroupPoints.clear();
         selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(selectedGroup.getPoints());
@@ -127,6 +128,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
             selectedGroupColours.add(groupColour);
         }
         selectedGroupPoints.repack();
+        renderScreen.animatorResume();
     }
 
     @Override

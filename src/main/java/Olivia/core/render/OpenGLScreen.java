@@ -806,4 +806,12 @@ public class OpenGLScreen implements GLEventListener {
         visualisationManager.windowInteracted(event);
     }
     
+    public void animatorPause(){
+        animator.pause();
+    }
+    
+    public void animatorResume(){
+        animator.resume();
+    }
+    
 }
