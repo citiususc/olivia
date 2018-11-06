@@ -17,6 +17,7 @@ import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -60,7 +61,7 @@ public class MainFrame extends JFrame{
     /**
      * The frame holding the render screens when they are decoupled from the GUI
      */
-    protected JFrame detachedFrame;
+    protected ArrayList<JFrame> detachedFrames;
     
     protected boolean isMirroring;
     
@@ -79,15 +80,12 @@ public class MainFrame extends JFrame{
     
     protected boolean isFullScreen;
     
-    public void initialize(){
-        initialize(false,false,false);
-    }
-
+    
     /**
      * Initialize the components.
      * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
-    public void initialize(boolean isStereo3D, boolean isDetached, boolean isUndecorated) {
+    public void initialize(){
         /*addWindowStateListener(new WindowStateListener() {
             @Override
             public void windowStateChanged(WindowEvent e) {
@@ -100,13 +98,10 @@ public class MainFrame extends JFrame{
                 }
             }
         });*/
-        this.isStereo3D = isStereo3D;
-        this.isDetached = isDetached;
         //this.addKeyListener(keyListener);
         setContentPane(splitPane2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setJMenuBar(menuBar);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         if (!isDetached) {
             //setSize(screenSize.width, screenSize.height);
             setSize(1600, 900); // HD+
@@ -129,6 +124,9 @@ public class MainFrame extends JFrame{
      * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
     public MainFrame(boolean isStereo3D, boolean isDetached, boolean isUndecorated) {
+        this.isStereo3D = isStereo3D;
+        this.isDetached = isDetached;
+        this.isUndecorated = isUndecorated;
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = env.getScreenDevices();
         device = devices[0];
@@ -166,6 +164,7 @@ public class MainFrame extends JFrame{
             detachedFrame.setTitle(TITLE);
             detachedFrame.setVisible(true);
             detachedFrame.setLocationRelativeTo(null);*/
+            detachedFrames = new ArrayList();
             this.buildDetachedFrame(isUndecorated);
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(controlPanel);
@@ -179,8 +178,6 @@ public class MainFrame extends JFrame{
     private void buildRenderPane(){
         renderPane = new DesktopPane(this);
         renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-   
-        overlayOptionsFrame = new OverlaysOptionsFrame(this);
         //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
         //int renderHeight =Math.round(screenSize.height*(3/4));
         renderPane.setMinimumSize(new Dimension(screenSize.width, renderHeight));
@@ -188,16 +185,25 @@ public class MainFrame extends JFrame{
     }
     
     private void buildDetachedFrame(boolean undecorated){
-        detachedFrame = new JFrame();
-        detachedFrame.setUndecorated(undecorated);
-        detachedFrame.setContentPane(renderPane);
+        JFrame newFrame = new JFrame();
+        newFrame = new JFrame();
+        newFrame.setUndecorated(undecorated);
+        newFrame.setContentPane(renderPane);
         //stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        detachedFrame.setSize(screenSize.width, screenSize.height);
-        detachedFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-        detachedFrame.setTitle(TITLE);
-        detachedFrame.setVisible(true);
-        detachedFrame.setLocationRelativeTo(null);
+        newFrame.setSize(screenSize.width, screenSize.height);
+        newFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
+        newFrame.setTitle(TITLE);
+        newFrame.setVisible(true);
+        newFrame.setLocationRelativeTo(null);
+        detachedFrames.add(newFrame);
         
+    }
+    
+    public void createNewRenderWindow(){
+        if(isDetached){
+            buildRenderPane();
+            buildDetachedFrame(isUndecorated);
+        }
     }
     
     public void initVisualisation(VisualisationManager visuManager) {
@@ -240,9 +246,11 @@ public class MainFrame extends JFrame{
      *
      * @return The pane holding the render screens
      */
+    /*
     public JDesktopPane getRenderPane() {
         return renderPane;
     }
+    */
 
     /**
      * Add the line into the output console (with line break)
@@ -399,6 +407,10 @@ public class MainFrame extends JFrame{
         this.menuBar.update();
         this.overlayOptionsFrame.update();
     }
+
+    public boolean isDetached() {
+        return isDetached;
+    }
     
     /**
      * To be used with MainFRame the main frame should be a different class
@@ -430,15 +442,17 @@ public class MainFrame extends JFrame{
     }
 */
     
+    
+    
     public void setFullscreen(boolean isFullScreen){
         if(!device.isFullScreenSupported()) return;
         if(this.isDetached){
             if(isFullScreen){
-                device.setFullScreenWindow(detachedFrame);
+                device.setFullScreenWindow(detachedFrames.get(detachedFrames.size()-1));
             }else{
                 device.setFullScreenWindow(null);
             }
-            detachedFrame.validate(); 
+            detachedFrames.get(detachedFrames.size()-1).validate(); 
         }else{
             if(isFullScreen){
                 device.setFullScreenWindow(this);

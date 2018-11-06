@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import com.jogamp.newt.event.InputEvent;
 
 /**
  * This is the class that controls the Point Cloud visualisation, is has the data for the point cloud, the overlays and the render screen;
@@ -431,6 +432,13 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
             return false;
         }
         return true;
+    }
+    
+    public void windowInteracted(InputEvent event){
+        if (Olivia.getLoadedVisualisations().contains(this) && this != gui.getActiveVisualisation()) {
+                gui.setActiveVisualisationManager(this);
+                gui.updateAll();
+        }
     }
 
 }

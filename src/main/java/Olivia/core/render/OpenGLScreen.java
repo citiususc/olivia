@@ -9,6 +9,7 @@ import Olivia.core.render.hi.NEWTScrollGestureHandler;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
 import Olivia.core.render.hi.PositionShowOverlay;
+import com.jogamp.newt.event.InputEvent;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
 import java.awt.event.ActionEvent;
@@ -799,6 +800,10 @@ public class OpenGLScreen implements GLEventListener {
 
     public GLWindow getWindow() {
         return window;
+    }
+    
+    public void windowInteracted(InputEvent event){
+        visualisationManager.windowInteracted(event);
     }
     
 }

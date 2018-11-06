@@ -83,6 +83,7 @@ public class NEWTMouseListener implements MouseListener{
         if(me.getPointerType(0).getPointerClass() == PointerClass.Onscreen){
             mouseSelection.pick(me.getX(), me.getY(), MOUSE_PICK_RADIUS, MOUSE_PICK_EPSILON);
             visualisationManager.getRenderScreen().fireEvent("pointSelected");
+            visualisationManager.getRenderScreen().windowInteracted(me);
         }
     
     }
@@ -98,6 +99,7 @@ public class NEWTMouseListener implements MouseListener{
             wY = me.getY();
             crX = visualisationManager.getRenderScreen().getCamera().getRotX();
             crZ = visualisationManager.getRenderScreen().getCamera().getRotZ();
+            visualisationManager.getRenderScreen().windowInteracted(me);
             return;
         }
         
@@ -122,6 +124,7 @@ public class NEWTMouseListener implements MouseListener{
             visualisationManager.getRenderScreen().fireEvent("groupSelected");
 
         }
+        visualisationManager.getRenderScreen().windowInteracted(me);
     }
 
     @Override
@@ -166,6 +169,7 @@ public class NEWTMouseListener implements MouseListener{
             //visualisationManager.getRenderScreen().getCamera().addToTransZ(step*me.getRotation()[1]*me.getRotationScale());
             
         }
+        visualisationManager.getRenderScreen().windowInteracted(me);
     }
 
     @Override
@@ -179,6 +183,7 @@ public class NEWTMouseListener implements MouseListener{
         if(me.getPointerType(0).getPointerClass() == PointerClass.Onscreen){
             visualisationManager.getRenderScreen().getCamera().setRotZ(crZ + (float) (me.getX() - wX) * speed);
             visualisationManager.getRenderScreen().getCamera().setRotX(crX + (float) (me.getY() - wY) * speed);
+            visualisationManager.getRenderScreen().windowInteracted(me);
             return;
         }
 
@@ -190,6 +195,7 @@ public class NEWTMouseListener implements MouseListener{
             visualisationManager.getRenderScreen().getCamera().setTransX(ctX + (float) (me.getX() - wX) * speed);
             visualisationManager.getRenderScreen().getCamera().setTransY(ctY - (float) (me.getY() - wY) * speed);
         }
+        visualisationManager.getRenderScreen().windowInteracted(me);
     }
 
     @Override

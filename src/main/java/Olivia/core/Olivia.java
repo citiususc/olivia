@@ -77,7 +77,7 @@ public class Olivia {
                     }
                 }
                 mainFrame = new MainFrame(isStereo3D, isDetached, isUndecorated);
-                mainFrame.initialize(isStereo3D, isDetached, isUndecorated);
+                mainFrame.initialize();
                 if (visulisationType != null) {
                     switch (visulisationType) {
                         case "-basic":

@@ -5,7 +5,6 @@ import Olivia.core.gui.MainFrame;
 import Olivia.core.gui.RenderGUI;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import com.jogamp.newt.awt.NewtCanvasAWT;
@@ -19,11 +18,9 @@ import java.beans.PropertyVetoException;
  */
 public class DesktopPane extends JDesktopPane implements RenderGUI{
     MainFrame gui;
-    //ArrayList<InternalFrame> frames;
 
     public DesktopPane(MainFrame gui) {
         this.gui = gui;
-        //frames = new ArrayList<>();
     }
 
     @Override
