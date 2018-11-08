@@ -814,4 +814,8 @@ public class OpenGLScreen implements GLEventListener {
         animator.resume();
     }
     
+    public void animatorStop(){
+        animator.stop();
+    }
+    
 }

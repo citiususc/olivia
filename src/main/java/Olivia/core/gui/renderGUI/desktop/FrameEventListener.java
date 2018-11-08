@@ -58,10 +58,12 @@ public class FrameEventListener implements InternalFrameListener {
             }
             gui.updateAll();
             System.out.println(visualisationManager.getId() + " deiconified");
+            visualisationManager.getRenderScreen().animatorResume();
         }
 
         @Override
         public void internalFrameIconified(InternalFrameEvent e) {
+            visualisationManager.getRenderScreen().animatorPause();
             System.out.println(visualisationManager.getId() + " iconified");
             gui.updateAll();
         }

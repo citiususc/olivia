@@ -1,12 +1,17 @@
 package Olivia.core.gui;
 
+import Olivia.core.Olivia;
 import Olivia.core.gui.renderGUI.desktop.DesktopPane;
 import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
+import Olivia.core.gui.renderGUI.desktop.DetachedFrames;
+import Olivia.core.gui.renderGUI.desktop.FrameAdapter;
+import Olivia.core.gui.renderGUI.desktop.FrameEventListener;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.hi.NEWTMouseListener;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
@@ -47,21 +52,13 @@ public class MainFrame extends JFrame{
      */
     protected MainControl controlPanel;
     /**
-     * The pane holding the render screens
+     * The pane holding the render screen or screens
      */
-    protected DesktopPane renderPane;
-    /**
-     * The array containing the different visualisation panels
-     */
-    //protected ArrayList<JPanel> visuPanels;
+    protected RenderGUI renderGUI;
     /**
      * The second split pane where visualisation panels are added
      */
     protected JSplitPane splitPane2;
-    /**
-     * The frame holding the render screens when they are decoupled from the GUI
-     */
-    protected ArrayList<JFrame> detachedFrames;
     
     protected boolean isMirroring;
     
@@ -101,6 +98,12 @@ public class MainFrame extends JFrame{
         //this.addKeyListener(keyListener);
         setContentPane(splitPane2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                renderGUI.close();
+            }
+        });
         setJMenuBar(menuBar);
         if (!isDetached) {
             //setSize(screenSize.width, screenSize.height);
@@ -140,32 +143,31 @@ public class MainFrame extends JFrame{
         menuBar.initialize();
         controlPanel = new MainControl(this);
         controlPanel.initialize();
-        buildRenderPane();
+        //buildRenderPane();
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
 
         if (!isDetached) {
+            DesktopPane desktopPane = new DesktopPane(this);
+            desktopPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+            desktopPane.setMinimumSize(new Dimension(screenSize.width, renderHeight));
+            renderGUI = desktopPane;
             JSplitPane splitPane1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane1.setTopComponent(controlPanel);
             controlPanel.setPreferredSize(new Dimension(screenSize.width, Math.round(screenSize.height*(1/4))));
             //splitPane1.setDividerSize(5);
-            splitPane1.setBottomComponent(renderPane);
+            splitPane1.setBottomComponent((Component)renderGUI);
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(splitPane1);
             splitPane2.setBottomComponent(null);
             splitPane2.setResizeWeight(1);
             //splitPane1.setDividerLocation(0.2);
         } else {
-            /*detachedFrame = new JFrame();
-            detachedFrame.setContentPane(renderPane);
-            detachedFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            detachedFrame.setSize(screenSize.width, screenSize.height);
-            detachedFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-            detachedFrame.setTitle(TITLE);
-            detachedFrame.setVisible(true);
-            detachedFrame.setLocationRelativeTo(null);*/
-            detachedFrames = new ArrayList();
-            this.buildDetachedFrame(isUndecorated);
+            DetachedFrames detachedFrames = new DetachedFrames(this,screenSize,isUndecorated);
+            detachedFrames.scaleMinimumSize(0.2f);
+            detachedFrames.scalePreferredSize(0.8f);
+            renderGUI = detachedFrames;
+            //this.buildDetachedFrame(isUndecorated);
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(controlPanel);
             splitPane2.setBottomComponent(null);
@@ -175,34 +177,11 @@ public class MainFrame extends JFrame{
         isMirroring = false;
     }
     
-    private void buildRenderPane(){
-        renderPane = new DesktopPane(this);
-        renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
-        //int renderHeight =Math.round(screenSize.height*(3/4));
-        renderPane.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-        
-    }
-    
-    private void buildDetachedFrame(boolean undecorated){
-        JFrame newFrame = new JFrame();
-        newFrame = new JFrame();
-        newFrame.setUndecorated(undecorated);
-        newFrame.setContentPane(renderPane);
-        //stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        newFrame.setSize(screenSize.width, screenSize.height);
-        newFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-        newFrame.setTitle(TITLE);
-        newFrame.setVisible(true);
-        newFrame.setLocationRelativeTo(null);
-        detachedFrames.add(newFrame);
-        
-    }
-    
     public void createNewRenderWindow(){
         if(isDetached){
-            buildRenderPane();
-            buildDetachedFrame(isUndecorated);
+            //buildRenderPane();
+            //buildDetachedFrame(isUndecorated);
+            renderGUI.createNewWindow();
         }
     }
     
@@ -216,7 +195,7 @@ public class MainFrame extends JFrame{
         //visuPanels.add(visuManager.getControlPane());
         //splitPane2.setBottomComponent(visuPanels.get(visuPanels.size() - 1));
         //visuManager.getRenderScreen().createRenderFrame();
-        renderPane.addVisualisation(visuManager);
+        renderGUI.addVisualisation(visuManager);
     }
 
     /**
@@ -248,7 +227,7 @@ public class MainFrame extends JFrame{
      */
     /*
     public JDesktopPane getRenderPane() {
-        return renderPane;
+        return renderGUI;
     }
     */
 
@@ -268,7 +247,7 @@ public class MainFrame extends JFrame{
         if (getLoadedVisualisations().isEmpty()) {
             return;
         }
-        renderPane.updateRenderLayout();
+        renderGUI.updateRenderLayout();
     }
     
      /**
@@ -447,12 +426,12 @@ public class MainFrame extends JFrame{
     public void setFullscreen(boolean isFullScreen){
         if(!device.isFullScreenSupported()) return;
         if(this.isDetached){
-            if(isFullScreen){
+            /*if(isFullScreen){
                 device.setFullScreenWindow(detachedFrames.get(detachedFrames.size()-1));
             }else{
                 device.setFullScreenWindow(null);
             }
-            detachedFrames.get(detachedFrames.size()-1).validate(); 
+            detachedFrames.get(detachedFrames.size()-1).validate(); */
         }else{
             if(isFullScreen){
                 device.setFullScreenWindow(this);

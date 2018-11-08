@@ -133,10 +133,13 @@ public class Olivia {
      */
     public static void removeVisualisation(VisualisationManager visualisationManager) {
         //mainFrame.removeVisuPanel(visualisationManagers.indexOf(visualisationManager));
+        System.out.println("Removing visualisation " + visualisationManager.getName());
+        visualisationManager.getRenderScreen().animatorStop();
         visualisationManagers.remove(visualisationManager);
         mainFrame.removeActiveVisualisationManager(visualisationManager);
         visualisationManager.destroy();
         mainFrame.updateRenderFrameLayout();
+        //System.gc();
     }
 
     /**

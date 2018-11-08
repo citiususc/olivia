@@ -179,7 +179,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         showOverlayOptions.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_O, ActionEvent.ALT_MASK)
         );
-        fullscreen = addCheckBoxMenuItem("Fullscreen", "Toggles between fullscreen or windowed mode", "fullscreen", false, true);
+        fullscreen = addCheckBoxMenuItem("Fullscreen", "Toggles between fullscreen or windowed mode", "fullscreen", false, !gui.isDetached());
         //fullscreen.setMnemonic(KeyEvent.VK_F);
         fullscreen.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_F, ActionEvent.ALT_MASK)

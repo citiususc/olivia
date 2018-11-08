@@ -399,6 +399,12 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
         freeVBOs();
         overlays.remove();
         pointCloud.clear();
+        overlays=null;
+        pointCloud=null;
+        renderScreen=null;
+        jMenu = null;
+        controlPane =null;
+        gui =null;
     }
     
     /**

@@ -10,6 +10,8 @@ import javax.swing.JInternalFrame;
 import com.jogamp.newt.awt.NewtCanvasAWT;
 import java.awt.Point;
 import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -26,6 +28,7 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
     @Override
     public boolean addVisualisation(VisualisationManager visualisationM) {
         InternalFrame frame = new InternalFrame(gui,visualisationM,visualisationM.getName(), true, true, true, true);
+        frame.setClosable(true);
         visualisationM.getRenderScreen().createRenderFrameNEWT();
         NewtCanvasAWT canvas = new NewtCanvasAWT(visualisationM.getRenderScreen().getWindow());
         frame.add(canvas);
@@ -54,12 +57,14 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
     @Override
     public boolean updateRenderLayout() {
         JInternalFrame[] frames = getAllFrames();
-        int width = this.getWidth() / frames.length;
-        int height = this.getHeight();
-        for (int i = 0; i < frames.length; i++) {
-            frames[i].setSize(width, height);
-            Point pos = frames[i].getLocation();
-            frames[i].setLocation(i * width, pos.y);
+        if(frames.length>0){
+            int width = this.getWidth() / frames.length;
+            int height = this.getHeight();
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].setSize(width, height);
+                Point pos = frames[i].getLocation();
+                frames[i].setLocation(i * width, pos.y);
+            }
         }
         return true;
     }
@@ -80,6 +85,35 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
                 }
             //}
         }
+    }
+    
+    public void closeAllInternalFrames(){
+        JInternalFrame frames[] = this.getAllFrames();
+        for (JInternalFrame frame : frames) {
+            this.getDesktopManager().closeFrame(frame);
+            try {
+                frame.setClosed(true);
+            } catch (PropertyVetoException ex) {
+                
+            }
+            this.remove(frame);
+        }
+    }
+
+    @Override
+    public boolean init() {
+        return true;
+    }
+
+    @Override
+    public boolean createNewWindow() {
+        return false;
+    }
+    
+    @Override
+    public boolean close(){
+        closeAllInternalFrames();
+        return true;
     }
     
     
