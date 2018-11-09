@@ -144,4 +144,14 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
         pointCloud.repack();
         System.out.println("set to Gradient colouring");
     }
+    
+    
+    @Override
+    public void destroy() {
+        super.destroy(); //To change body of generated methods, choose Tools | Templates.
+        this.inputReader = null;
+        this.colours = null;
+    }
+    
+    
 }

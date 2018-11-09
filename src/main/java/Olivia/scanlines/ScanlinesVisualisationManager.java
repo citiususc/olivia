@@ -131,5 +131,23 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
         pointCloud.repack();
         System.out.println("set to random colouring");
     }
+    
+
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedScanPoints.freeVBO(renderScreen);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.colours = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedScan = null;
+        this.selectedScanColours = null;
+        this.selectedScanPoints = null;
+    }
 
 }

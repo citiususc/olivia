@@ -386,14 +386,18 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     }
     
     /**
-     * Because the point cloud uses VBOs, and thay are native programming, they need to be manually freed, this method does that, ONLY FOR THE MAIN POINT CLOUD
+     * Because the point cloud uses VBOs, and they are native programming, they need to be manually freed, this method does that, ONLY FOR THE MAIN POINT CLOUD, needs to be overridden if there are more VBOs in the child class
      */
     public void freeVBOs(){
         pointCloud.freeVBO(renderScreen);
     }
     
     /**
-     * Destroys the visualisation, not very well checked with the overlays, probable memory leaks somewhere TODO
+     * Destroys the visualisation, not very well checked with the overlays, probable memory leaks somewhere TODO.
+     * This is needed to free the VBOs that are native memory, but because there are so many references to the visualisation
+     * some may not be null, so to make sure memory is released all data is set to null, if a bug is found where the visualisation
+     * is still in use it will be fixed, meanwhile it is recommended that all child classes override this method, calling it
+     * with super and the setting to null all their particular data
      */
     public void destroy(){
         freeVBOs();

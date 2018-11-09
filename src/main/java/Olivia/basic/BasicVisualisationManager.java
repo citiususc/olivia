@@ -69,4 +69,11 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
         inputReader.readFromFiles(filePath, this);
         colours.add(new IntensityColourArray(pointCloud));
     }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.colours = null;
+        this.inputReader = null;
+    }
 }

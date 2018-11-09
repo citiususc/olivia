@@ -188,4 +188,24 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         pointCloud.repack();
         System.out.println("set to classification colouring");
     }
+    
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedGroupPoints.freeVBO(renderScreen);
+    }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.activeClasses = null;
+        this.colours = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedFlags = null;
+        this.selectedGroup = null;
+        this.selectedGroupPoints = null;
+        this.selectedGroupColours = null;
+        this.textInfo = null;
+    }
 }

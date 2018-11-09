@@ -165,5 +165,23 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         selectedColour = colourIndex;
         pointCloud.repack();
     }
+    
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedGroupPoints.freeVBO(renderScreen);
+    }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.groupIds = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedFlags = null;
+        this.selectedGroup = null;
+        this.selectedGroupColours = null;
+        this.selectedGroupPoints = null;
+    }
 
 }
