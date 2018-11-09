@@ -34,7 +34,10 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
         frame.add(canvas);
         frame.setResizable(true);
         frame.addInternalFrameListener(new FrameEventListener(visualisationM));
-        frame.addComponentListener(new ComponentAdapter() {
+        frame.setSize(this.getWidth(), this.getHeight());
+        frame.setPreferredSize(this.getPreferredSize());
+        frame.setMinimumSize(this.getMinimumSize());
+        /*frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 if (gui.isActiveVisualisationManager(visualisationM)) {
@@ -48,15 +51,16 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
                     }
                 }
             }
-        });
+        });*/
         this.add(frame);
         frame.setVisible(true);
         return true;
     }
 
+    
     @Override
     public boolean updateRenderLayout() {
-        JInternalFrame[] frames = getAllFrames();
+        /*JInternalFrame[] frames = getAllFrames();
         if(frames.length>0){
             int width = this.getWidth() / frames.length;
             int height = this.getHeight();
@@ -65,7 +69,7 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
                 Point pos = frames[i].getLocation();
                 frames[i].setLocation(i * width, pos.y);
             }
-        }
+        }*/
         return true;
     }
     

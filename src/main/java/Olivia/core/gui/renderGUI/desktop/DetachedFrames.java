@@ -73,6 +73,7 @@ public class DetachedFrames implements RenderGUI{
         return renderPanes.get(renderPanes.size()-1).addVisualisation(visualisationM);
     }
 
+    
     @Override
     public boolean updateRenderLayout() {
         renderPanes.forEach((dp) -> {
@@ -80,6 +81,7 @@ public class DetachedFrames implements RenderGUI{
         });
         return true;
     }
+    
 
     @Override
     public boolean init() {
