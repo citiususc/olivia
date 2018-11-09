@@ -2,6 +2,7 @@ package Olivia.core.gui.renderGUI.desktop;
 
 import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
+import javafx.scene.Cursor;
 import javax.swing.JInternalFrame;
 
 /**

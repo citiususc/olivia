@@ -8,10 +8,19 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import com.jogamp.newt.awt.NewtCanvasAWT;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.Cursor;
+import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 
 /**
@@ -29,14 +38,33 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
     public boolean addVisualisation(VisualisationManager visualisationM) {
         InternalFrame frame = new InternalFrame(gui,visualisationM,visualisationM.getName(), true, true, true, true);
         frame.setClosable(true);
+        frame.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         visualisationM.getRenderScreen().createRenderFrameNEWT();
         NewtCanvasAWT canvas = new NewtCanvasAWT(visualisationM.getRenderScreen().getWindow());
+        //canvas.setSize(new Dimension(this.getWidth()-40, this.getHeight()-40));
         frame.add(canvas);
-        frame.setResizable(true);
-        frame.addInternalFrameListener(new FrameEventListener(visualisationM));
         frame.setSize(this.getWidth(), this.getHeight());
         frame.setPreferredSize(this.getPreferredSize());
         frame.setMinimumSize(this.getMinimumSize());
+        frame.addMouseListener(new MouseAdapter() { 
+          @Override
+          public void mousePressed(MouseEvent me) { 
+              System.out.println("check");
+              if(SwingUtilities.isRightMouseButton(me)){
+                frame.setSize(new Dimension(frame.getWidth()-40, frame.getHeight()-40));
+              }
+              if(SwingUtilities.isLeftMouseButton(me)){
+                frame.setSize(new Dimension(frame.getWidth()+40, frame.getHeight()+40));
+              }
+          } 
+        });
+        //Border border = BorderFactory.createLineBorder(Color.RED,20);
+        //frame.setBorder(BorderFactory.createLineBorder(Color.RED,20));
+        //frame.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        //frame.setBorder(BorderFactory.createEmptyBorder());
+        //frame.setBorder(BorderFactory.createTitledBorder(frame.getBorder(),visualisationM.getName()));
+        //frame.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        frame.addInternalFrameListener(new FrameEventListener(visualisationM));
         /*frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

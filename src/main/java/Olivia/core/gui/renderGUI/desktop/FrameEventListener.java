@@ -11,6 +11,7 @@ import javax.swing.event.InternalFrameListener;
  * @author oscar.garcia
  */
 public class FrameEventListener implements InternalFrameListener {
+//public class FrameEventListener extends InternalFrameAdapter {
         protected MainFrame gui;
         protected VisualisationManager visualisationManager;
     

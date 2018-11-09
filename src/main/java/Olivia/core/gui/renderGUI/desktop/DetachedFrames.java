@@ -43,6 +43,7 @@ public class DetachedFrames implements RenderGUI{
     private boolean buildDetachedFrame(boolean undecorated){
         DesktopPane renderPane = new DesktopPane(gui);
         renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+        //renderPane.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
         //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
         //int renderHeight =Math.round(screenSize.height*(3/4));
         renderPane.setMinimumSize(minimumSize);
