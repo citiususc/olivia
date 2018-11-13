@@ -137,7 +137,7 @@ public class MainFrame extends JFrame{
         
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
-        renderHeight =Math.round(screenSize.height*(3/4));
+        renderHeight =Math.round(screenSize.height*0.75f);
    
         menuBar = new MainMenuBar(this);
         menuBar.initialize();
@@ -150,11 +150,14 @@ public class MainFrame extends JFrame{
         if (!isDetached) {
             DesktopPane desktopPane = new DesktopPane(this);
             desktopPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-            desktopPane.setMinimumSize(new Dimension(screenSize.width, renderHeight));
+            desktopPane.setMinimumSize(new Dimension(Math.round(screenSize.width*0.25f), Math.round(renderHeight*0.25f)));
+            desktopPane.setPreferredSize(new Dimension(screenSize.width, renderHeight));
+            desktopPane.setSize(new Dimension(screenSize.width, renderHeight));
             renderGUI = desktopPane;
             JSplitPane splitPane1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane1.setTopComponent(controlPanel);
-            controlPanel.setPreferredSize(new Dimension(screenSize.width, Math.round(screenSize.height*(1/4))));
+            controlPanel.setPreferredSize(new Dimension(screenSize.width, Math.round(screenSize.height*0.25f)));
+            controlPanel.setSize(new Dimension(screenSize.width, Math.round(screenSize.height*0.25f)));
             //splitPane1.setDividerSize(5);
             splitPane1.setBottomComponent((Component)renderGUI);
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
