@@ -1,14 +1,14 @@
 package Olivia.core.gui;
 
 import Olivia.core.Olivia;
-import Olivia.core.gui.renderGUI.desktop.DesktopPane;
+import Olivia.core.gui.renderGUI.DesktopPane;
 import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
-import Olivia.core.gui.renderGUI.desktop.DetachedFrames;
-import Olivia.core.gui.renderGUI.desktop.FrameAdapter;
-import Olivia.core.gui.renderGUI.desktop.FrameEventListener;
+import Olivia.core.gui.renderGUI.DetachedFrames;
+import Olivia.core.gui.renderGUI.FrameAdapter;
+import Olivia.core.gui.renderGUI.FrameEventListener;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.hi.NEWTMouseListener;
 import java.awt.Component;

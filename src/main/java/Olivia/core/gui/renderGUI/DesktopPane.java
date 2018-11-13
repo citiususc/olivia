@@ -1,4 +1,4 @@
-package Olivia.core.gui.renderGUI.desktop;
+package Olivia.core.gui.renderGUI;
 
 import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
@@ -47,51 +47,7 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
         frame.setSize(this.getWidth(), this.getHeight());
         frame.setPreferredSize(this.getPreferredSize());
         frame.setMinimumSize(this.getMinimumSize());
-        frame.addMouseListener(new MouseAdapter() { 
-            int x,y;
-            @Override
-            public void mouseClicked(MouseEvent me) { 
-                if(me.getClickCount()==2){
-                    int w = frame.getWidth();
-                    int h = frame.getHeight();
-                    int x = me.getPoint().x;
-                    int y = me.getPoint().y;
-                    int h_add,w_add;
-                    h_add=w_add=40;
-                    Insets ins = frame.getInsets();
-                    //System.out.println(ins);
-                    int width_add=0;
-                    int height_add=0;
-                    if(y>h-ins.bottom){
-                        height_add = h_add; //bottom
-                    }else if(y<ins.top){
-                        height_add = h_add; //top
-                    }
-                    if(x<ins.left){
-                        width_add = w_add; //left
-                    }else if(x>w-ins.right){
-                        width_add = w_add;;//right
-                    }
-                    //System.out.println(me.getPoint() + " w_add" + width_add + " h_add" + height_add);
-                    
-                    if(SwingUtilities.isRightMouseButton(me)){
-                      frame.setSize(new Dimension(frame.getWidth()-width_add, frame.getHeight()-height_add));
-                    }
-                    if(SwingUtilities.isLeftMouseButton(me)){
-                      frame.setSize(new Dimension(frame.getWidth()+width_add, frame.getHeight()+height_add));
-                    }
-                }
-                /*
-                x=me.getX();
-                y=me.getY();*/
-            } 
-            /*
-            @Override
-            public void mouseReleased(MouseEvent me) {
-                frame.setSize(new Dimension(frame.getWidth()-me.getX()-x, frame.getHeight()-me.getY()-y));
-            }
-                */
-        });
+        frame.addMouseListener(new InternalFrameMouseAdapter(frame));
         //Border border = BorderFactory.createLineBorder(Color.RED,20);
         frame.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY,10));
         //frame.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));

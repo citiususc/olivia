@@ -1,4 +1,4 @@
-package Olivia.core.gui.renderGUI.desktop;
+package Olivia.core.gui.renderGUI;
 
 import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;

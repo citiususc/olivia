@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Olivia.core.gui.renderGUI.desktop;
+package Olivia.core.gui.renderGUI;
 
 import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
