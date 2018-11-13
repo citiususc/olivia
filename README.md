@@ -28,16 +28,20 @@ mvn package
 
 ## Usage
 Open a terminal inside the JAR folder and run:  
-`java -jar point-cloud-viewer.jar`  
+`java -jar Olivia.jar`  
 To launch with stereoscopic 3D enabled use:  
-`java -jar point-cloud-viewer.jar -stereo`  
+`java -jar Olivia.jar -stereo`  
+To launch with detached render windows with an internal desktop use:  
+`java -jar Olivia.jar -detachedD`
+To launch with detached render windows, one for each visualisation, use:  
+`java -jar Olivia.jar -detachedI`
 To launch a specified visualisation and file use:  
-`java -jar point-cloud-viewer.jar -visutype path`    
+`java -jar Olivia.jar -visutype path`    
 Example:  
 `java -jar point-cloud-viewer.jar -classifier data/classifier`   
 Current supported `-visutypes` are: `-basic -neighbours -segmenter -classifier`  
 This can be used as well with `-stereo` argument:  
-`java -jar point-cloud-viewer.jar -stereo -classifier data/classifier`   
+`java -jar Olivia.jar -stereo -classifier data/classifier`   
 
 ## Authorship
 Grupo de Arquitectura de Computadores (GAC)  

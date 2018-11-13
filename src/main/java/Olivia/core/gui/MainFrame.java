@@ -9,6 +9,7 @@ import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
 import Olivia.core.gui.renderGUI.DetachedFrames;
 import Olivia.core.gui.renderGUI.FrameAdapter;
 import Olivia.core.gui.renderGUI.FrameEventListener;
+import Olivia.core.gui.renderGUI.IndependentFrames;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.hi.NEWTMouseListener;
 import java.awt.Component;
@@ -34,6 +35,11 @@ import javax.swing.border.TitledBorder;
  * @author oscar.garcia
  */
 public class MainFrame extends JFrame{
+    
+    public static int SINGLE_WINDOW = 0;
+    public static int DETACHED_DESKTOP = 1;
+    public static int DETACHED_INDEPENDENT = 2;
+    
 
     /**
      * Title of the frame.
@@ -72,7 +78,9 @@ public class MainFrame extends JFrame{
     protected int renderHeight;
     
     protected boolean isStereo3D; 
-    protected boolean isDetached;
+    protected boolean isSingleWindow;
+    protected boolean isDetachedIndependent;
+    protected boolean isDetachedDesktop;
     protected boolean isUndecorated;
     
     protected boolean isFullScreen;
@@ -105,7 +113,7 @@ public class MainFrame extends JFrame{
             }
         });
         setJMenuBar(menuBar);
-        if (!isDetached) {
+        if (isSingleWindow) {
             //setSize(screenSize.width, screenSize.height);
             setSize(1600, 900); // HD+
             setTitle(TITLE);
@@ -118,7 +126,7 @@ public class MainFrame extends JFrame{
     }
     
     public MainFrame(){
-        this(false,false,false);
+        this(false,SINGLE_WINDOW,false);
     }
 
     /**
@@ -126,9 +134,18 @@ public class MainFrame extends JFrame{
      *
      * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
-    public MainFrame(boolean isStereo3D, boolean isDetached, boolean isUndecorated) {
+    public MainFrame(boolean isStereo3D, int mode, boolean isUndecorated) {
         this.isStereo3D = isStereo3D;
-        this.isDetached = isDetached;
+        this.isSingleWindow = this.isDetachedDesktop = this.isDetachedIndependent = false;
+        if(mode==SINGLE_WINDOW){
+            this.isSingleWindow = true;
+        }else if(mode==DETACHED_DESKTOP){
+            this.isDetachedDesktop = true;
+        }else if(mode==DETACHED_INDEPENDENT){
+            this.isDetachedIndependent = true;
+        }else{
+            this.isSingleWindow = true;
+        }
         this.isUndecorated = isUndecorated;
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = env.getScreenDevices();
@@ -147,7 +164,7 @@ public class MainFrame extends JFrame{
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
 
-        if (!isDetached) {
+        if (isSingleWindow) {
             DesktopPane desktopPane = new DesktopPane(this);
             desktopPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
             desktopPane.setMinimumSize(new Dimension(Math.round(screenSize.width*0.25f), Math.round(renderHeight*0.25f)));
@@ -165,12 +182,21 @@ public class MainFrame extends JFrame{
             splitPane2.setBottomComponent(null);
             splitPane2.setResizeWeight(1);
             //splitPane1.setDividerLocation(0.2);
-        } else {
+        } else if(isDetachedDesktop){
             DetachedFrames detachedFrames = new DetachedFrames(this,screenSize,isUndecorated);
             detachedFrames.scaleMinimumSize(0.2f);
             detachedFrames.scalePreferredSize(0.8f);
             renderGUI = detachedFrames;
-            //this.buildDetachedFrame(isUndecorated);
+            splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+            splitPane2.setTopComponent(controlPanel);
+            splitPane2.setBottomComponent(null);
+            //splitPane2.setResizeWeight(1);
+            this.setTitle(TITLE + " control");
+        }else if(isDetachedIndependent){
+            IndependentFrames independentFrames = new IndependentFrames(this,screenSize,isUndecorated);
+            independentFrames.scaleMinimumSize(0.2f);
+            independentFrames.scalePreferredSize(0.8f);
+            renderGUI = independentFrames;
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(controlPanel);
             splitPane2.setBottomComponent(null);
@@ -181,7 +207,7 @@ public class MainFrame extends JFrame{
     }
     
     public void createNewRenderWindow(){
-        if(isDetached){
+        if(isDetachedDesktop){
             //buildRenderPane();
             //buildDetachedFrame(isUndecorated);
             renderGUI.createNewWindow();
@@ -391,7 +417,7 @@ public class MainFrame extends JFrame{
     }
 
     public boolean isDetached() {
-        return isDetached;
+        return isDetachedDesktop;
     }
     
     /**
@@ -428,7 +454,7 @@ public class MainFrame extends JFrame{
     
     public void setFullscreen(boolean isFullScreen){
         if(!device.isFullScreenSupported()) return;
-        if(this.isDetached){
+        if(this.isDetachedDesktop){
             /*if(isFullScreen){
                 device.setFullScreenWindow(detachedFrames.get(detachedFrames.size()-1));
             }else{

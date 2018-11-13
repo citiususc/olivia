@@ -26,7 +26,7 @@ public class Olivia {
     //private static VisualisationManager activeVisualisationManager;
     private static String visulisationType;
     private static boolean isStereo3D;
-    private static boolean isDetached;
+    private static int desktopMode;
     private static boolean isUndecorated;
     //private static boolean isMirroring;
     private static int idCount;
@@ -40,7 +40,7 @@ public class Olivia {
         visualisationManagers = new ArrayList<>();
         visulisationType = null;
         isStereo3D = false;
-        isDetached = false;
+        desktopMode = MainFrame.SINGLE_WINDOW;
         isUndecorated = false;
         //isMirroring = false;
         idCount = 0;
@@ -55,12 +55,13 @@ public class Olivia {
                         case "-stereo":
                             isStereo3D = true;
                             break;
-                        case "-detached":
-                            isDetached = true;
-                            isUndecorated = false;
+                        case "-detachedD":
+                            desktopMode = MainFrame.DETACHED_DESKTOP;
                             break;
-                        case "-detachedU":
-                            isDetached = true;
+                        case "-detachedI":
+                            desktopMode = MainFrame.DETACHED_INDEPENDENT;
+                            break;
+                        case "-U":
                             isUndecorated = true;
                             break;
                         case "-neighbours":
@@ -76,7 +77,7 @@ public class Olivia {
                             break;
                     }
                 }
-                mainFrame = new MainFrame(isStereo3D, isDetached, isUndecorated);
+                mainFrame = new MainFrame(isStereo3D, desktopMode, isUndecorated);
                 mainFrame.initialize();
                 if (visulisationType != null) {
                     switch (visulisationType) {

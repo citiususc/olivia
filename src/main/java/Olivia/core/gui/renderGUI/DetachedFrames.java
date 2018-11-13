@@ -8,7 +8,6 @@ package Olivia.core.gui.renderGUI;
 import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
 import static Olivia.core.gui.MainFrame.TITLE;
-import Olivia.core.gui.RenderGUI;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
@@ -18,25 +17,13 @@ import javax.swing.JFrame;
  *
  * @author oscar.garcia
  */
-public class DetachedFrames implements RenderGUI{
-    MainFrame gui;
-    Dimension screenSize;
-    Dimension preferredSize;
-    Dimension minimumSize;
-    boolean undecorated;
-    ArrayList<JFrame> frames;
+public class DetachedFrames extends IndependentFrames{
     ArrayList<DesktopPane> renderPanes;
     
     
     public DetachedFrames(MainFrame gui, Dimension screenSize, boolean undecorated){
-        this.frames = new ArrayList<>();
+        super(gui,screenSize,undecorated);
         this.renderPanes = new ArrayList<>();
-        this.gui = gui;
-        this.screenSize = screenSize;
-        this.undecorated = undecorated;
-        
-        this.preferredSize = screenSize;
-        this.minimumSize = screenSize;
     }
     
     
@@ -85,38 +72,24 @@ public class DetachedFrames implements RenderGUI{
     
 
     @Override
-    public boolean init() {
-        return true;
-    }
-
-    @Override
     public boolean createNewWindow() {
         return buildDetachedFrame(undecorated);
     }
     
+    @Override
     public boolean removeFrame(JFrame frame){
         int index = this.frames.indexOf(frame);
-        frames.remove(frame);
         renderPanes.remove(index);
+        super.removeFrame(frame);
         return true;
-    }
-    
-    public void scalePreferredSize(float scale){
-        this.preferredSize = new Dimension(Math.round(screenSize.width*scale),
-                                          Math.round(screenSize.height*scale));
-    }
-    
-    public void scaleMinimumSize(float scale){
-        this.minimumSize = new Dimension(Math.round(screenSize.width*scale),
-                                          Math.round(screenSize.height*scale));
     }
 
     @Override
     public boolean close() {
-        for(JFrame jf:frames){
-            jf.dispose();
+        for(DesktopPane dp:renderPanes){
+            dp.close();
         }
-        return true;
+        return super.close();
     }
     
 }
