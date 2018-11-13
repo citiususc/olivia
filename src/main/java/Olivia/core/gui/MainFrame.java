@@ -416,52 +416,17 @@ public class MainFrame extends JFrame{
         this.overlayOptionsFrame.update();
     }
 
-    public boolean isDetached() {
+    public boolean isDetachedDesktop() {
         return isDetachedDesktop;
     }
     
     /**
-     * To be used with MainFRame the main frame should be a different class
+     * Sets the MainFrame to fullscreen, does not work with detached windows
      * @param isFullScreen 
      */
-    /*
-    public void setFullscreen(boolean isFullScreen){
-        if(isStereo3D){
-            if(!device.isFullScreenSupported()) return;
-            //this.dispose();
-            //setUndecorated(isFullScreen);
-            //setResizable(!isFullScreen);
-            if (isFullScreen) {
-                // Full-screen mode
-                this.buildDetachedFrame();
-                device.setFullScreenWindow(this.detachedFrame);
-                device.
-                validate();
-            } else {
-                // Windowed mode
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
-                int renderHeight =Math.round(screenSize.height*(3/4));
-                this.buildDetachedFrame(screenSize, renderHeight);
-                pack();
-                setVisible(true);
-            }
-        }
-    }
-*/
-    
-    
-    
     public void setFullscreen(boolean isFullScreen){
         if(!device.isFullScreenSupported()) return;
-        if(this.isDetachedDesktop){
-            /*if(isFullScreen){
-                device.setFullScreenWindow(detachedFrames.get(detachedFrames.size()-1));
-            }else{
-                device.setFullScreenWindow(null);
-            }
-            detachedFrames.get(detachedFrames.size()-1).validate(); */
-        }else{
+        if(this.isSingleWindow){
             if(isFullScreen){
                 device.setFullScreenWindow(this);
             }else{

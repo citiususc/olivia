@@ -179,7 +179,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         showOverlayOptions.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_O, ActionEvent.ALT_MASK)
         );
-        fullscreen = addCheckBoxMenuItem("Fullscreen", "Toggles between fullscreen or windowed mode", "fullscreen", false, !gui.isDetached());
+        fullscreen = addCheckBoxMenuItem("Fullscreen", "Toggles between fullscreen or windowed mode", "fullscreen", false, !gui.isDetachedDesktop());
         //fullscreen.setMnemonic(KeyEvent.VK_F);
         fullscreen.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_F, ActionEvent.ALT_MASK)
@@ -191,7 +191,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         }else{
             stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
         }
-        newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetached());
+        newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
         
         optionsMenu.add(showSelectedPoint);
         optionsMenu.add(showOverlayOptions);

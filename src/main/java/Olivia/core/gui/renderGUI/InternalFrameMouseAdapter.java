@@ -20,20 +20,28 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     protected InternalFrame frame;
     protected int h_add,w_add;
     protected boolean pressed_right,pressed_bottom,pressed_top,pressed_left;
+    protected boolean resize_started;
     
     public InternalFrameMouseAdapter(InternalFrame frame){
         this.frame = frame;
-        h_add=w_add=40;
+        h_add=w_add=100;
+        resize_started=false;
     }
     
     @Override
     public void mouseClicked(MouseEvent me) { 
         if(me.getClickCount()==2){
+            resize_started=false;
             int w = frame.getWidth();
             int h = frame.getHeight();
+            int width_set=frame.getWidth();
+            int height_set=frame.getHeight();
             int x = me.getPoint().x;
             int y = me.getPoint().y;
             Insets ins = frame.getInsets();
+            int loc_x,loc_y;
+            loc_x = 0;
+            loc_y = 0;
             //System.out.println(ins);
             int width_add=0;
             int height_add=0;
@@ -41,44 +49,55 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
                 height_add = h_add; //bottom
             }else if(y<ins.top){
                 height_add = h_add; //top
+                loc_y = h_add;
             }
             if(x<ins.left){
                 width_add = w_add; //left
+                loc_x = w_add;
             }else if(x>w-ins.right){
                 width_add = w_add;//right
             }
             //System.out.println(me.getPoint() + " w_add" + width_add + " h_add" + height_add);
 
             if(SwingUtilities.isRightMouseButton(me)){
-              frame.setSize(new Dimension(frame.getWidth()-width_add, frame.getHeight()-height_add));
+                width_set = frame.getWidth()-width_add;
+                height_set = frame.getHeight()-height_add;
+                loc_x = frame.getLocation().x + loc_x;
+                loc_y = frame.getLocation().y + loc_y;
             }
-            if(SwingUtilities.isLeftMouseButton(me)){
-              frame.setSize(new Dimension(frame.getWidth()+width_add, frame.getHeight()+height_add));
+            if(SwingUtilities.isMiddleMouseButton(me)){
+                width_set = frame.getWidth()+width_add;
+                height_set = frame.getHeight()+height_add;
+                loc_x = frame.getLocation().x - loc_x;
+                loc_y = frame.getLocation().y - loc_y;
             }
+            
+            
+            resize(width_set,height_set, loc_x, loc_y);
         }
-        /*
-        x=me.getX();
-        y=me.getY();*/
     } 
             
     @Override
     public void mousePressed(MouseEvent me) {
-        pressed_right=pressed_bottom=pressed_top=pressed_left=false;
-        int w = frame.getWidth();
-        int h = frame.getHeight();
-        int x = me.getPoint().x;
-        int y = me.getPoint().y;
-        Insets ins = frame.getInsets();
-        //System.out.println(ins);
-        if(y>h-ins.bottom){
-            pressed_bottom = true; //bottom
-        }else if(y<ins.top){
-            pressed_top = true; //top
-        }
-        if(x<ins.left){
-            pressed_left = true; //left
-        }else if(x>w-ins.right){
-            pressed_right = true;//right
+        if( (me.getClickCount()==1)&SwingUtilities.isLeftMouseButton(me)){
+            resize_started=true;
+            pressed_right=pressed_bottom=pressed_top=pressed_left=false;
+            int w = frame.getWidth();
+            int h = frame.getHeight();
+            int x = me.getPoint().x;
+            int y = me.getPoint().y;
+            Insets ins = frame.getInsets();
+            //System.out.println(ins);
+            if(y>h-ins.bottom){
+                pressed_bottom = true; //bottom
+            }else if(y<ins.top){
+                pressed_top = true; //top
+            }
+            if(x<ins.left){
+                pressed_left = true; //left
+            }else if(x>w-ins.right){
+                pressed_right = true;//right
+            }
         }
         //System.out.println("Pressed in " +me.getPoint());
         
@@ -87,6 +106,8 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     
     @Override
     public void mouseReleased(MouseEvent me) {
+        if(resize_started&SwingUtilities.isLeftMouseButton(me)){
+        resize_started=false;
         int x = me.getPoint().x;
         int y = me.getPoint().y;
         int width_set=frame.getWidth();
@@ -113,18 +134,25 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             width_set = frame.getWidth()-x;
         }
         
-        if(width_set<frame.getMinimumSize().width) width_set = frame.getMinimumSize().width;
-        if(width_set>frame.getMaximumSize().width) width_set = frame.getMaximumSize().width;
-        if(height_set<frame.getMinimumSize().height) height_set = frame.getMinimumSize().height;
-        if(height_set>frame.getMaximumSize().height) height_set = frame.getMaximumSize().height;
+        resize(width_set,height_set,loc_x,loc_y);
+    }
+    }
+    
+    protected void resize(int width, int height, int loc_x, int loc_y){
+        if(width<frame.getMinimumSize().width) width = frame.getMinimumSize().width;
+        if(width>frame.getMaximumSize().width) width = frame.getMaximumSize().width;
+        if(height<frame.getMinimumSize().height) height = frame.getMinimumSize().height;
+        if(height>frame.getMaximumSize().height) height = frame.getMaximumSize().height;
         
-        if(loc_x > location.x+frame.getWidth()-frame.getMinimumSize().width) loc_x = location.x+frame.getWidth()-frame.getMinimumSize().width;
-        if(loc_y > location.y+frame.getHeight()-frame.getMinimumSize().height) loc_y = location.y+frame.getHeight()-frame.getMinimumSize().height;
+        if(loc_x > frame.getLocation().x+frame.getWidth()-frame.getMinimumSize().width) loc_x = frame.getLocation().x+frame.getWidth()-frame.getMinimumSize().width;
+        if(loc_y > frame.getLocation().y+frame.getHeight()-frame.getMinimumSize().height) loc_y = frame.getLocation().y+frame.getHeight()-frame.getMinimumSize().height;
          
-        frame.setSize(new Dimension(width_set, height_set));
+        frame.setSize(new Dimension(width, height));
         frame.setLocation(loc_x, loc_y);
     }
     
-    
+    protected void resize(int width, int height){
+        resize(width,height,frame.getLocation().x,frame.getLocation().y);
+    }
     
 }
