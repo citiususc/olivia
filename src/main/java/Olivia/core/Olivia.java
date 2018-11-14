@@ -3,6 +3,7 @@ package Olivia.core;
 import Olivia.basic.BasicVisualisationManager;
 import Olivia.classifier.ClassifierVisualisationManager;
 import Olivia.core.gui.MainFrame;
+import Olivia.landing.LandingVisualisationManager;
 import Olivia.scanlines.ScanlinesVisualisationManager;
 import Olivia.segmenter.SegmenterVisualisationManager;
 import Olivia.standard.StandardVisualisationManager;
@@ -141,6 +142,24 @@ public class Olivia {
         visualisationManager.destroy();
         mainFrame.updateRenderFrameLayout();
         //System.gc();
+    }
+    
+        /**
+     * Adds a new LandingVisualisationManger, reading its data from the folder in filePath
+     * @param filePath The folder where all the landing data are
+     */
+    public static void addNewLandingVisualisation(String filePath) {   
+        try {
+            System.out.println("Creating Landing Visualisation");
+            LandingVisualisationManager visuMan = new LandingVisualisationManager(idCount++, mainFrame, isStereo3D,filePath);
+            addNewVisualisationManager(visuMan);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Cannot add visualisation, cannot read File" + e);
+        }
+        catch (IOException e) {
+            System.out.println("Cannot add visualisation, cannot read from File" + e);
+        }
     }
 
     /**
