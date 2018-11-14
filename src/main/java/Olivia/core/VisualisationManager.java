@@ -378,7 +378,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     }
     
     /**
-     * Draws the overlays only, do not remember why now TODO
+     * Draws the overlays only, do not remember why now TODO (maybe because of EmptyVisualisation?)
      */
     public void draw(){
         //points.draw(renderScreen);
