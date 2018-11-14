@@ -13,21 +13,41 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * An Mouse listener for the internal frames, needed mainly because there are issues with resize under Ubuntu 16 at least, maybe in more.
  * @author oscar.garcia
  */
 public class InternalFrameMouseAdapter extends MouseAdapter{
+    /**
+     * The internal frame this is listening to
+     */
     protected InternalFrame frame;
+    /**
+     * To save how much width and height will be added or substracted in one operation
+     */
     protected int h_add,w_add;
+    /**
+     * To save where in the border the mouse pressed
+     */
     protected boolean pressed_right,pressed_bottom,pressed_top,pressed_left;
+    /**
+     * To save whether a resize operation has been started
+     */
     protected boolean resize_started;
     
+    /**
+     * Creates a new instance of InternalFrameMouseAdapter
+     * @param frame the frame it is listening to
+     */
     public InternalFrameMouseAdapter(InternalFrame frame){
         this.frame = frame;
         h_add=w_add=100;
         resize_started=false;
     }
     
+    /**
+     * Increases the size with a Right double click, decreases the size with a Middle double click, in increments and depending where in the border it was clicked
+     * @param me a mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent me) { 
         if(me.getClickCount()==2){
@@ -77,6 +97,10 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
         }
     } 
             
+    /**
+     * Begins a resize operation with the left button, detects where in the border it was pressed
+     * @param me 
+     */
     @Override
     public void mousePressed(MouseEvent me) {
         if( (me.getClickCount()==1)&SwingUtilities.isLeftMouseButton(me)){
@@ -103,7 +127,10 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
         
     }
     
-    
+    /**
+     * Ends the resize operation, depending on where the mouse stoped
+     * @param me 
+     */
     @Override
     public void mouseReleased(MouseEvent me) {
         if(resize_started&SwingUtilities.isLeftMouseButton(me)){
@@ -138,6 +165,13 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     }
     }
     
+    /**
+     * Resizes the InternalFrame, checks for bound so minimum and maximum sizes are no exceeded
+     * @param width The new width
+     * @param height The new Height
+     * @param loc_x The new location on x
+     * @param loc_y  The new location on y
+     */
     protected void resize(int width, int height, int loc_x, int loc_y){
         if(width<frame.getMinimumSize().width) width = frame.getMinimumSize().width;
         if(width>frame.getMaximumSize().width) width = frame.getMaximumSize().width;
@@ -151,6 +185,11 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
         frame.setLocation(loc_x, loc_y);
     }
     
+    /**
+     * Resizes the InternalFrame, checks for bound so minimum and maximum sizes are no exceeded
+     * @param width The new width
+     * @param height The new Height
+     */
     protected void resize(int width, int height){
         resize(width,height,frame.getLocation().x,frame.getLocation().y);
     }

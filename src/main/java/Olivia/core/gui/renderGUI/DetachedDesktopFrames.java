@@ -14,19 +14,31 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
 /**
- *
+ * Renders the visualisation in multiple windows (frames) with an internal desktop.
  * @author oscar.garcia
  */
-public class DetachedFrames extends IndependentFrames{
+public class DetachedDesktopFrames extends IndependentFrames{
+    /**
+     * An array with all the DesktopPanes, the DesktopPanes should have the same index in the array as the JFrame they are in 
+     */
     ArrayList<DesktopPane> renderPanes;
     
-    
-    public DetachedFrames(MainFrame gui, Dimension screenSize, boolean undecorated){
+    /**
+     * Creates a new instance of DetachedDesktopFrames
+     * @param gui The MainGUI
+     * @param screenSize The screen size of DetachedDesktopFrames, initial values of preferred, minimum and current size are taken from here
+     * @param undecorated Whether the JFrames are decorated or not
+     */
+    public DetachedDesktopFrames(MainFrame gui, Dimension screenSize, boolean undecorated){
         super(gui,screenSize,undecorated);
         this.renderPanes = new ArrayList<>();
     }
     
-    
+    /**
+     * Build a new JFrame with and internal DesktopPane and adds it to the arrays
+     * @param undecorated Whether the JFrame is decorated or not
+     * @return true if everything OK
+     */
     private boolean buildDetachedFrame(boolean undecorated){
         DesktopPane renderPane = new DesktopPane(gui);
         renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
@@ -50,9 +62,11 @@ public class DetachedFrames extends IndependentFrames{
         return true;
     }
     
-    
-    
-
+    /**
+     * Adds a new visualisation to be rendered, it will be rendered in the last created window
+     * @param visualisationM The visualisation to be rendered
+     * @return true if everything OK
+     */
     @Override
     public boolean addVisualisation(VisualisationManager visualisationM) {
         if(frames.isEmpty()){
@@ -61,7 +75,10 @@ public class DetachedFrames extends IndependentFrames{
         return renderPanes.get(renderPanes.size()-1).addVisualisation(visualisationM);
     }
 
-    
+    /**
+     * Updates the render layout of all the DesktopPanes in all the frames
+     * @return 
+     */
     @Override
     public boolean updateRenderLayout() {
         renderPanes.forEach((dp) -> {
@@ -70,12 +87,21 @@ public class DetachedFrames extends IndependentFrames{
         return true;
     }
     
-
+    /**
+     * Creates a new window to render
+     * @return true if everything OK
+     * @see buildDetachedFrame()
+     */
     @Override
     public boolean createNewWindow() {
         return buildDetachedFrame(undecorated);
     }
     
+    /**
+     * Removes a window (frame) from the render window
+     * @param frame the JFrame to be removed
+     * @return true if everything ok
+     */
     @Override
     public boolean removeFrame(JFrame frame){
         int index = this.frames.indexOf(frame);
@@ -84,6 +110,10 @@ public class DetachedFrames extends IndependentFrames{
         return true;
     }
 
+    /**
+     * Closes all windows and desktops
+     * @return true if everything OK
+     */
     @Override
     public boolean close() {
         for(DesktopPane dp:renderPanes){
