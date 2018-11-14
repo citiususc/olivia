@@ -14,11 +14,11 @@ import javax.swing.JFrame;
  * @author oscar.garcia
  */
 public class FrameAdapter extends WindowAdapter{
-    DetachedFrames df;
+    DetachedDesktopFrames df;
     DesktopPane renderPane;
     JFrame detachedFrame;
     
-    public FrameAdapter(DetachedFrames gui, JFrame detachedFrame, DesktopPane renderPane){
+    public FrameAdapter(DetachedDesktopFrames gui, JFrame detachedFrame, DesktopPane renderPane){
         this.df = gui;
         this.detachedFrame = detachedFrame;
         this.renderPane = renderPane;

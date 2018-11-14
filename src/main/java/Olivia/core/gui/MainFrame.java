@@ -6,24 +6,14 @@ import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
-import Olivia.core.gui.renderGUI.DetachedFrames;
-import Olivia.core.gui.renderGUI.FrameAdapter;
-import Olivia.core.gui.renderGUI.FrameEventListener;
+import Olivia.core.gui.renderGUI.DetachedDesktopFrames;
 import Olivia.core.gui.renderGUI.IndependentFrames;
 import Olivia.core.render.OpenGLScreen;
-import Olivia.core.render.hi.NEWTMouseListener;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
-import java.beans.PropertyVetoException;
-import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -88,7 +78,6 @@ public class MainFrame extends JFrame{
     
     /**
      * Initialize the components.
-     * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
     public void initialize(){
         /*addWindowStateListener(new WindowStateListener() {
@@ -123,6 +112,7 @@ public class MainFrame extends JFrame{
         }
         setVisible(true);
         setLocationRelativeTo(null);
+        renderGUI.init();
     }
     
     public MainFrame(){
@@ -183,7 +173,7 @@ public class MainFrame extends JFrame{
             splitPane2.setResizeWeight(1);
             //splitPane1.setDividerLocation(0.2);
         } else if(isDetachedDesktop){
-            DetachedFrames detachedFrames = new DetachedFrames(this,screenSize,isUndecorated);
+            DetachedDesktopFrames detachedFrames = new DetachedDesktopFrames(this,screenSize,isUndecorated);
             detachedFrames.scaleMinimumSize(0.2f);
             detachedFrames.scalePreferredSize(0.8f);
             renderGUI = detachedFrames;

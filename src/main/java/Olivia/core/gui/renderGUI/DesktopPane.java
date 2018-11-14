@@ -3,38 +3,37 @@ package Olivia.core.gui.renderGUI;
 import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
 import Olivia.core.gui.RenderGUI;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import com.jogamp.newt.awt.NewtCanvasAWT;
-import java.awt.event.MouseEvent;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
 import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.Cursor;
 import javax.swing.BorderFactory;
-import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 
 /**
- *
+ * Creates a desktop pane where visualisations can be rendered
  * @author oscar.garcia
  */
 public class DesktopPane extends JDesktopPane implements RenderGUI{
+    /**
+     * The main GUI
+     */
     MainFrame gui;
 
+    /**
+     * Creates a new instance of DesktopPane
+     * @param gui the main GUI
+     */
     public DesktopPane(MainFrame gui) {
         this.gui = gui;
     }
 
+    /**
+     * Adds a new visualisation in a new internal frame
+     * @param visualisationM The visualisation to render
+     * @return true if there where no problems
+     */
     @Override
     public boolean addVisualisation(VisualisationManager visualisationM) {
         InternalFrame frame = new InternalFrame(gui,visualisationM,visualisationM.getName(), true, true, true, true);
@@ -76,6 +75,10 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
     }
 
     
+    /**
+     * Updates the render layout when changes are made externally.
+     * @return true if the layout was changed
+     */
     @Override
     public boolean updateRenderLayout() {
         /*JInternalFrame[] frames = getAllFrames();
@@ -92,7 +95,7 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
     }
     
     
-       /**
+     /**
      * Iconifies or de-iconifies the inactive render screens
      *
      * @param iconify The flag to minimize (true) or de-minize (false) the frame
@@ -109,6 +112,9 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
         }
     }
     
+    /**
+     * Closes all internal frames
+     */
     public void closeAllInternalFrames(){
         JInternalFrame frames[] = this.getAllFrames();
         for (JInternalFrame frame : frames) {
@@ -122,16 +128,29 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
         }
     }
 
+    /**
+     * Inits the desktop pane (does nothing)
+     * @return true if ok
+     */
     @Override
     public boolean init() {
         return true;
     }
 
+    /**
+     * Creates a new window, all new visualisation will be added to the last window created
+     * @return 
+     */
     @Override
     public boolean createNewWindow() {
         return false;
     }
     
+    /**
+     * Closes the desktop pane by closing all internal frames (internal frames then call Olivia.removeVisualisation() with their FrameEventListener)
+     * @return true if the DesktopPane is closed
+     * @see Olivia.core.Olivia.removeVisualisation()
+     */
     @Override
     public boolean close(){
         closeAllInternalFrames();
