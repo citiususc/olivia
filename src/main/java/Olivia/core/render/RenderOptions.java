@@ -113,7 +113,16 @@ public interface RenderOptions {
         "WHITE",
         "RED",
         "GREEN",
-        "BLUE"
+        "BLUE",
+        "YELLOW",
+        "ORANGE",
+        "PINK",
+        "GRAY",
+        "LIGHT_GRAY",
+        "DARK_GRAY",
+        "BLACK",
+        "CYAN",
+        "MAGENTA"
     };
     
     /**
@@ -165,6 +174,15 @@ public interface RenderOptions {
             case "RED" : return Color.RED;
             case "GREEN" : return Color.GREEN;
             case "BLUE" : return Color.BLUE;
+            case "BLACK" : return Color.BLACK;
+            case "CYAN" : return Color.CYAN;
+            case "MAGENTA" : return Color.MAGENTA;
+            case "ORANGE" : return Color.ORANGE;
+            case "PINK" : return Color.PINK;
+            case "YELLOW" : return Color.YELLOW;
+            case "DARK_GRAY" : return Color.DARK_GRAY;
+            case "LIGHT_GRAY" : return Color.LIGHT_GRAY;
+            case "GRAY" : return Color.GRAY;
             default : return Color.WHITE;
         }
     }
@@ -179,6 +197,15 @@ public interface RenderOptions {
             if(color.equals(Color.RED)) return "RED";
             if(color.equals(Color.GREEN)) return "GREEN";
             if(color.equals(Color.BLUE)) return "BLUE";
+            if(color.equals(Color.BLACK)) return "BLACK";
+            if(color.equals(Color.CYAN)) return "CYAN";
+            if(color.equals(Color.MAGENTA)) return "MAGENTA";
+            if(color.equals(Color.ORANGE)) return "ORANGE";
+            if(color.equals(Color.PINK)) return "PINK";
+            if(color.equals(Color.YELLOW)) return "YELLOW";
+            if(color.equals(Color.DARK_GRAY)) return "DARK_GRAY";
+            if(color.equals(Color.LIGHT_GRAY)) return "LIGHT_GRAY";
+            if(color.equals(Color.GRAY)) return "GRAY";
             return "WHITE";
     }
     
