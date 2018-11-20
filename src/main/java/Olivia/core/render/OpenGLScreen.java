@@ -826,4 +826,8 @@ public class OpenGLScreen implements GLEventListener {
         System.out.println("Animator Stopped");
     }
     
+    public boolean animatorIsAnimating(){
+        return animator.isAnimating();
+    }
+    
 }
