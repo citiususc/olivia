@@ -808,6 +808,10 @@ public class OpenGLScreen implements GLEventListener {
     
     public void animatorPause(){
         animator.pause();
+        while(animator.isAnimating()){
+            System.out.print(".");
+        };
+        System.out.println("Animator Paused");
     }
     
     public void animatorResume(){
@@ -816,6 +820,14 @@ public class OpenGLScreen implements GLEventListener {
     
     public void animatorStop(){
         animator.stop();
+        while(animator.isAnimating()){
+            System.out.print(".");
+        };
+        System.out.println("Animator Stopped");
+    }
+    
+    public boolean animatorIsAnimating(){
+        return animator.isAnimating();
     }
     
 }

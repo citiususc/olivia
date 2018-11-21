@@ -400,6 +400,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      * with super and the setting to null all their particular data
      */
     public void destroy(){
+        renderScreen.animatorStop();
         freeVBOs();
         overlays.remove();
         pointCloud.clear();

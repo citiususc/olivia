@@ -129,7 +129,10 @@ public abstract class RenderableOverlay<VM extends VisualisationManager> extends
      */
     @Override
     public void setDefaultColour(PointColour colour){
-        this.defaultColour = colour;
+        //this.defaultColour = colour;
+        this.defaultColour.setR(colour.getR());
+        this.defaultColour.setG(colour.getG());
+        this.defaultColour.setB(colour.getB());
         this.repack(visualisationManager.getRenderScreen());
     }
     
@@ -140,7 +143,10 @@ public abstract class RenderableOverlay<VM extends VisualisationManager> extends
      */
     @Override
     public void setDefaultColour(String name){
-        this.defaultColour = new PointColour(RenderOptions.getColor(name));
+        PointColour col = new PointColour(RenderOptions.getColor(name));
+        this.defaultColour.setR(col.getR());
+        this.defaultColour.setG(col.getG());
+        this.defaultColour.setB(col.getB());
         this.repack(visualisationManager.getRenderScreen());
     }
     

@@ -338,8 +338,12 @@ public class VBOManager {
     public static void free(OpenGLScreen screen, PointArray points) {
         if (points.isVboAlreadySet()) {
             System.out.println("Freeing VBO: name=" + points.getVboIndices()[0]);
-            screen.getGl2().glDeleteBuffers(1, points.getVboIndices(), 0);
-            System.out.println("Freed VBO: name=" + points.getVboIndices()[0]);
+            if(!screen.animatorIsAnimating()){
+                screen.getGl2().glDeleteBuffers(1, points.getVboIndices(), 0);
+                System.out.println("Freed VBO: name=" + points.getVboIndices()[0]);
+            }else{
+                System.out.println("Screen is animating! should not free VBO: name=" + points.getVboIndices()[0]);
+            }
         }else{
             System.out.println("Trying to free non existing VBO buffer, ?");
         }

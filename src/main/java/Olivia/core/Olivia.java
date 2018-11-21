@@ -136,7 +136,7 @@ public class Olivia {
     public static void removeVisualisation(VisualisationManager visualisationManager) {
         //mainFrame.removeVisuPanel(visualisationManagers.indexOf(visualisationManager));
         System.out.println("Removing visualisation " + visualisationManager.getName());
-        visualisationManager.getRenderScreen().animatorStop();
+        //visualisationManager.getRenderScreen().animatorPause();
         visualisationManagers.remove(visualisationManager);
         mainFrame.removeActiveVisualisationManager(visualisationManager);
         visualisationManager.destroy();

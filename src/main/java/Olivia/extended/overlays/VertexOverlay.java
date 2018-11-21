@@ -85,7 +85,6 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
         this.colours = colours;
     }
     
-    
     public void add(Point3D_id point,PointColour colour){
         vertices.add(point);
         colours.add(colour);
