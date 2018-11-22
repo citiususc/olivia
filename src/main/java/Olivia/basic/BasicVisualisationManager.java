@@ -53,13 +53,13 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
 
     public void setIntensityColouring() {
         selectedColours = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setRandomColouring() {
         selectedColours = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to random colouring");
     }
 

@@ -106,42 +106,42 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
     public void setIntensityColouring() {
         if (intensityIndex == -1) return;
         selectedColours = intensityIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setRGBColouring() {
         if (rgbIndex == -1) return;
         selectedColours = rgbIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to RGB colouring");
     }
     
     public void setClassificationColouring() {
         if (classificationIndex == -1) return;
         selectedColours = classificationIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Classification colouring");
     }
     
     public void setReturnNumberColouring() {
         if (returnsIndex == -1) return;
         selectedColours = returnsIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Return colouring");
     }
     
     public void setScanlineColouring() {
         if (scanlineIndex == -1) return;
         selectedColours = scanlineIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Scanline colouring");
     }
 
     public void setGradientColouring() {
         if (gradientIndex == -1) return;
         selectedColours = gradientIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Gradient colouring");
     }
     

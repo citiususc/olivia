@@ -239,13 +239,13 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      * for example when changing the colours, if it is not called keeps drawing
      * the same image
      */
-    public void repack() {
+    public void doRepack() {
         doRepack = true;
     }
     
     @Override
     public void repack(OpenGLScreen renderScreen) {
-        repack();
+        doRepack();
     }
     
     @Override

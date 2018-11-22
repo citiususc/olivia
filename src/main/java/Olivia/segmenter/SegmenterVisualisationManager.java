@@ -94,7 +94,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         for (int i = 0; i < selectedGroupPoints.size(); i++) {
             selectedGroupColours.add(groupColour);
         }
-        selectedGroupPoints.repack();       
+        selectedGroupPoints.doRepack();       
     }
 
     public void flagSelectedPoints(boolean[] selectedFlags) {
@@ -118,13 +118,13 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
     public void toggleSegmented() {
         showSegmented = !showSegmented;
         flagSelectedPoints(selectedFlags);
-        pointCloud.repack();
+        pointCloud.doRepack();
     }
 
     public void toggleUnsegmented() {
         showUnsegmented = !showUnsegmented;
         flagSelectedPoints(selectedFlags);
-        pointCloud.repack();
+        pointCloud.doRepack();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
 
     public void setColouring(int colourIndex) {
         selectedColour = colourIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
     }
     
     @Override
