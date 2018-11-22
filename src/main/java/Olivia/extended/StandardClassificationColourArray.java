@@ -12,18 +12,18 @@ import Olivia.core.render.colours.PointColour;
  */
 public class StandardClassificationColourArray<P extends PointStandard> extends ColourArray {
     
-    private static final float[] COLOR_UNCLASSIFIED = {0.75f, 0.75f, 0.75f};
-    private static final float[] COLOR_UNKNOWN = {1.0f, 1.0f, 0.5f};
-    private static final float[] COLOR_GROUND = {0.4f, 0.2f, 0.0f};
-    private static final float[] COLOR_LOW_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_MEDIUM_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_HIGH_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_BUILDING = {1.0f, 0.0f, 0.0f};
-    private static final float[] COLOR_LOW_POINT = {1.0f, 0.6f, 0.0f};
-    private static final float[] COLOR_RESERVED = {1.0f, 1.0f, 0.0f};
-    private static final float[] COLOR_WATER = {0.0f, 1.0f, 1.0f};
-    private static final float[] COLOR_ROAD = {0.5f, 0.5f, 0.5f};
-    private static final float[] COLOR_PARKING = {0.0f, 0.0f, 1.0f};
+    protected PointColour COLOR_UNCLASSIFIED = new PointColour(0.75f, 0.75f, 0.75f);
+    protected PointColour COLOR_UNKNOWN = new PointColour(1.0f, 1.0f, 0.5f);
+    protected PointColour COLOR_GROUND = new PointColour(0.4f, 0.2f, 0.0f);
+    protected PointColour COLOR_LOW_VEG = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour COLOR_MEDIUM_VEG = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour COLOR_HIGH_VEG = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour COLOR_BUILDING = new PointColour(1.0f, 0.0f, 0.0f);
+    protected PointColour COLOR_LOW_POINT = new PointColour(1.0f, 0.6f, 0.0f);
+    protected PointColour COLOR_RESERVED = new PointColour(1.0f, 1.0f, 0.0f);
+    protected PointColour COLOR_WATER = new PointColour(0.0f, 1.0f, 1.0f);
+    protected PointColour COLOR_ROAD = new PointColour(0.5f, 0.5f, 0.5f);
+    protected PointColour COLOR_PARKING = new PointColour(0.0f, 0.0f, 1.0f);
 
     public StandardClassificationColourArray(PointArray<P> points) {
         super(points);
@@ -32,47 +32,47 @@ public class StandardClassificationColourArray<P extends PointStandard> extends 
         }
     }
     
-    public static PointColour getPointColour(int type) {
+    public PointColour getPointColour(int classID) {
         PointColour colour;
-        switch (type) {
+        switch (classID) {
             case PointStandard.UNCLASSIFIED:
-                colour = new PointColour(COLOR_UNCLASSIFIED[0], COLOR_UNCLASSIFIED[1], COLOR_UNCLASSIFIED[2]);
+                colour = COLOR_UNCLASSIFIED;
                 break;
             case PointStandard.UNKNOWN:
-                colour = new PointColour(COLOR_UNKNOWN[0], COLOR_UNKNOWN[1], COLOR_UNKNOWN[2]);
+                colour = COLOR_UNKNOWN;
                 break;
             case PointStandard.GROUND:
-                colour = new PointColour(COLOR_GROUND[0], COLOR_GROUND[1], COLOR_GROUND[2]);
+                colour = COLOR_GROUND;
                 break;
             case PointStandard.LOW_VEG:
-                colour = new PointColour(COLOR_LOW_VEG[0], COLOR_LOW_VEG[1], COLOR_LOW_VEG[2]);
+                colour = COLOR_LOW_VEG;
                 break;
             case PointStandard.MEDIUM_VEG:
-                colour = new PointColour(COLOR_MEDIUM_VEG[0], COLOR_MEDIUM_VEG[1], COLOR_MEDIUM_VEG[2]);
+                colour = COLOR_MEDIUM_VEG;
                 break;
             case PointStandard.HIGH_VEG:
-                colour = new PointColour(COLOR_HIGH_VEG[0], COLOR_HIGH_VEG[1], COLOR_HIGH_VEG[2]);
+                colour = COLOR_HIGH_VEG;
                 break;
             case PointStandard.BUILDING:
-                colour = new PointColour(COLOR_BUILDING[0], COLOR_BUILDING[1], COLOR_BUILDING[2]);
+                colour = COLOR_BUILDING;
                 break;
             case PointStandard.LOW_POINT:
-                colour = new PointColour(COLOR_LOW_POINT[0], COLOR_LOW_POINT[1], COLOR_LOW_POINT[2]);
+                colour = COLOR_LOW_POINT;
                 break;
             case PointStandard.RESERVED:
-                colour = new PointColour(COLOR_RESERVED[0], COLOR_RESERVED[1], COLOR_RESERVED[2]);
+                colour = COLOR_RESERVED;
                 break;
             case PointStandard.WATER:
-                colour = new PointColour(COLOR_WATER[0], COLOR_WATER[1], COLOR_WATER[2]);
+                colour = COLOR_WATER;
                 break;
             case PointStandard.ROAD:
-                colour = new PointColour(COLOR_ROAD[0], COLOR_ROAD[1], COLOR_ROAD[2]);
+                colour = COLOR_ROAD;
                 break;
             case PointStandard.PARKING:
-                colour = new PointColour(COLOR_PARKING[0], COLOR_PARKING[1], COLOR_PARKING[2]);
+                colour = COLOR_PARKING;
                 break;
             default:
-                colour = new PointColour(COLOR_GROUND[0], COLOR_GROUND[1], COLOR_GROUND[2]);
+                colour = COLOR_GROUND;
                 break;
         }
         return colour;
