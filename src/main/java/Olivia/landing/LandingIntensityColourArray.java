@@ -1,16 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Olivia.landing;
 
-import Olivia.core.render.colours.ColourArray;
-import Olivia.extended.PointI;
 import Olivia.core.data.PointArray;
+import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
+import Olivia.extended.PointI;
 
 /**
  *
  * @author oscar.garcia
  */
-public class LandingColourArray extends ColourArray {
-    PointColour black = new PointColour(0.0f, 0.0f, 0.0f);
+public class LandingIntensityColourArray extends ColourArray{
+    /*PointColour black = new PointColour(0.0f, 0.0f, 0.0f);
     PointColour r_1 = new PointColour(0.5f, 0.0f, 0.0f);
     PointColour r_2 = new PointColour(0.4f, 0.0f, 0.0f);
     PointColour r_3 = new PointColour(0.55f, 0.0f, 0.0f);
@@ -19,7 +24,7 @@ public class LandingColourArray extends ColourArray {
     PointColour r_6 = new PointColour(0.7f, 0.0f, 0.0f);
     PointColour r_7 =new PointColour(0.8f, 0.0f, 0.0f);
     PointColour r_9 = new PointColour(0.9f, 0.0f, 0.0f);
-    PointColour r = new PointColour(1.0f, 0.0f, 0.0f);
+    PointColour r = new PointColour(1.0f, 0.0f, 0.0f);*/
     PointColour b_0 =  new PointColour(0.0f, 0.0f, 0.50f);
     PointColour b_1 =  new PointColour(0.0f, 0.0f, 0.60f);
     PointColour b_2 = new PointColour(0.0f, 0.0f, 0.65f);
@@ -58,71 +63,52 @@ public class LandingColourArray extends ColourArray {
     protected PointColour p_7 = new PointColour(0.95f, 0.95f, 0.95f);
     protected PointColour w = new PointColour(1.0f, 1.0f, 1.0f);
     
-
-    public LandingColourArray(PointArray<PointI> points, LandingGroupArray lgroups) {
+    public LandingIntensityColourArray(PointArray<PointI> points, LandingGroupArray lgroups) {
         super(points);
         this.ensureCapacity(points.size());
-        System.out.println("Loading landing colours");
+        float max_i = 0;
+        float min_i = 0;
+
         for (PointI point : points) {
+            if (point.getIntensity() < min_i) {
+                min_i = point.getIntensity();
+            }
+            if (point.getIntensity() > max_i) {
+                max_i = point.getIntensity();
+            }
+        }
+
+        System.out.println("Intensity between: " + min_i + " and " + max_i);
+        float grad = max_i - min_i;
+        
+        
+        System.out.println("Loading intensity landing colours");
+        for (PointI point : points) {
+            float r = 0.05f + point.getIntensity() / grad;
+            float g = 0.05f + point.getIntensity() / grad;
+            float b = 0.05f + point.getIntensity() / grad;
+            PointColour dc = new PointColour(r, g, b);
             for (LandingGroup group : lgroups) {
                 if (group.getPoints().contains(point)) {
-                    this.add(getGroupColour(group));
+                    this.add(getGroupColour(group,dc));
                 }
             }
         }
-        System.out.println("landing colours loaded");
+        System.out.println("landing intensity colours loaded");
     }
 
-    private PointColour getGroupColour(LandingGroup lGroup) {
+    private PointColour getGroupColour(LandingGroup lGroup, PointColour dc) {
         PointColour ret;// = new PointColour(0.0f,0.0f,0.0f);;
 
         switch (lGroup.getType2()) {
             default:
-                ret = black;
+                ret = dc;
                 break;
             //UNSORTED, BAD
             case 0:
-                if (lGroup.getType1() <= 1) {
-                    ret = black;
-                } else {
-                    ret = r_1;
-                }
-                break;
-            //Planar
             case 1:
-                switch (lGroup.getType1()) {
-                    default:
-                        ret = black;
-                        break;
-                    case 2:
-                        ret = r_2;
-                        break;
-                    case 5:
-                        ret = r_1;
-                        break;
-                    case 6:
-                        ret = r_3;
-                        break;
-                    case 7:
-                        ret = r_4;
-                        break;
-                    case 8:
-                        ret = r_5;
-                        break;
-                    case 9:
-                        ret = r_6;
-                        break;
-                    case 10:
-                        ret = r_7;
-                        break;
-                    case 11:
-                        ret = r_9;
-                        break;
-                    case 12:
-                        ret = r;
-                        break;
-                }
-                break;
+                   ret = dc;
+                   break;
             //Part Risky
             case 2:
                 ret = b_0;
@@ -285,4 +271,5 @@ public class LandingColourArray extends ColourArray {
         }
         return ret;
     }
+    
 }

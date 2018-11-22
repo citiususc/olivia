@@ -20,6 +20,7 @@ public class LandingControlPane extends JPanel implements ActionListener {
     protected JPanel colourPane;
     protected JButton intensityButton;
     protected JButton landingButton;
+    protected JButton landingIntensityButton;
     protected JToggleButton toggleApproxB;
     protected JLabel groupLabel;
 
@@ -33,8 +34,10 @@ public class LandingControlPane extends JPanel implements ActionListener {
         colourPane.setBorder(border);
         intensityButton = GUIManager.createButton("Intensity", "Changes to intensity colouring", "intensity", this);
         landingButton = GUIManager.createButton("Landing", "Changes to landing colouring", "landing", this);
+        landingIntensityButton = GUIManager.createButton("Landing Intensity", "Changes to landing intensity colouring", "landingI", this);
         colourPane.add(intensityButton);
         colourPane.add(landingButton);
+        colourPane.add(landingIntensityButton);
 
         toggleApproxB = new JToggleButton("Approaches", false);
         toggleApproxB.setToolTipText("Show the approaches to the selected point");
@@ -61,6 +64,9 @@ public class LandingControlPane extends JPanel implements ActionListener {
                 break;
             case "landing":
                 visualisationManager.setLandingColouring();
+                break;
+            case "landingI":
+                visualisationManager.setLandingIntensityColouring();
                 break;
             case "showApproximations":
                 visualisationManager.toggleApproximations();

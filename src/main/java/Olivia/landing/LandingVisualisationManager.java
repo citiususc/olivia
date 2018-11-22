@@ -117,6 +117,7 @@ public class LandingVisualisationManager extends VisualisationManager<LandingVis
         inputReader.readFromFiles(filePath, this);
         colours.add(new IntensityColourArray(pointCloud));
         colours.add(new LandingColourArray(pointCloud, groups));
+        colours.add(new LandingIntensityColourArray(pointCloud, groups));
         System.out.println("points " + pointCloud.size() + " " + colours.get(0).size());
         //camera.centerAt(pointCloud.getCentreCurrent());
         //System.out.println("Number of Groups " + groups.size() + " " + groups.get(28).getPointCloud().size());
@@ -148,6 +149,12 @@ public class LandingVisualisationManager extends VisualisationManager<LandingVis
         this.selectedColours = 1;
         this.pointCloud.repack();
         System.out.println("set to landing colouring");
+    }
+    
+    public void setLandingIntensityColouring() {
+        this.selectedColours = 2;
+        this.pointCloud.repack();
+        System.out.println("set to landing intensitycolouring");
     }
 
     public void setGroups(LandingGroupArray groups) {
