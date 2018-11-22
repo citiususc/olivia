@@ -11,45 +11,62 @@ import java.awt.Color;
  * @author jorge.martinez.sanchez
  */
 public class SingleColourArray extends ColourArray {
+    protected PointColour defaultColour;
 
     public SingleColourArray(PointArray points, Color color) {
         super(points);
+        float r = (float) color.getRed();
+        float g = (float) color.getGreen();
+        float b = (float) color.getBlue();
+        defaultColour = new PointColour(r, g, b);
         for (int i = 0; i < points.size(); i++) {
-            float r = (float) color.getRed();
-            float g = (float) color.getGreen();
-            float b = (float) color.getBlue();
-            this.add(new PointColour(r, g, b));
+            this.add(defaultColour);
         }
     }
     
     public SingleColourArray(int size, Color color) {
         super(size);
+        float r = (float) color.getRed();
+        float g = (float) color.getGreen();
+        float b = (float) color.getBlue();
+        defaultColour = new PointColour(r, g, b);
         for (int i = 0; i < size; i++) {
-            float r = (float) color.getRed();
-            float g = (float) color.getGreen();
-            float b = (float) color.getBlue();
-            this.add(new PointColour(r, g, b));
+            this.add(defaultColour);
         }
     }
     
     public SingleColourArray(int size, PointColour color) {
         super(size);
+        float r = color.getR();
+        float g = color.getG();
+        float b = color.getB();
+        defaultColour = new PointColour(r, g, b);
         for (int i = 0; i < size; i++) {
-            float r = color.getR();
-            float g = color.getG();
-            float b = color.getB();
-            this.add(new PointColour(r, g, b));
+            this.add(defaultColour);
         }
     }
     
     public SingleColourArray(PointArray points, PointColour color) {
         super(points);
+        float r = color.getR();
+        float g = color.getG();
+        float b = color.getB();
+        defaultColour = new PointColour(r, g, b);
         for (int i = 0; i < points.size(); i++) {
-            float r = color.getR();
-            float g = color.getG();
-            float b = color.getB();
-            this.add(new PointColour(r, g, b));
+            this.add(defaultColour);
         }
+    }
+    
+    public void changeColour(PointColour color){
+        defaultColour.setR(color.getR());
+        defaultColour.setG(color.getG());
+        defaultColour.setB(color.getB());
+    }
+    
+    public void changeColour(Color color){
+        defaultColour.setR((float) color.getRed());
+        defaultColour.setG((float) color.getGreen());
+        defaultColour.setB((float) color.getBlue());
     }
     
 }
