@@ -26,6 +26,8 @@ public class ClassifierColourArray extends ColourArray {
     protected PointColour color_water = new PointColour(0.0f, 1.0f, 1.0f);
     protected PointColour color_road = new PointColour(0.5f, 0.5f, 0.5f);
     protected PointColour color_parking = new PointColour(0.0f, 0.0f, 1.0f);
+    protected PointColour color_wire = new PointColour(1.0f, 1.0f, 0.0f);
+    protected PointColour color_pole = new PointColour(1.0f, 1.0f, 1.0f);
 
     public ClassifierColourArray(PointArray<PointI> points, ClassifierGroupArray<ClassifierGroup> groups) {
         super(points);
@@ -71,6 +73,12 @@ public class ClassifierColourArray extends ColourArray {
                 break;
             case LOW_POINT:
                 colour = color_low_point;
+                break;
+            case WIRE:
+                colour = color_wire;
+                break;
+            case ELECTRIC_TOWER:
+                colour = color_pole;
                 break;
             case RESERVED:
                 colour = color_reserved;

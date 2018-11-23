@@ -199,7 +199,8 @@ public class MainControl extends JPanel implements ActionListener {
                 @Override
                 public void run() {
                     //pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML(gui.getActiveVisualisation().getPointCloud().getCentreOriginal().toArray()));
-                    pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML());
+                    //pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML());
+                    pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML(gui.getActiveVisualisation().getDisplacement()));
                 
                 }
             });

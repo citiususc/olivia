@@ -25,6 +25,12 @@ public interface RenderGUI{
     public boolean updateRenderLayout();
     
     /**
+     * Shows all the visualisations
+     * @return 
+     */
+    public boolean showAll();
+    
+    /**
      * Inits the RenderGUI components
      * @return true if the components where initialised
      */
@@ -43,5 +49,5 @@ public interface RenderGUI{
     public boolean close();
     
     //public boolean addRemove(VisualisationManager visualisationM);
-    
+  
 }

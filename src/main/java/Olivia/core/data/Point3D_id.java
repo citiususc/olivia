@@ -88,6 +88,7 @@ public class Point3D_id extends Point3D{
      * @param center Center of mass need to recover original point coordinates
      * @return The description as html
      */
+    /*
     @Override
     public String getDescriptionAsHTML(double[] center) {
         DecimalFormat df = new DecimalFormat("#.00");
@@ -95,6 +96,27 @@ public class Point3D_id extends Point3D{
                 + "X : " + df.format(x + center[0]) + " "
                 + "Y : " + df.format(y + center[1]) + " "
                 + "Z : " + df.format(z + center[2]) + ")<ul>"
+                + "<li>Id: " + Integer.toString(id) + "</li>"
+                + "</ul></html>";
+        return d;
+    }
+    */
+    
+    /**
+     * This creates a description as HTML, override as needed
+     *
+     * @param x The x coordinate of the displacement this point had
+     * @param y The y coordinate of the displacement this point had
+     * @param z The z coordinate of the displacement this point had
+     * @return The description as html
+     */
+    @Override
+    public String getDescriptionAsHTML(double x, double y, double z) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String d = "<html><p>("
+                + "X : " + df.format(this.x + x) + " "
+                + "Y : " + df.format(this.y + y) + " "
+                + "Z : " + df.format(this.z + z) + ")<ul>"
                 + "<li>Id: " + Integer.toString(id) + "</li>"
                 + "</ul></html>";
         return d;

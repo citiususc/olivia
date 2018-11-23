@@ -204,6 +204,10 @@ public class MainFrame extends JFrame{
         }
     }
     
+    public void showAll(){
+        renderGUI.showAll();
+    }
+    
     public void initVisualisation(VisualisationManager visuManager) {
         System.out.println("Main Frame inits " + visuManager.getName());
         visuManager.getControlPane().setPreferredSize(new Dimension(visuManager.getControlPane().getWidth(), 150));
