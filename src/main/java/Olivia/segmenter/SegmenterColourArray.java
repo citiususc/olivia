@@ -8,6 +8,8 @@ import Olivia.core.render.colours.PointColour;
 import Olivia.extended.PointI;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -23,6 +25,7 @@ public class SegmenterColourArray extends ColourArray {
     
     protected ArrayList<PointColour> colours;
 
+    /*
     public SegmenterColourArray(PointArray<PointI> points, ArrayList<Integer> groupIds) {
         super(points);
         ensureCapacity(points.size());
@@ -35,7 +38,9 @@ public class SegmenterColourArray extends ColourArray {
         }
         System.out.println("Loaded segmentation colours");
     }
+    */
 
+    /*
     public SegmenterColourArray(PointArray<PointI> points, ClassifierGroupArray<ClassifierGroup> groups) {
         super(points);
         ensureCapacity(points.size());
@@ -49,24 +54,55 @@ public class SegmenterColourArray extends ColourArray {
                 add(colour);
             }
         }
+    }*/
+    
+    public SegmenterColourArray(PointArray<PointI> points, ArrayList<Integer> groupIds) {
+        super(points);
+        ensureCapacity(points.size());
+        colours = fillColours(0.1f);
+        int index=0;
+        System.out.println("Loading segmentation colours");
+        for (int i = 0; i < points.size(); i++) {
+            index = Math.floorMod(groupIds.get(i), colours.size());
+            add(colours.get(index));
+        }
+        System.out.println("Loaded segmentation colours");
     }
     
-    protected ArrayList<PointColour> fillRainbowColours(int numberOfColours){
-        float hue = 1.0f; //hue
-        float saturation = 0.5f; //saturation
-        float lightness=0.0f;
+    public SegmenterColourArray(PointArray<PointI> points, ClassifierGroupArray<ClassifierGroup> groups) {
+        super(points);
+        ensureCapacity(points.size());
+        colours = fillColours(0.1f);
+        int index=0;
+        for (ClassifierGroup group : groups) {
+            //index = rand.nextInt(colours.size());
+            for (int i = 0; i < group.getPoints().size(); i++) {
+                add(colours.get(index));
+            }
+            index = Math.floorMod(index+1, colours.size());
+        }
+    }
+    
+    protected ArrayList<PointColour> fillColours(float step){
+        ArrayList<PointColour> here_colours = new ArrayList<>();
+        float r,g,b;
         
-        ArrayList<PointColour> here_colours = new ArrayList<>(numberOfColours);
-        Color here_color;
-        
-        float step = 1.0f / numberOfColours;
-        
-        for(int i=0;i<numberOfColours;i++){
-            here_color = Color.getHSBColor(hue, saturation, lightness);
-            here_colours.add(new PointColour(here_color));
-            lightness = lightness + step;
+        r=0.0f;        
+        while (r<=1.0f){
+            g=0.0f;
+            while(g<=1.0f){
+                b=0.0f;
+                while(b<=1.0f){
+                    here_colours.add(new PointColour(r,g,b));
+                    b=b+step;
+                }
+                g=g+step;
+            }
+            r=r+step;
         }
         
+        Collections.shuffle(here_colours);
         return here_colours;    
+        
     }
 }
