@@ -10,21 +10,22 @@ import Olivia.extended.PointI;
  * This class defines the colour of each classification label
  * 
  * @author jorge.martinez.sanchez
+ * @author oscar.garcia
  */
 public class ClassifierColourArray extends ColourArray {
 
-    private static final float[] COLOR_UNCLASSIFIED = {0.75f, 0.75f, 0.75f};
-    private static final float[] COLOR_UNKNOWN = {1.0f, 1.0f, 0.5f};
-    private static final float[] COLOR_GROUND = {0.4f, 0.2f, 0.0f};
-    private static final float[] COLOR_LOW_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_MEDIUM_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_HIGH_VEG = {0.0f, 0.65f, 0.0f};
-    private static final float[] COLOR_BUILDING = {1.0f, 0.0f, 0.0f};
-    private static final float[] COLOR_LOW_POINT = {1.0f, 0.6f, 0.0f};
-    private static final float[] COLOR_RESERVED = {1.0f, 1.0f, 0.0f};
-    private static final float[] COLOR_WATER = {0.0f, 1.0f, 1.0f};
-    private static final float[] COLOR_ROAD = {0.5f, 0.5f, 0.5f};
-    private static final float[] COLOR_PARKING = {0.0f, 0.0f, 1.0f};
+    protected PointColour color_unclassified = new PointColour(0.75f, 0.75f, 0.75f);
+    protected PointColour color_unknown = new PointColour(1.0f, 1.0f, 0.5f);
+    protected PointColour color_ground = new PointColour(0.4f, 0.2f, 0.0f);
+    protected PointColour color_low_veg = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour color_medium_veg = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour color_high_veg = new PointColour(0.0f, 0.65f, 0.0f);
+    protected PointColour color_building = new PointColour(1.0f, 0.0f, 0.0f);
+    protected PointColour color_low_point = new PointColour(1.0f, 0.6f, 0.0f);
+    protected PointColour color_reserved = new PointColour(1.0f, 1.0f, 0.0f);
+    protected PointColour color_water = new PointColour(0.0f, 1.0f, 1.0f);
+    protected PointColour color_road = new PointColour(0.5f, 0.5f, 0.5f);
+    protected PointColour color_parking = new PointColour(0.0f, 0.0f, 1.0f);
 
     public ClassifierColourArray(PointArray<PointI> points, ClassifierGroupArray<ClassifierGroup> groups) {
         super(points);
@@ -35,50 +36,102 @@ public class ClassifierColourArray extends ColourArray {
             }
         }
     }
+    
+    public ClassifierColourArray(PointArray<PointI> points, int groupType) {
+        super(points);
+        ensureCapacity(points.size());
+        for (int i = 0; i < points.size(); i++) {
+            add(getGroupColour(groupType));
+        }
+    }
 
-    public static PointColour getGroupColour(int type) {
+    public PointColour getGroupColour(int type) {
         PointColour colour;
         switch (type) {
             case UNCLASSIFIED:
-                colour = new PointColour(COLOR_UNCLASSIFIED[0], COLOR_UNCLASSIFIED[1], COLOR_UNCLASSIFIED[2]);
+                colour = color_unclassified;
                 break;
             case UNKNOWN:
-                colour = new PointColour(COLOR_UNKNOWN[0], COLOR_UNKNOWN[1], COLOR_UNKNOWN[2]);
+                colour = color_unknown;
                 break;
             case GROUND:
-                colour = new PointColour(COLOR_GROUND[0], COLOR_GROUND[1], COLOR_GROUND[2]);
+                colour = color_ground;
                 break;
             case LOW_VEG:
-                colour = new PointColour(COLOR_LOW_VEG[0], COLOR_LOW_VEG[1], COLOR_LOW_VEG[2]);
+                colour = color_low_veg;
                 break;
             case MEDIUM_VEG:
-                colour = new PointColour(COLOR_MEDIUM_VEG[0], COLOR_MEDIUM_VEG[1], COLOR_MEDIUM_VEG[2]);
+                colour = color_medium_veg;
                 break;
             case HIGH_VEG:
-                colour = new PointColour(COLOR_HIGH_VEG[0], COLOR_HIGH_VEG[1], COLOR_HIGH_VEG[2]);
+                colour = color_high_veg;
                 break;
             case BUILDING:
-                colour = new PointColour(COLOR_BUILDING[0], COLOR_BUILDING[1], COLOR_BUILDING[2]);
+                colour = color_building;
                 break;
             case LOW_POINT:
-                colour = new PointColour(COLOR_LOW_POINT[0], COLOR_LOW_POINT[1], COLOR_LOW_POINT[2]);
+                colour = color_low_point;
                 break;
             case RESERVED:
-                colour = new PointColour(COLOR_RESERVED[0], COLOR_RESERVED[1], COLOR_RESERVED[2]);
+                colour = color_reserved;
                 break;
             case WATER:
-                colour = new PointColour(COLOR_WATER[0], COLOR_WATER[1], COLOR_WATER[2]);
+                colour = color_water;
                 break;
             case ROAD:
-                colour = new PointColour(COLOR_ROAD[0], COLOR_ROAD[1], COLOR_ROAD[2]);
+                colour = color_road;
                 break;
             case PARKING:
-                colour = new PointColour(COLOR_PARKING[0], COLOR_PARKING[1], COLOR_PARKING[2]);
+                colour = color_parking;
                 break;
             default:
-                colour = new PointColour(COLOR_GROUND[0], COLOR_GROUND[1], COLOR_GROUND[2]);
+                colour = color_ground;
                 break;
         }
         return colour;
+    }
+    
+        public void setPointColour(int classID, PointColour colour) {
+        switch (classID) {
+            case UNCLASSIFIED:
+                color_unclassified.setRGB(colour);
+                break;
+            case UNKNOWN:
+                color_unknown.setRGB(colour);
+                break;
+            case GROUND:
+                color_ground.setRGB(colour);
+                break;
+            case LOW_VEG:
+                color_low_veg.setRGB(colour);
+                break;
+            case MEDIUM_VEG:
+                color_medium_veg.setRGB(colour);
+                break;
+            case HIGH_VEG:
+                color_high_veg.setRGB(colour);
+                break;
+            case BUILDING:
+                color_building.setRGB(colour);
+                break;
+            case LOW_POINT:
+                color_low_point.setRGB(colour);
+                break;
+            case RESERVED:
+                color_reserved.setRGB(colour);
+                break;
+            case WATER:
+                color_water.setRGB(colour);
+                break;
+            case ROAD:
+                color_road.setRGB(colour);
+                break;
+            case PARKING:
+                color_parking.setRGB(colour);
+                break;
+            default:
+                color_ground.setRGB(colour);
+                break;
+        }
     }
 }

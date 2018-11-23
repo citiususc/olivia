@@ -79,7 +79,7 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
         for (int i = 0; i < selectedScanPoints.size(); i++) {
             selectedScanColours.add(groupColour);
         }
-        selectedScanPoints.repack();
+        selectedScanPoints.doRepack();
     }
 
     @Override
@@ -116,19 +116,19 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
 
     public void setIntensityColouring() {
         selectedColour = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setEdgesColouring() {
         selectedColour = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to edge colouring");
     }
 
     public void setRandomColouring() {
         selectedColour = 2;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to random colouring");
     }
     

@@ -80,7 +80,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (!activeClasses.contains(classId)) {
             activeClasses.add(classId);
             flagSelectedPoints(selectedFlags);
-            pointCloud.repack();
+            pointCloud.doRepack();
         }
     }
 
@@ -88,7 +88,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (activeClasses.contains(classId)) {
             activeClasses.remove(activeClasses.indexOf(classId));
             flagSelectedPoints(selectedFlags);
-            pointCloud.repack();
+            pointCloud.doRepack();
         }
     }
 
@@ -121,13 +121,8 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         selectedGroupPoints.clear();
         selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(selectedGroup.getPoints());
-        selectedGroupColours = new ColourArray(selectedGroupPoints) {
-        };
-        PointColour groupColour = ClassifierColourArray.getGroupColour(selectedGroup.getType());
-        for (int i = 0; i < selectedGroupPoints.size(); i++) {
-            selectedGroupColours.add(groupColour);
-        }
-        selectedGroupPoints.repack();
+        selectedGroupColours = new ClassifierColourArray(selectedGroupPoints,selectedGroup.getType());
+        selectedGroupPoints.doRepack();
         renderScreen.animatorResume();
     }
 
@@ -173,19 +168,19 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
 
     public void setIntensityColouring() {
         selectedColour = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setSegmenterColouring() {
         selectedColour = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to segmentation colouring");
     }
 
     public void setClassificationColouring() {
         selectedColour = 2;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to classification colouring");
     }
     
