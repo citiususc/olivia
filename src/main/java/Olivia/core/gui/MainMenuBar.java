@@ -67,6 +67,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
     protected JCheckBoxMenuItem showOverlayOptions;
     protected JCheckBoxMenuItem fullscreen;
     protected JCheckBoxMenuItem stereoActive;
+    protected JMenuItem showAll;
     protected JMenuItem newWindow;
     
     
@@ -191,12 +192,14 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         }else{
             stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
         }
+        showAll = addMenuItem("Show All", "Shows all visualisations", "showAll", true);
         newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
         
         optionsMenu.add(showSelectedPoint);
         optionsMenu.add(showOverlayOptions);
         optionsMenu.add(fullscreen);
         optionsMenu.add(stereoActive);
+        optionsMenu.add(showAll);
         optionsMenu.add(newWindow);
         
         clearVisualisationMenu = new JMenu("");
@@ -475,6 +478,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 break;
             case "fullscreen":
                 gui.setFullscreen(fullscreen.isSelected());
+                break;
+            case "showAll":
+                gui.showAll();
                 break;
             case "newWindow":
                 gui.createNewRenderWindow();

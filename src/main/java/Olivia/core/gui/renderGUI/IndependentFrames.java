@@ -199,5 +199,13 @@ public class IndependentFrames implements RenderGUI{
         this.minimumSize = new Dimension(Math.round(screenSize.width*scale),
                                           Math.round(screenSize.height*scale));
     }
+
+    @Override
+    public boolean showAll() {
+        frames.forEach((f) -> {
+                f.setState(JFrame.NORMAL); }
+        );
+        return true;
+    }
     
 }
