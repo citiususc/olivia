@@ -141,19 +141,19 @@ public class LandingVisualisationManager extends VisualisationManager<LandingVis
     
     public void setIntensityColouring() {
         this.selectedColours = 0;
-        this.pointCloud.repack();
+        this.pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setLandingColouring() {
         this.selectedColours = 1;
-        this.pointCloud.repack();
+        this.pointCloud.doRepack();
         System.out.println("set to landing colouring");
     }
     
     public void setLandingIntensityColouring() {
         this.selectedColours = 2;
-        this.pointCloud.repack();
+        this.pointCloud.doRepack();
         System.out.println("set to landing intensitycolouring");
     }
 
