@@ -89,6 +89,7 @@ public class DetachedDesktopFrames extends IndependentFrames{
     
     @Override
     public boolean showAll() {
+        super.showAll();
         renderPanes.forEach((dp) -> {
             dp.showAll();
         });
