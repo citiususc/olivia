@@ -40,7 +40,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
     protected JMenuItem openScanlineVisualisation;
     protected JMenuItem openSegmenterVisualisation;
     protected JMenuItem openClassifierVisualisation;
-    protected JMenuItem openLandingVisualisation;
 
     protected JMenu loadMenu;
     protected JMenuItem loadNeighbours;
@@ -122,7 +121,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         openScanlineVisualisation = addMenuItem("Open Scanline", "Opens a Scanline Visualisation", "openScanline", true);
         openClassifierVisualisation = addMenuItem("Open Classifier", "Opens a Classifier Visualisation", "openClassifier", true);
         openSegmenterVisualisation = addMenuItem("Open Segmenter", "Opens a Segmenter Visualisation", "openSegmenter",true);
-        openLandingVisualisation = addMenuItem("Open Landing", "Opens a Landing Visualisation", "openLanding", true);
         
         //fileMenu.add(openBasicVisualisation);
         fileMenu.add(openEmptyVisualisation);
@@ -131,7 +129,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         fileMenu.add(openScanlineVisualisation);
         fileMenu.add(openClassifierVisualisation);
         fileMenu.add(openSegmenterVisualisation);
-        fileMenu.add(openLandingVisualisation);
 
         // Load menu. To load common preprocessed stuff of LiDAR clouds for later displaying/tweaking
         loadMenu = addMenu("Load", "Load Menu", true);
@@ -301,15 +298,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = directoryFC.getSelectedFile();
                     //addNewNeighboursVisualisation(file.getAbsolutePath());
-                } else {
-                    System.out.println("Open command cancelled by user.");
-                }
-                break;
-            case "openLanding":
-                returnVal = directoryFC.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = directoryFC.getSelectedFile();
-                    addNewLandingVisualisation(file.getAbsolutePath());
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
