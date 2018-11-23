@@ -10,7 +10,7 @@ import Olivia.core.render.OpenGLScreen;
 import java.util.ArrayList;
 
 /**
- * A especial case of OverlayArray which cycles thorugh it overlays with the passage of time, making an animation.
+ * A especial case of OverlayArray which cycles through it overlays with the passage of time, making an animation.
  * In this class each overlay in the array can be considered a "frame" of the animation
  * It counts time in milliseconds.
  * CAREFUL: If you add the same overlay to many frames move and displace operations will be done many times.

@@ -12,12 +12,49 @@ import Olivia.core.data.Point3D_id;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.PointColour;
 import com.jogamp.opengl.util.gl2.GLUT;
+import java.util.ArrayList;
 
 /**
  *
  * @author oscar.garcia
  */
 public class TextOverlay extends Overlay {
+    
+    public static final ArrayList<Integer> AVAILABLE_FONTS = new ArrayList<Integer>() {{
+        add(GLUT.BITMAP_8_BY_13);
+        add(GLUT.BITMAP_9_BY_15);
+        add(GLUT.BITMAP_HELVETICA_10);
+        add(GLUT.BITMAP_HELVETICA_12);
+        add(GLUT.BITMAP_HELVETICA_18);
+        add(GLUT.BITMAP_TIMES_ROMAN_10);
+        add(GLUT.BITMAP_TIMES_ROMAN_24);
+        add(GLUT.STROKE_MONO_ROMAN);
+        add(GLUT.STROKE_ROMAN);
+    }};
+    
+    public static final String[] AVAILABLE_FONTS_TEXT_A = new String[] {
+        "BITMAP_8_BY_13",
+        "BITMAP_9_BY_15",
+        "BITMAP_HELVETICA_10",
+        "BITMAP_HELVETICA_12",
+        "BITMAP_HELVETICA_18",
+        "BITMAP_TIMES_ROMAN_10",
+        "BITMAP_HELVETICA_18",
+        "STROKE_MONO_ROMAN",
+        "STROKE_ROMAN"
+    };
+    
+    public static final ArrayList<String> AVAILABLE_FONTS_TEXT = new ArrayList<String>() {{
+        add("BITMAP_8_BY_13");
+        add("BITMAP_9_BY_15");
+        add("BITMAP_HELVETICA_10");
+        add("BITMAP_HELVETICA_12");
+        add("BITMAP_HELVETICA_18");
+        add("BITMAP_TIMES_ROMAN_10");
+        add("BITMAP_HELVETICA_18");
+        add("STROKE_MONO_ROMAN");
+        add("STROKE_ROMAN");
+    }};
 
     public static final int DEFAULT_FONT = GLUT.BITMAP_HELVETICA_18;
     public static final PointColour DEFAULT_COLOUR = new PointColour(1.0f, 0.0f, 0.0f);
@@ -60,7 +97,16 @@ public class TextOverlay extends Overlay {
     }
 
     public void setFont(int font) {
-        this.font = font;
+        if(AVAILABLE_FONTS.contains(font)){
+            this.font = font;
+        }
+    }
+    
+    public void setFont(String fontName) {
+        if(AVAILABLE_FONTS_TEXT.contains(fontName)){
+            int index = AVAILABLE_FONTS_TEXT.indexOf(fontName);
+            this.font = AVAILABLE_FONTS.get(index);
+        }
     }
 
     public String getText() {

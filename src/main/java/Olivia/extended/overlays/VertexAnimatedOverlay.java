@@ -176,5 +176,25 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
     public void setDefaultColour(Color colour){
         this.defaultColour = new PointColour(colour);
     }
+
+    @Override
+    public void changeColour(PointColour colour) {
+        this.defaultColour.setR(colour.getR());
+        this.defaultColour.setG(colour.getG());
+        this.defaultColour.setB(colour.getB());
+        this.repack(visualisationManager.getRenderScreen());
+    }
+
+    @Override
+    public void changeColour(String name) {
+        PointColour col = new PointColour(RenderOptions.getColor(name));
+        this.changeColour(col);
+    }
+
+    @Override
+    public void changeColour(Color colour) {
+        PointColour col = new PointColour(colour);
+        this.changeColour(col);
+    }
     
 }

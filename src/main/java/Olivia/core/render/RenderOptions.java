@@ -126,7 +126,7 @@ public interface RenderOptions {
     };
     
     /**
-     * Gets the mode as an interger depending on its name
+     * Gets the mode as an integer depending on its name
      * @param name the name, should be one of SUPPORTED_PRIMITIVE_MODES_TEXT or SUPPORTED_RASTER_MODES_TEXT
      * @return a render o raster mode
      */
@@ -263,21 +263,39 @@ public interface RenderOptions {
     public void setRasterMode(String rasterMode);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the colour
      */
     public void setDefaultColour(PointColour colour);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param name the colour name
      */
     public void setDefaultColour(String name);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the colour
      */
     public void setDefaultColour(Color colour);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param colour the colour
+     */
+    public void changeColour(PointColour colour);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param name the colour name
+     */
+    public void changeColour(String name);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param colour the colour
+     */
+    public void changeColour(Color colour);
     
 }
