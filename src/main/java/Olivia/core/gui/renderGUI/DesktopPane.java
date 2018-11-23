@@ -7,6 +7,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import com.jogamp.newt.awt.NewtCanvasAWT;
 import java.awt.Color;
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import javax.swing.BorderFactory;
 
@@ -91,6 +92,21 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
                 frames[i].setLocation(i * width, pos.y);
             }
         }*/
+        return true;
+    }
+    
+    @Override
+    public boolean showAll() {
+        JInternalFrame[] frames = getAllFrames();
+        if(frames.length>0){
+            int width = this.getWidth() / frames.length;
+            int height = this.getHeight();
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].setSize(width, height);
+                Point pos = frames[i].getLocation();
+                frames[i].setLocation(i * width, pos.y);
+            }
+        }
         return true;
     }
     
