@@ -29,6 +29,8 @@ public class ClassifierControlPane extends JPanel implements ActionListener {
     protected JToggleButton buildingToggle;
     protected JToggleButton roadToggle;
     protected JToggleButton otherToggle;
+    protected JToggleButton catToggle;
+    protected JToggleButton poleToggle;
     //protected JPanel neighPane;
     //protected JToggleButton neighboursToggle;
 
@@ -60,7 +62,7 @@ public class ClassifierControlPane extends JPanel implements ActionListener {
         neighPane.add(neighboursToggle);
         */
 
-        classPane = new JPanel(new GridLayout(2, 3));
+        classPane = new JPanel(new GridLayout(2, 4));
         border = new TitledBorder("Active Classes");
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.TOP);
@@ -71,13 +73,17 @@ public class ClassifierControlPane extends JPanel implements ActionListener {
         buildingToggle = GUIManager.createToggleButton("Building", "Show/Hide building points", "building", visualisationManager.activeClasses.contains(BUILDING), this);
         roadToggle = GUIManager.createToggleButton("Road", "Show/Hide road", "road", visualisationManager.activeClasses.contains(ROAD), this);
         otherToggle = GUIManager.createToggleButton("Other", "Show/Hide other", "other", visualisationManager.activeClasses.contains(RESERVED), this);
+        catToggle = GUIManager.createToggleButton("Catenaries", "Show/Hide Catenaries", "cat", visualisationManager.activeClasses.contains(WIRE), this);
+        poleToggle = GUIManager.createToggleButton("Electric Towers", "Show/Hide Electric Towers", "pole", visualisationManager.activeClasses.contains(ELECTRIC_TOWER), this);
 
         classPane.add(unknownToggle);
         classPane.add(groundToggle);
         classPane.add(vegetationToggle);
+        classPane.add(catToggle);
         classPane.add(buildingToggle);
         classPane.add(roadToggle);
         classPane.add(otherToggle);
+        classPane.add(poleToggle);
 
         //add(neighPane);
         add(colourPane);
@@ -123,6 +129,12 @@ public class ClassifierControlPane extends JPanel implements ActionListener {
                 break;
             case "road":
                 toogleClass(roadToggle, ROAD);
+                break;
+            case "cat":
+                toogleClass(catToggle, WIRE);
+                break;
+            case "pole":
+                toogleClass(poleToggle, ELECTRIC_TOWER);
                 break;
             case "other":
                 toogleClass(otherToggle, RESERVED);

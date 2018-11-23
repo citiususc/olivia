@@ -20,6 +20,8 @@ public class ClassifierLabels {
     public static final int RESERVED = 8;
     public static final int WATER = 9;
     public static final int ROAD = 11;
+    public static final int WIRE = 14;
+    public static final int ELECTRIC_TOWER = 15;
     public static final int PARKING = 21;  // Field not in the LAS standard
     public static final int OTHER = 1337;
     
@@ -36,6 +38,8 @@ public class ClassifierLabels {
             add(WATER);
             add(ROAD);
             add(PARKING);
+            add(WIRE);
+            add(ELECTRIC_TOWER);
         }
     };
 }

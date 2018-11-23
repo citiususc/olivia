@@ -64,6 +64,8 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         activeClasses.add(BUILDING);
         activeClasses.add(WATER);
         activeClasses.add(ROAD);
+        activeClasses.add(WIRE);
+        activeClasses.add(ELECTRIC_TOWER);
         selectedGroup = null;
         selectedGroupPoints = new PointArray();
         System.out.println("Creating Overlay Array for " + name);
