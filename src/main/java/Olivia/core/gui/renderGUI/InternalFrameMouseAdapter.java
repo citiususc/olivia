@@ -26,13 +26,25 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
      */
     protected int h_add,w_add;
     /**
+     * The size of the title bar (best guess)
+     */
+    protected int barSize = 20;
+    /**
      * To save where in the border the mouse pressed
      */
-    protected boolean pressed_right,pressed_bottom,pressed_top,pressed_left;
+    protected boolean pressed_right,pressed_bottom,pressed_top,pressed_left,pressed_move;
     /**
      * To save whether a resize operation has been started
      */
     protected boolean resize_started;
+    /**
+     * To save whether a move operation has been started
+     */
+    protected boolean move_started;
+    /**
+     * To save where a mouse event started
+     */
+    protected int mouse_start_x,mouse_start_y;
     
     /**
      * Creates a new instance of InternalFrameMouseAdapter
@@ -104,7 +116,6 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     @Override
     public void mousePressed(MouseEvent me) {
         if( (me.getClickCount()==1)&SwingUtilities.isLeftMouseButton(me)){
-            resize_started=true;
             pressed_right=pressed_bottom=pressed_top=pressed_left=false;
             int w = frame.getWidth();
             int h = frame.getHeight();
@@ -114,14 +125,24 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             //System.out.println(ins);
             if(y>h-ins.bottom){
                 pressed_bottom = true; //bottom
+                resize_started=true;
             }else if(y<ins.top){
                 pressed_top = true; //top
-            }
+                resize_started=true;
+            }else if(y<(ins.top+barSize)){
+                pressed_move = true; //top
+                move_started = true;
+                //System.out.println("moved");
+            }         
             if(x<ins.left){
                 pressed_left = true; //left
+                resize_started=true;
             }else if(x>w-ins.right){
                 pressed_right = true;//right
+                resize_started=true;
             }
+            mouse_start_x=x;
+            mouse_start_y=y;
         }
         //System.out.println("Pressed in " +me.getPoint());
         
@@ -133,36 +154,39 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
      */
     @Override
     public void mouseReleased(MouseEvent me) {
-        if(resize_started&SwingUtilities.isLeftMouseButton(me)){
-        resize_started=false;
         int x = me.getPoint().x;
         int y = me.getPoint().y;
-        int width_set=frame.getWidth();
-        int height_set=frame.getHeight();
-        int loc_x,loc_y;
         Point location = frame.getLocation();
-        loc_x = location.x;
-        loc_y = location.y;
-        
-        //System.out.println("Frame_location " +location);
-        //System.out.println("Released in " +me.getPoint());
-        
-        if(pressed_bottom){
-            height_set = y;
-        }else if(pressed_top){
-            loc_y = loc_y+y;
-            height_set = frame.getHeight()-y;
+        int loc_x = location.x;
+        int loc_y = location.y;
+        if(resize_started&SwingUtilities.isLeftMouseButton(me)){
+            resize_started=false;
+            int width_set=frame.getWidth();
+            int height_set=frame.getHeight();
+
+            //System.out.println("Frame_location " +location);
+            //System.out.println("Released in " +me.getPoint());
+
+            if(pressed_bottom){
+                height_set = y;
+            }else if(pressed_top){
+                loc_y = loc_y+y;
+                height_set = frame.getHeight()-y;
+            }
+
+            if(pressed_right){
+                width_set = x;
+            }else if(pressed_left){
+                loc_x = loc_x+x;
+                width_set = frame.getWidth()-x;
+            }
+
+            resize(width_set,height_set,loc_x,loc_y);
+        }else if(move_started&SwingUtilities.isLeftMouseButton(me)){
+            loc_x = loc_x+(x-mouse_start_x);
+            loc_y = loc_y+(y-mouse_start_y);
+            frame.setLocation(loc_x, loc_y);
         }
-        
-        if(pressed_right){
-            width_set = x;
-        }else if(pressed_left){
-            loc_x = loc_x+x;
-            width_set = frame.getWidth()-x;
-        }
-        
-        resize(width_set,height_set,loc_x,loc_y);
-    }
     }
     
     /**
