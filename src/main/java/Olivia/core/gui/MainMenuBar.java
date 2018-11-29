@@ -34,7 +34,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 
     protected JMenu fileMenu;
     //protected JMenuItem openBasicVisualisation;
-    protected JMenuItem openEmptyVisualisation;
+    //protected JMenuItem openEmptyVisualisation;
     protected JMenuItem openStandardVisualisation;
     //protected JMenuItem openStandardVisualisationG;
     protected JMenuItem openScanlineVisualisation;
@@ -115,7 +115,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         fileMenu = addMenu("File", "File Menu", true);
         //openAuto = addMenuItem("Open Auto", "Opens a file according to the standard LAS fields", "openAuto", true);
         //openBasicVisualisation = addMenuItem("Open Basic", "Opens a Basic Visualisation", "openBasic", true);
-        openEmptyVisualisation = addMenuItem("Open Empty", "Opens an Empty Visualisation (with no points)", "openEmpty", true);
+        //openEmptyVisualisation = addMenuItem("Open Empty", "Opens an Empty Visualisation (with no points)", "openEmpty", true);
         openStandardVisualisation = addMenuItem("Open Standard", "Opens a Standard Visualisation", "openStandard", true);
         //openStandardVisualisationG = addMenuItem("Open Standard G", "Opens a Standard Visualisation with Guava", "openStandardG", true);
         openScanlineVisualisation = addMenuItem("Open Scanline", "Opens a Scanline Visualisation", "openScanline", true);
@@ -123,7 +123,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         openSegmenterVisualisation = addMenuItem("Open Segmenter", "Opens a Segmenter Visualisation", "openSegmenter",true);
         
         //fileMenu.add(openBasicVisualisation);
-        fileMenu.add(openEmptyVisualisation);
+        //fileMenu.add(openEmptyVisualisation);
         fileMenu.add(openStandardVisualisation);
         //fileMenu.add(openStandardVisualisationG);
         fileMenu.add(openScanlineVisualisation);
