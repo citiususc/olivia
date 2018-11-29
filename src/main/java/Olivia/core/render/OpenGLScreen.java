@@ -460,6 +460,7 @@ public class OpenGLScreen implements GLEventListener {
 
         gl2 = glad.getGL().getGL2();
         gl2.glEnable(GL2.GL_POINT_SMOOTH);
+        gl2.glEnable(GL2.GL_BLEND);
         //gl2.glEnable(GL2.GL_POINT_SPRITE);
         gl2.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl2.glPointSize(pointSize);

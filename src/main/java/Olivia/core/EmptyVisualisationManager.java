@@ -14,7 +14,8 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 /**
- *
+ * THIS CLASS DOES NOT WORK EXACTLY AS INTENDED, RETHINK
+ * An empty visualisation to be able to load overlays without an underlying point cloud
  * @author oscar.garcia
  */
 //public class EmptyVisualisationManager extends VisualisationManager<EmptyVisualisationManager, Point3D_id, PointArray<Point3D>,OpenGLScreen,Overlay<EmptyVisualisationManager>,OverlayArray<Overlay<EmptyVisualisationManager>,EmptyVisualisationManager>,JPanel>{

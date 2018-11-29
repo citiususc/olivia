@@ -17,15 +17,15 @@ import java.nio.FloatBuffer;
  */
 public class VBOManager {
     /**
-     * Deafault Red value in case colours are not defined
+     * Default Red value in case colours are not defined
      */
     public static float DEFAULT_R = 1.0f;
     /**
-     * Deafault Green value in case colours are not defined
+     * Default Green value in case colours are not defined
      */
     public static float DEFAULT_G = 1.0f;
     /**
-     * Deafault Blue value in case colours are not defined
+     * Default Blue value in case colours are not defined
      */
     public static float DEFAULT_B = 1.0f;
     

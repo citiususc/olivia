@@ -77,7 +77,7 @@ public class DetachedDesktopFrames extends IndependentFrames{
 
     /**
      * Updates the render layout of all the DesktopPanes in all the frames
-     * @return 
+     * @return true if all OK
      */
     @Override
     public boolean updateRenderLayout() {
@@ -87,6 +87,10 @@ public class DetachedDesktopFrames extends IndependentFrames{
         return true;
     }
     
+    /**
+     * Shows all frames, minimised or not, and all visualisations in all DesktopPanes, with the same size 
+     * @return true if all OK
+     */
     @Override
     public boolean showAll() {
         super.showAll();

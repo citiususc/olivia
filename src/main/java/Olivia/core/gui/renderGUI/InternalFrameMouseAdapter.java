@@ -22,7 +22,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
      */
     protected InternalFrame frame;
     /**
-     * To save how much width and height will be added or substracted in one operation
+     * To save how much width and height will be added or subtracted in one operation
      */
     protected int h_add,w_add;
     /**
@@ -110,7 +110,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     } 
             
     /**
-     * Begins a resize operation with the left button, detects where in the border it was pressed
+     * Begins a resize or move operation with the left button, detects where in the border it was pressed
      * @param me 
      */
     @Override
@@ -149,7 +149,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
     }
     
     /**
-     * Ends the resize operation, depending on where the mouse stoped
+     * Ends the resize or move operation, depending on where the mouse stopped
      * @param me 
      */
     @Override

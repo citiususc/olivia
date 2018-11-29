@@ -5,12 +5,11 @@
  */
 package Olivia.core.gui.renderGUI;
 
-import Olivia.core.gui.MainFrame;
 import java.awt.event.WindowAdapter;
 import javax.swing.JFrame;
 
 /**
- *
+ * A window adapter to use with JFrames of a DetachedDesktopFrames with DesktopPanes as their content pane
  * @author oscar.garcia
  */
 public class FrameAdapter extends WindowAdapter{
@@ -24,6 +23,10 @@ public class FrameAdapter extends WindowAdapter{
         this.renderPane = renderPane;
     }
     
+    /**
+     * Closes all internalFrames of the renderPane
+     * @param windowEvent 
+     */
     @Override
     public void windowClosing(java.awt.event.WindowEvent windowEvent) {
         System.out.println("Window closing");

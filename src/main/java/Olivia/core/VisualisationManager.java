@@ -445,6 +445,10 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
         return true;
     }
     
+    /**
+     * Called when the renderScreen is interacted with, used to gain focus
+     * @param event The input event that interacted with the renderScreen
+     */
     public void windowInteracted(InputEvent event){
         if (Olivia.getLoadedVisualisations().contains(this) && this != gui.getActiveVisualisation()) {
                 gui.setActiveVisualisationManager(this);

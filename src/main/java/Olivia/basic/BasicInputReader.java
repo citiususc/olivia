@@ -13,6 +13,13 @@ import java.io.IOException;
  */
 public class BasicInputReader extends InputReader<BasicVisualisationManager> {
 
+    /**
+     * Reads the point cloud file
+     * @param filePath The path of the file, as a string
+     * @return The points read
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public PointArray<PointI> readPointCloudFile(String filePath) throws FileNotFoundException, IOException {
 
         openFile(filePath);
