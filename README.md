@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=MultipleWindows)](https://travis-ci.org/citiususc/olivia)
+
 # OLIVIA
 
 > A Developer-Friendly "Open Lidar Visualizer and Analyser" for Point Clouds with 3D Stereoscopic View
