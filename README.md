@@ -33,9 +33,9 @@ Open a terminal inside the JAR folder and run:
 To launch with stereoscopic 3D enabled use:  
 `java -jar Olivia.jar -stereo`  
 To launch with detached render windows with an internal desktop use:  
-`java -jar Olivia.jar -detachedD`
+`java -jar Olivia.jar -detachedD`  
 To launch with detached render windows, one for each visualisation, use:  
-`java -jar Olivia.jar -detachedI`
+`java -jar Olivia.jar -detachedI`  
 
 ## Authorship
 Grupo de Arquitectura de Computadores (GAC)  
