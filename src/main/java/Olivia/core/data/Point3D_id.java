@@ -11,39 +11,74 @@ import java.text.DecimalFormat;
  */
 public class Point3D_id extends Point3D{
 
+    /**
+     * To use when no id data is available
+     */
     public static int NO_DATA = -1;
 
+    /**
+     * This point id
+     */
     protected int id;
 
+    /**
+     * Creates a point in (x,y,z), its id is set to NO_DATA
+     * @param x The X coordinate
+     * @param y The Y coordinate
+     * @param z The Z coordinate
+     */
     public Point3D_id(double x, double y, double z) {
         super(x,y,z);
         this.id = NO_DATA;
     }
 
+    /**
+     * Creates a point in (x,y,z), with an id
+     * @param id the id
+     * @param x The X coordinate
+     * @param y The Y coordinate
+     * @param z The Z coordinate
+     */
     public Point3D_id(int id, double x, double y, double z) {
         super(x,y,z);
     }
     
+    /**
+     * Creates a new Point3D_id from a Point3D, with its coordinates and no id
+     * @param point The point from where the coordinates will be taken
+     */
     public Point3D_id(Point3D point) {
         super(point.x,point.y,point.z);
     }
 
+    /**
+     * Sets the id, overwrites the previous id
+     * @param id the new id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Sets the id ONLY IF there was no id set before
+     * @param id the new id
+     */
     public void setIdIfNotSet(int id) {
         if (this.id == NO_DATA) {
             this.id = id;
         }
     }
 
+    /**
+     * Gets the id
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
     /**
-     * If the point have id it checks them, else is a (x,y,z) comparisson
+     * If the point have id it checks them, else is a (x,y,z) comparison
      *
      * @param other The point to compare
      * @return true if they are the same
@@ -122,6 +157,10 @@ public class Point3D_id extends Point3D{
         return d;
     }
     
+    /**
+     * This creates a description as HTML
+     * @return a description formatted as HTML
+     */
     @Override
     public String getDescriptionAsHTML() {
         DecimalFormat df = new DecimalFormat("#.00");

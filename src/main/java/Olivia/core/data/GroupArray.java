@@ -6,13 +6,21 @@ import java.util.ArrayList;
  * A GroupArray keeps the groups collected and allows for a few operations.
  *
  * @author oscar.garcia
+ * @param <G> The gkind of groups to store in this array
  */
 public class GroupArray<G extends Group> extends ArrayList<G> {
 
+    /**
+     * Instantiates the GroupArray
+     */
     public GroupArray(){
         super();
     }
     
+    /**
+     * Instantiates the GroupArray
+     * @param initialCapacity The initial capacity of the array, can have more than this, but it is more efficient to set the exact number on creation
+     */
     public GroupArray(int initialCapacity){
         super(initialCapacity);
     }

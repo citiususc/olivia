@@ -11,6 +11,7 @@ import java.util.HashSet;
  * colours
  *
  * @author oscar.garcia
+ * @param <P> The kind of points this group collects
  */
 public class Group<P extends Point3D_id> {
 

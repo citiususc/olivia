@@ -34,11 +34,11 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      * To use in rendering
      */
     protected int[] vboIndices = new int[]{-1};
-    /*
+    /**
     * Number of coloured point that fit in VBO buffer, to make sure the VBO buffer does not overflow. Should be the same as vboNumVertices, we keep it duplicated in case there are changes in the rendering mechanism
     */
     protected int vboBufferCapacity = -1;   
-    /*
+    /**
     * To make sure the VBO buffer does not overflow
     */
     protected boolean vboBuffer_alreadySet= false;
@@ -53,10 +53,19 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     protected int numSelected;
     
+    /**
+     * To indicate in the draw() method whether a repack is needed
+     */
     protected boolean doRepack= false;
     
+    /**
+     * To indicate if the contained points have been modified
+     */
     protected boolean stillOriginal = true;
     
+    /**
+     * The bounding box of all the points in the array
+     */
     protected BoundingBoxO bounds = new BoundingBoxO();
     
     /**
