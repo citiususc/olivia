@@ -41,7 +41,7 @@ public class SelectOverlayPanel extends BasicArrowPanel implements ActionListene
     }
 
     /*
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         this.renderScreen = renderScreen;
     }
     */

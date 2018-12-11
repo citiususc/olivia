@@ -22,7 +22,7 @@ public class ActiveGeometryPanel extends BasicArrowPanel implements ActionListen
     }
 
     /*
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         this.renderScreen = renderScreen;
     }
     */

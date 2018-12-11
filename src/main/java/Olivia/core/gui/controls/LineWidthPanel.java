@@ -22,7 +22,7 @@ public class LineWidthPanel extends BasicArrowPanel implements ActionListener {
     }
 
     /*
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         this.renderScreen = renderScreen;
     }
     */
