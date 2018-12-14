@@ -25,7 +25,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
     /**
      * dummy, not actually tested
      */ 
-    public static int MAX_OVERLAYS_SUPPORTED = 1000000;
+    public static int MAX_OVERLAYS_SUPPORTED = 10000000;
     
     /**
      * The overlays here stored

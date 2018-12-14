@@ -4,6 +4,7 @@ import static Olivia.core.Olivia.*;
 import Olivia.extended.overlays.AreasArray;
 import Olivia.extended.overlays.CircleAnimatedOverlay;
 import Olivia.extended.overlays.CircleOverlayArray;
+import Olivia.extended.overlays.DensitiesOverlay;
 import Olivia.extended.overlays.NeighbourhoodArray;
 import Olivia.extended.overlays.NormalsOverlay;
 import Olivia.extended.overlays.VertexAnimatedOverlay;
@@ -68,6 +69,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to load a normals overlay
      */
     protected JMenuItem loadNormals;
+    /**
+     * The item to load a densities (2d and 3D) overlay
+     */
+    protected JMenuItem loadDensities;
     /**
      * The item to load an areas overlay
      */
@@ -266,9 +271,11 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         loadMenu = addMenu("Load", "Load Menu", true);
         loadNeighbours = addMenuItem("Neighbours", "Loads a neighbours file", "loadNeighbours", true);
         loadNormals = addMenuItem("Normals", "Loads a Normals file, format one line for point, the next for vector", "drawNormals", true);
+        loadDensities = addMenuItem("Densities", "Loads a Densities file, format first line min max and mean, next lines x, y, z, density_2d, density 3d", "drawDensities", true);
         loadAreas = addMenuItem("Areas", "Loads areas, as many files as there are on folder, format one  line for label, next lines for polygon", "loadAreas", true);
         loadMenu.add(loadNeighbours);
         loadMenu.add(loadNormals);
+        loadMenu.add(loadDensities);
         loadMenu.add(loadAreas);
 
         // Draw menu. To drawShape OpenGL primitives on top of the point cloud inmediately
@@ -560,6 +567,21 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     }
                 } else {
                     System.out.println("Load command cancelled by user.");
+                }
+                break;
+            case "drawDensities":
+                returnVal = fileC.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileC.getSelectedFile();
+                    DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
+                    try {
+                        overlay.readFromFile(file.toPath());
+                        gui.getActiveVisualisation().addOverlay(overlay);
+                    }catch (IOException ex) {
+                        System.out.println("Exception:" + ex);
+                    }
+                } else {
+                    System.out.println("Open command cancelled by user.");
                 }
                 break;
             case "drawNormals":
