@@ -65,7 +65,7 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
             System.out.println("Error in path animated overlay, timestamps and positions do not match");
             return;
         }
-        if((timestamp>duration)||(timestamp<=0)){
+        if((timestamp>duration)||(timestamp<0)){
             System.out.println("Animation is not that long");
         }else{
             int i;

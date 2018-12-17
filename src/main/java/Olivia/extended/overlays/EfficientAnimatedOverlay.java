@@ -58,6 +58,7 @@ public class EfficientAnimatedOverlay<O extends Overlay<VM>,VM extends Visualisa
     public boolean add(O e, long timestamp) {
         boolean ret;
         if(this.overlays.contains(e)){
+            if(duration<timestamp) duration = timestamp;
             ret = timestamps.add(timestamp);
             if(!ret) return ret;
         }else{
@@ -76,7 +77,7 @@ public class EfficientAnimatedOverlay<O extends Overlay<VM>,VM extends Visualisa
             System.out.println("Error in efficient animated overlay, timestamps and frames do not match");
             return;
         }
-        if((timestamp>duration)||(timestamp<=0)){
+        if((timestamp>duration)||(timestamp<0)){
             System.out.println("Animation is not that long");
         }else{
             int i;

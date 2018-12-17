@@ -255,6 +255,7 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
      */
     public boolean add(O e, long timestamp) {
         if(super.add(e)){
+            if(duration<timestamp) duration = timestamp;
             return timestamps.add(timestamp);
         }
         return false;
@@ -269,7 +270,7 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
             System.out.println("Error in animated overlay, timestamps and overlays do not match");
             return;
         }
-        if((timestamp>duration)||(timestamp<=0)){
+        if((timestamp>duration)||(timestamp<0)){
             System.out.println("Animation is not that long");
         }else{
             int i;
