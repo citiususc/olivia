@@ -11,11 +11,17 @@ import Olivia.core.VisualisationManager;
 import java.util.ArrayList;
 
 /**
- * A version of AnimatedOverlay for when a frame (Overlay) repeats many times during the animation, only one copy of each repeated frame (Overlay) is kept in memory UNTESTED
+ * UNTESTED A version of AnimatedOverlay for when a frame (Overlay) repeats many times during the animation,
+ * only one copy of each repeated frame (Overlay) is kept in memory, probably unnecessary because ArrayList does
+ * not copy the elements, only references them, I keep the code just in case,
+ * PathAnimatedOverlay extends form this, could extend from AnimatedOverlay directly, but would need to be changed
  * @author oscar.garcia
  */
 public class EfficientAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationManager> extends AnimatedOverlay<O,VM> {
     
+    /**
+     * Keeps a pointer 
+     */
     protected ArrayList<Integer> frameInTimestamp;
     
     /**

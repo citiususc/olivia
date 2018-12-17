@@ -11,7 +11,9 @@ import Olivia.core.data.Point3D;
 import java.util.ArrayList;
 
 /**
- * UNTESTED
+ * UNTESTED An animation that keeps a "path", an ArrayList of Points3D, corresponding one to one with the timestamps
+ * to move the frames (Overlay), so a same frame can move as an animation. A better version should probably keep an
+ * array of Transformation to allow for more control
  * @author oscar.garcia
  */
 public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationManager> extends EfficientAnimatedOverlay<O,VM> {
@@ -28,6 +30,12 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
         return this.add(e, true);
     }
 
+    /**
+     * Adds a new frame (or an existing frame in a new timestamp) with a position on its centre
+     * @param e the frame (Overlay)
+     * @param isSelected whether it is selected
+     * @return treu if everithing ok
+     */
     @Override
     public boolean add(O e, boolean isSelected) {
         if(super.add(e,isSelected)){
@@ -44,6 +52,13 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
         return false;
     }
     
+    /**
+     * Adds a new frame (or an existing frame in a new timestamp) that will move to position in timestamp
+     * @param e the frame (Overlay)
+     * @param timestamp The timestamp when this frame will be visible
+     * @param position The position this frame will have in the specified timestamp
+     * @return 
+     */
     public boolean add(O e, long timestamp, Point3D position) {
         if(super.add(e,timestamp)){
             return positions.add(position);
@@ -58,7 +73,12 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
         return false;
     }
     
-    
+    /**
+     * Sets the animation to a determined timestamp (in milliseconds), the current frame will be set as the one with
+     * the closed timestamp, rounding down; checks that it is a valid timestamp; the current frame will be moved to
+     * the position in the same index as the timestamp
+     * @param timestamp a timestamp (in milliseconds) between zero and duration
+     */
     @Override
     public void gotoTime(long timestamp) {
         if((timestamps.size()!=frameInTimestamp.size())&(timestamps.size()!=positions.size())){
