@@ -481,6 +481,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
             my_point.setY(my_point.getY() - bounds.getCentre().getY() + point.getY());
             my_point.setZ(my_point.getZ() - bounds.getCentre().getZ() + point.getZ());
         }
+        doRepack = true;
         bounds.moveTo(point);
     }
     
@@ -496,6 +497,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
             my_point.setY(my_point.getY() - point.getY());
             my_point.setZ(my_point.getZ() - point.getZ());
         }
+        doRepack = true;
         bounds.displace(point);
     }
     

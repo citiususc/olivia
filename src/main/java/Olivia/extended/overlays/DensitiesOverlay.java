@@ -9,7 +9,9 @@ import Olivia.core.Overlay;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
+import Olivia.core.data.Point3D_id;
 import Olivia.core.render.OpenGLScreen;
+import Olivia.core.render.RenderOptions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,10 +24,35 @@ import java.util.List;
  */
 public class DensitiesOverlay<VM extends VisualisationManager> extends OverlayArray<Overlay<VM>,VM> {
     
+    VertexOverlay<VM> cube;
+    
     public DensitiesOverlay(VM visualisationManager, String name) {
         super(visualisationManager, name);
         this.listenToActionsOnScreen();
         this.setSelectingCurrentByMouse(true);
+        cube = new VertexOverlay(visualisationManager,"cubicmeter");
+        cube.setRenderMode(RenderOptions.GL_QUADS);
+        cube.setRasterMode(RenderOptions.GL_LINE);
+        
+        cube.add(new Point3D_id(0.5,-0.5,0.5));
+        cube.add(new Point3D_id(0.5,0.5,0.5));
+        cube.add(new Point3D_id(-0.5,0.5,0.5));
+        cube.add(new Point3D_id(-0.5,-0.5,0.5));
+        
+        cube.add(new Point3D_id(-0.5,0.5,-0.5));
+        cube.add(new Point3D_id(-0.5,-0.5,-0.5));
+        cube.add(new Point3D_id(0.5,-0.5,-0.5));
+        cube.add(new Point3D_id(0.5,0.5,-0.5));
+        
+        cube.add(new Point3D_id(0.5,0.5,-0.5));
+        cube.add(new Point3D_id(0.5,0.5,0.5));
+        cube.add(new Point3D_id(0.5,-0.5,0.5));
+        cube.add(new Point3D_id(0.5,-0.5,-0.5));
+        
+        cube.add(new Point3D_id(-0.5,0.5,0.5));
+        cube.add(new Point3D_id(-0.5,0.5,-0.5));
+        cube.add(new Point3D_id(-0.5,-0.5,-0.5));
+        cube.add(new Point3D_id(-0.5,-0.5,0.5));
     }
     
     public void readFromFile(Path path) throws FileNotFoundException,IOException{
@@ -55,7 +82,46 @@ public class DensitiesOverlay<VM extends VisualisationManager> extends OverlayAr
 
     @Override
     protected void drawShape(OpenGLScreen renderScreen) {
+        cube.drawShape(renderScreen);
         super.drawShapeCurrent(renderScreen);
     }
+    
+    @Override
+    public boolean selectOverlayAtPoint(Point3D point, boolean isSelected) {
+        cube.moveTo(point);
+        return super.selectOverlayAtPoint(point, isSelected);
+    }
+
+    @Override
+    public boolean selectOverlayAtPoint(Point3D point) {
+        return selectOverlayAtPoint(point, true);
+    }
+    
+    @Override
+    public boolean selectOverlayAtPoint(double[] coords) {
+        return selectOverlayAtPoint(coords,true);
+    }
+    
+    @Override
+    public boolean selectOverlayAtPoint(double[] coords, boolean isSelected) {
+        if(coords.length!=3) return false;
+        Point3D point = new Point3D(coords[0],coords[1],coords[2]);
+        return selectOverlayAtPoint(point, isSelected);
+    }
+    
+    @Override
+    public boolean setOverlayAtPointAsCurrent(Point3D point) {
+        cube.moveTo(point);
+        return super.setOverlayAtPointAsCurrent(point);
+    }
+    
+    @Override
+    public boolean setOverlayAtPointAsCurrent(double[] coords) {
+        if(coords.length!=3) return false;
+        Point3D point = new Point3D(coords[0],coords[1],coords[2]);
+        return setOverlayAtPointAsCurrent(point);
+    }
+    
+    
     
 }

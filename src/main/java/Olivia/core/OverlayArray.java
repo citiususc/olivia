@@ -511,7 +511,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
      * @param renderScreen The render OpenGL screen where to draw
      */
     protected void drawShapeCurrent(OpenGLScreen renderScreen){
-        if(current!=MAX_OVERLAYS_SUPPORTED){
+        if(current<overlays.size()){
                 overlays.get(current).draw(renderScreen);
         }
     }
