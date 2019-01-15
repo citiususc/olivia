@@ -34,7 +34,7 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
      * Adds a new frame (or an existing frame in a new timestamp) with a position on its centre
      * @param e the frame (Overlay)
      * @param isSelected whether it is selected
-     * @return treu if everithing ok
+     * @return true if everything ok
      */
     @Override
     public boolean add(O e, boolean isSelected) {

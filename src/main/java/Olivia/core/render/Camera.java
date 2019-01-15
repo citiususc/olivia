@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 /**
- * Used to save the camera atributes of the main application. Does not
+ * Used to save the camera attributes of the main application. Does not
  * execute any openGL operations until they are called
  *
  * @author oscar.garcia
