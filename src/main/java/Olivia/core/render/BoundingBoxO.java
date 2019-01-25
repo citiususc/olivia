@@ -62,8 +62,8 @@ public class BoundingBoxO implements Renderable{
      * Creates a new bounding box centered in (0,0,0)  and setting the bounds to MINIMUM_BOUNDS
      */
     public BoundingBoxO(){
-        maxX = maxY = maxZ = MINIMUM_BOUNDS;
-        minX = minY = minZ = -MINIMUM_BOUNDS;
+        maxX = maxY = maxZ = Double.MIN_VALUE;
+        minX = minY = minZ = Double.MAX_VALUE;
         centre = new Point3D(0.0,0.0,0.0);
     }
     
