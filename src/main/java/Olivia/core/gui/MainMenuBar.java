@@ -2,6 +2,7 @@ package Olivia.core.gui;
 
 import static Olivia.core.Olivia.*;
 import Olivia.extended.overlays.AreasArray;
+import Olivia.extended.overlays.LabeledCellArray;
 import Olivia.extended.overlays.CircleAnimatedOverlay;
 import Olivia.extended.overlays.CircleOverlayArray;
 import Olivia.extended.overlays.DensitiesOverlay;
@@ -81,7 +82,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to load an areas overlay
      */
     protected JMenuItem loadAreas;
-
+    /**
+     * The item to load a labeled cells overlay
+     */
+    protected JMenuItem loadLabeledCells;
     /**
      * The menu to draw simple overlays
      */
@@ -279,10 +283,12 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         loadNormals = addMenuItem("Normals", "Loads a Normals file, format one line for point, the next for vector", "drawNormals", true);
         loadDensities = addMenuItem("Densities", "Loads a Densities file, format first line min max and mean, next lines x, y, z, density_2d, density 3d", "drawDensities", true);
         loadAreas = addMenuItem("Areas", "Loads areas, as many files as there are on folder, format one  line for label, next lines for polygon", "loadAreas", true);
+        loadLabeledCells = addMenuItem("Labeled Cells", "Loads cells (quad) with a label (string), format one line for label, next four lines for quads", "loadLabeledCells", true);
         loadMenu.add(loadNeighbours);
         loadMenu.add(loadNormals);
         loadMenu.add(loadDensities);
         loadMenu.add(loadAreas);
+        loadMenu.add(loadLabeledCells);
 
         // Draw menu. To drawShape OpenGL primitives on top of the point cloud inmediately
         drawMenu = addMenu("Draw", "Geometry Menu", false);
@@ -517,6 +523,23 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     System.out.println("Open command cancelled by user.");
                 }
                 break;
+            case "loadLabeledCells":
+                LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
+                returnVal = fileC.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileC.getSelectedFile();
+                    System.out.println("Opening cell path file: " + file.getParent() + "/" + file.getName());
+                    try {
+                        cells.readFromFile(file.toPath());
+                        gui.getActiveVisualisation().addOverlay(cells);
+                    }catch (IOException ex) {
+                        System.out.println("Exception:" + ex);
+                    }
+                } else {
+                    System.out.println("Open command cancelled by user.");
+                }
+                break;
+                
             case "drawVertex":
                 vOverlay = new VertexOverlay(gui.getActiveVisualisation(),ae.getActionCommand());
                 vertexFileCA = new VertexOverlayFileChooserAccessory(vOverlay);
