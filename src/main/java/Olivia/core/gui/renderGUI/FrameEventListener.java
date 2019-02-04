@@ -37,7 +37,7 @@ public class FrameEventListener implements InternalFrameListener {
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
         System.out.println(visualisationManager.getId() + " activated");
-        if (Olivia.getLoadedVisualisations().contains(visualisationManager) && visualisationManager != gui.getActiveVisualisation()) {
+        if (gui.getOlivia().getLoadedVisualisations().contains(visualisationManager) && visualisationManager != gui.getActiveVisualisation()) {
             gui.setActiveVisualisationManager(visualisationManager);
             gui.updateAll();
         }
@@ -60,7 +60,7 @@ public class FrameEventListener implements InternalFrameListener {
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
         System.out.println(visualisationManager.getId() + " closing");
-        Olivia.removeVisualisation(visualisationManager);
+        gui.getOlivia().removeVisualisation(visualisationManager);
         gui.updateAll();
         //animator.stop();
         //frame.dispose();

@@ -5,11 +5,8 @@
  */
 package Olivia.core;
 
-import Olivia.core.gui.MainFrame;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,9 +19,11 @@ import java.util.List;
 public class CommandParser {
     
     //protected MainFrame gui;
+    protected Olivia olivia;
     protected String delimiter = " ";
     
-    public CommandParser(){
+    public CommandParser(Olivia olivia){
+        this.olivia = olivia;
     }
     
     /*
@@ -38,52 +37,49 @@ public class CommandParser {
         switch (cols[0]){
             case "standard" :
                 if(cols.length>2){
-                    addStandardVisualisation(cols[1], Integer.parseInt(cols[2]));
+                    olivia.addNewStandardVisualisation(cols[1], Integer.parseInt(cols[2]));
                 }
                 break;
             case "segmenter" :
                 if(cols.length>1){
-                    addSegmenterVisualisation(cols[1]);
+                    olivia.addNewSegmenterVisualisation(cols[1]);
                 }
                 break;
             case "classifier" :
                 if(cols.length>1){
-                    addClassifierVisualisation(cols[1]);
+                    olivia.addNewClassifierVisualisation(cols[1]);
                 }
                 break;
+            case "loadCamera" :
+                if(cols.length>1){
+                    olivia.getGUI().loadCamera(new File(cols[1]));
+                }
+                break;
+            case "saveCamera" :
+                if(cols.length>1){
+                    olivia.getGUI().saveCamera(new File(cols[1]));
+                }
+                break;
+            case "showAll" :
+                olivia.getGUI().showAll();
+                break;
+            case "fullscreen" :
+                olivia.getGUI().setFullscreen(true);
+                break;
             default :
-                Olivia.println("Command: Unrecognised command " + line);
+                olivia.println("Command: Unrecognised command " + line);
                 break;
         }
         
     }
     
     public void readFromFile(Path path) throws FileNotFoundException, IOException {
-        Olivia.println("Command: Reading commnads from " + path);
+        olivia.println("Command: Reading commnads from " + path);
         List<String> lines = Files.readAllLines(path);
-        Olivia.println("Command: read " + lines.size());
+        olivia.println("Command: read " + lines.size());
         for(String line:lines){
                 runCommand(line);
         }
-    }
-    
-    
-    protected void addClassifierVisualisation(String filePath){
-        Olivia.println("Command: Loading Classifier Visualisation from file " + filePath);
-        Olivia.addNewClassifierVisualisation(filePath);
-        Olivia.println("Command: Loaded Classifier Visualisation from file " + filePath);
-    }
-    
-    protected void addSegmenterVisualisation(String filePath){
-        Olivia.println("Command: Loading Segmenter Visualisation from file " + filePath);
-        Olivia.addNewSegmenterVisualisation(filePath);
-        Olivia.println("Command: Loaded Segmenter Visualisation from file " + filePath);
-    }
-    
-    protected void addStandardVisualisation(String filePath, int decimation){
-        Olivia.println("Command: Loading Standard Visualisation from file " + filePath + " and decimation " + decimation);
-        Olivia.addNewStandardVisualisation(filePath, decimation);
-        Olivia.println("Command: Loaded Standard Visualisation from file " + filePath + " and decimation " + decimation);
     }
     
 }

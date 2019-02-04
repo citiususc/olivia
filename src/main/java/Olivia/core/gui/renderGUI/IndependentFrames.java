@@ -79,7 +79,7 @@ public class IndependentFrames implements RenderGUI{
             @Override
             public void windowClosing(WindowEvent e) {
                 System.out.println(visualisationM.getId() + " closing");
-                Olivia.removeVisualisation(visualisationM);
+                gui.getOlivia().removeVisualisation(visualisationM);
                 gui.updateAll();
             }
 
@@ -96,7 +96,7 @@ public class IndependentFrames implements RenderGUI{
             }
             @Override
             public void windowGainedFocus(WindowEvent e) {
-                if (Olivia.getLoadedVisualisations().contains(visualisationM) && visualisationM != gui.getActiveVisualisation()) {
+                if (gui.getOlivia().getLoadedVisualisations().contains(visualisationM) && visualisationM != gui.getActiveVisualisation()) {
                     gui.setActiveVisualisationManager(visualisationM);
                     gui.updateAll();
                 }
@@ -104,7 +104,7 @@ public class IndependentFrames implements RenderGUI{
             }
             @Override
             public void windowActivated(WindowEvent e) {
-                if (Olivia.getLoadedVisualisations().contains(visualisationM) && visualisationM != gui.getActiveVisualisation()) {
+                if (gui.getOlivia().getLoadedVisualisations().contains(visualisationM) && visualisationM != gui.getActiveVisualisation()) {
                     gui.setActiveVisualisationManager(visualisationM);
                     gui.updateAll();
                 }

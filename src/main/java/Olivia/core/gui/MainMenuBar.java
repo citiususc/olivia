@@ -396,7 +396,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    addNewScanlinesVisualisation(file.getAbsolutePath());
+                    gui.getOlivia().addNewScanlinesVisualisation(file.getAbsolutePath());
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -411,14 +411,14 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 }
                 break;
             case "openEmpty":
-                addNewEmptyVisualisation();
+                gui.getOlivia().addNewEmptyVisualisation();
                 break;
             case "openStandard":
                 fileC.setAccessory(decimationFileCA);
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    addNewStandardVisualisation(file.getAbsolutePath(),decimationFileCA.getDecimation());
+                    gui.getOlivia().addNewStandardVisualisation(file.getAbsolutePath(),decimationFileCA.getDecimation());
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -437,7 +437,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    addNewClassifierVisualisation(file.getAbsolutePath());
+                    gui.getOlivia().addNewClassifierVisualisation(file.getAbsolutePath());
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -446,7 +446,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    addNewSegmenterVisualisation(file.getAbsolutePath());
+                    gui.getOlivia().addNewSegmenterVisualisation(file.getAbsolutePath());
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -465,76 +465,38 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
                     try {
-                        getCommandParser().readFromFile(file.toPath());
+                        gui.getOlivia().getCommandParser().readFromFile(file.toPath());
                     }catch (IOException ex) {
-                        Olivia.core.Olivia.println("Exception:" + ex);
+                        gui.getOlivia().println("Exception:" + ex);
                     }
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
                 break;
-                
-//            case "loadNeighbours":
-//                returnVal = directoryFC.showOpenDialog(null);
-//                if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                    File file = directoryFC.getSelectedFile();
-//                    NeighboursInputReader nir = new NeighboursInputReader();
-//                    try {
-//                        System.out.println("Loading neighbours...");
-//                        renderScreen.getVisualisation().getNeighbourhood().setNeighbours(nir.readIdentifiers(file.getAbsolutePath(), NeighboursInputReader.ID_FILE));
-//                        renderScreen.getVisualisation().getNeighbourhood().setNeighboursDistances(nir.readDistances(file.getAbsolutePath(), NeighboursInputReader.DISTANCE_FILE));
-//                    }
-//                    catch (IOException ex) {
-//                        System.out.println("Exception:" + ex);
-//                    }
-//                }
-//                break;
              case "loadNeighbours":
-                NeighbourhoodArray neighs = new  NeighbourhoodArray(gui.getActiveVisualisation());
                 returnVal = directoryFC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = directoryFC.getSelectedFile();
-                    System.out.println("Opening point file: " + file.getParent() + "/" + file.getName());
-                    try {
-                        neighs.readFromFiles(file.toPath());
-                        gui.getActiveVisualisation().addOverlay(neighs);
-                        neighs.listenToActionsOnScreen();
-                        neighs.setSelectingCurrentByMouse(true);
-                    }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
-                    }
+                    gui.getOlivia().loadNeighboursOverlay(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
                 break;
             case "loadAreas":
-                AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
+                //AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
                 returnVal = directoryFC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = directoryFC.getSelectedFile();
-                    System.out.println("Opening areas file: " + file.getParent() + "/" + file.getName());
-                    try {
-                        areas.readFromFiles(file.toPath());
-                        gui.getActiveVisualisation().addOverlay(areas);
-                    }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
-                    }
+                    gui.getOlivia().loadAreasOverlay(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
                 break;
             case "loadLabeledCells":
-                LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening cell path file: " + file.getParent() + "/" + file.getName());
-                    try {
-                        cells.readFromFile(file.toPath());
-                        gui.getActiveVisualisation().addOverlay(cells);
-                    }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
-                    }
+                    gui.getOlivia().loadLabelledCells(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -616,13 +578,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
-                    try {
-                        overlay.readFromFile(file.toPath());
-                        gui.getActiveVisualisation().addOverlay(overlay);
-                    }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
-                    }
+                    gui.getOlivia().loadDensities(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -631,13 +587,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    NormalsOverlay overlay = new NormalsOverlay(gui.getActiveVisualisation(),"Normals");
-                    try {
-                        overlay.readFromFile(file.toPath());
-                        gui.getActiveVisualisation().addOverlay(overlay);
-                    }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
-                    }
+                    gui.getOlivia().loadNormals(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -649,8 +599,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening camera file: " + file.getParent() + "/" + file.getName());
-                    gui.getActiveVisualisation().getRenderScreen().getCamera().readFromFile(file.getParent(), file.getName());
+                    gui.loadCamera(file);
                 } else {
                     System.out.println("Load command cancelled by user.");
                 }
@@ -659,8 +608,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Saving camera file to: " + file.getParent() + "/" + file.getName());
-                    gui.getActiveVisualisation().getRenderScreen().getCamera().writeToFile(file.getParent(), file.getName());
+                    gui.saveCamera(file);
                 } else {
                     System.out.println("Save command cancelled by user.");
                 }
@@ -669,13 +617,13 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 gui.toogleMirroring();
                 break;
             case "takeScreenshot":
-                gui.getActiveVisualisation().getRenderScreen().getCapture().setCaptureImage(true);
+                gui.getOlivia().takeScreenshoot();
                 break;
             case "recordVideo":
-                gui.getActiveVisualisation().getRenderScreen().getCapture().toggleCaptureVideo();
+                gui.getOlivia().recordVideo();
                 break;
             case "showSelectedPoint":
-                gui.getActiveVisualisation().setDrawMouseSelection(showSelectedPoint.isSelected());
+                gui.showSelectedPoint(showSelectedPoint.isSelected());
                 break;
             case "showOverlayOptions":
                 gui.setOverlayOptionsVisible(showOverlayOptions.isSelected());

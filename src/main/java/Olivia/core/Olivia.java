@@ -3,6 +3,11 @@ package Olivia.core;
 import Olivia.basic.BasicVisualisationManager;
 import Olivia.classifier.ClassifierVisualisationManager;
 import Olivia.core.gui.MainFrame;
+import Olivia.extended.overlays.AreasArray;
+import Olivia.extended.overlays.DensitiesOverlay;
+import Olivia.extended.overlays.LabeledCellArray;
+import Olivia.extended.overlays.NeighbourhoodArray;
+import Olivia.extended.overlays.NormalsOverlay;
 import Olivia.scanlines.ScanlinesVisualisationManager;
 import Olivia.segmenter.SegmenterVisualisationManager;
 import Olivia.standard.StandardVisualisationManager;
@@ -21,17 +26,17 @@ import org.pushingpixels.substance.api.skin.GraphiteSkin;
  */
 public class Olivia {
 
-    private static MainFrame mainFrame;
-    private static ArrayList<VisualisationManager> visualisationManagers;
-    //private static VisualisationManager activeVisualisationManager;
-    private static String visulisationType;
-    private static boolean isStereo3D;
-    private static int desktopMode;
-    private static boolean isUndecorated;
+    protected MainFrame gui;
+    protected ArrayList<VisualisationManager> visualisationManagers;
+    //protected VisualisationManager activeVisualisationManager;
+    protected String visulisationType;
+    protected boolean isStereo3D;
+    protected int desktopMode;
+    protected boolean isUndecorated;
     //private static boolean isMirroring;
-    private static int idCount;
-    private static TextOutputter textOutputter;
-    private static CommandParser commandParser;
+    protected int idCount;
+    protected TextOutputter textOutputter;
+    protected CommandParser commandParser;
     
     /**
      * TODO
@@ -39,36 +44,28 @@ public class Olivia {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-        textOutputter = new ConsoleTextOutputter();
-        commandParser = new CommandParser();
-        visualisationManagers = new ArrayList<>();
-        visulisationType = null;
-        isStereo3D = false;
-        desktopMode = MainFrame.SINGLE_WINDOW;
-        isUndecorated = false;
-        //isMirroring = false;
-        idCount = 0;
+        Olivia olivia = new Olivia();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 SubstanceLookAndFeel.setSkin(new GraphiteSkin());
-                String path = System.getProperty("user.dir");
-                File file = new File(path);
+                //String path = System.getProperty("user.dir");
+                //File file = new File(path);
                 for (int i = args.length - 1; i >= 0; i--) {
                     switch (args[i]) {
                         case "-stereo":
-                            isStereo3D = true;
+                            olivia.isStereo3D = true;
                             break;
                         case "-detachedD":
-                            desktopMode = MainFrame.DETACHED_DESKTOP;
+                            olivia.desktopMode = MainFrame.DETACHED_DESKTOP;
                             break;
                         case "-detachedI":
-                            desktopMode = MainFrame.DETACHED_INDEPENDENT;
+                            olivia.desktopMode = MainFrame.DETACHED_INDEPENDENT;
                             break;
                         case "-U":
-                            isUndecorated = true;
+                            olivia.isUndecorated = true;
                             break;
-                        case "-neighbours":
+                        /*case "-neighbours":
                         case "-basic":
                         case "-standard":
                         case "-segmenter":
@@ -78,12 +75,14 @@ public class Olivia {
                         default:
                             path = args[i];
                             file = new File(path);
+                            break;*/
+                        default:
                             break;
                     }
                 }
-                mainFrame = new MainFrame(isStereo3D, desktopMode, isUndecorated);
-                mainFrame.initialize();
-                if (visulisationType != null) {
+                olivia.gui = new MainFrame(olivia,olivia.isStereo3D, olivia.desktopMode, olivia.isUndecorated);
+                olivia.gui.initialize();
+                /*if (visulisationType != null) {
                     switch (visulisationType) {
                         case "-basic":
                             //addNewBasicVisualisation(file.getAbsolutePath());
@@ -101,12 +100,26 @@ public class Olivia {
                             System.out.println("Error: " + visulisationType + "is not a correct visualisation");
                             System.exit(0);
                     }
-                }
+                }*/
             }
         });
     }
     
-    public static void println(String text){
+    public Olivia(){
+        textOutputter = new ConsoleTextOutputter();
+        commandParser = new CommandParser(this);
+        visualisationManagers = new ArrayList<>();
+        visulisationType = null;
+        isStereo3D = false;
+        desktopMode = MainFrame.SINGLE_WINDOW;
+        isUndecorated = false;
+        //isMirroring = false;
+        idCount = 0;
+    }
+    
+    
+    
+    public void println(String text){
         textOutputter.println(text);
     }
     
@@ -114,25 +127,25 @@ public class Olivia {
      * Gets all the visualisationManger that have been loaded
      * @return an arrayList with all the visualisationManagers, it may be empty
      */
-    public static ArrayList<VisualisationManager> getLoadedVisualisations(){
+    public ArrayList<VisualisationManager> getLoadedVisualisations(){
         return visualisationManagers;
     }
 
     
-    private static void addNewVisualisationManager(VisualisationManager visuManager) {
+    private void addNewVisualisationManager(VisualisationManager visuManager) {
         //visuManager.getRenderScreen().createRenderFrame();
         //activeVisualisation.getRenderScreen().setVisualisation(visu);
         //mainFrame.addVisuPanel(visuManager.getName(), visuManager.getControlPane());
         if(visuManager.checkCorrectness()){
-            System.out.println("Adding " + visuManager.getName() + " to loaded visualisations"
+            println("Adding " + visuManager.getName() + " to loaded visualisations"
                     + "\n\tDisplacement:" + visuManager.getDisplacement().toString()
                                 );
             visualisationManagers.add(visuManager);
-            mainFrame.initVisualisation(visuManager);
-            mainFrame.setActiveVisualisationManager(visuManager);
-            mainFrame.updateRenderFrameLayout();
+            gui.initVisualisation(visuManager);
+            gui.setActiveVisualisationManager(visuManager);
+            gui.updateRenderFrameLayout();
         }else{
-            System.out.println("Problem detected adding " + visuManager.getName() + " to loaded visualisations");
+            println("Problem detected adding " + visuManager.getName() + " to loaded visualisations");
         }
     }
 
@@ -140,14 +153,14 @@ public class Olivia {
      * Removes the given visualisationManager
      * @param visualisationManager the visualisationManager to remove
      */
-    public static void removeVisualisation(VisualisationManager visualisationManager) {
+    public void removeVisualisation(VisualisationManager visualisationManager) {
         //mainFrame.removeVisuPanel(visualisationManagers.indexOf(visualisationManager));
-        System.out.println("Removing visualisation " + visualisationManager.getName());
+        println("Removing visualisation " + visualisationManager.getName());
         //visualisationManager.getRenderScreen().animatorPause();
         visualisationManagers.remove(visualisationManager);
-        mainFrame.removeActiveVisualisationManager(visualisationManager);
+        gui.removeActiveVisualisationManager(visualisationManager);
         visualisationManager.destroy();
-        mainFrame.updateRenderFrameLayout();
+        gui.updateRenderFrameLayout();
         //System.gc();
     }
 
@@ -155,27 +168,27 @@ public class Olivia {
      * Adds a new BasicVisualisationManger, reading its data from the folder in filePath
      * @param filePath The folder where all the basic data are
      */
-    public static void addNewBasicVisualisation(String filePath) {   
+    public void addNewBasicVisualisation(String filePath) {   
         try {
-            System.out.println("Creating Basic Visualisation");
-            BasicVisualisationManager visuMan = new BasicVisualisationManager(idCount++, mainFrame, isStereo3D);
+            println("Creating Basic Visualisation");
+            BasicVisualisationManager visuMan = new BasicVisualisationManager(idCount++, gui, isStereo3D);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            System.out.println("Cannot add visualisation, cannot read File" + e);
+            println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            System.out.println("Cannot add visualisation, cannot read from File" + e);
+            println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
     /**
      * Adds an empty visualisation, used to show overlays without point cloud data (not working well at the moment)
      */
-    public static void addNewEmptyVisualisation(){
-        System.out.println("Creating Empty Visualisation");
-        EmptyVisualisationManager visuMan = new EmptyVisualisationManager(idCount++, mainFrame, isStereo3D);
+    public void addNewEmptyVisualisation(){
+        println("Creating Empty Visualisation");
+        EmptyVisualisationManager visuMan = new EmptyVisualisationManager(idCount++, gui, isStereo3D);
         addNewVisualisationManager(visuMan);
     }
     
@@ -184,53 +197,36 @@ public class Olivia {
      * @param filePath The folder where all the data are
      * @param decimation the decimation to be done to the file, for example, a decimation of 5 would pick 1 in 5 points int he file for the visualisation
      */
-    public static void addNewStandardVisualisation(String filePath, int decimation) {
+    public void addNewStandardVisualisation(String filePath, int decimation) {
         try {
-            System.out.println("Creating Standard Visualisation");
-            StandardVisualisationManager visuMan = new StandardVisualisationManager(idCount++, mainFrame, isStereo3D,filePath,decimation);
+            println("Creating Standard Visualisation");
+            StandardVisualisationManager visuMan = new StandardVisualisationManager(idCount++, gui, isStereo3D,filePath,decimation);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            System.out.println("Cannot add visualisation, cannot read File" + e);
+            println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            System.out.println("Cannot add visualisation, cannot read from File" + e);
+            println("Cannot add visualisation, cannot read from File" + e);
         }
     }
-    
-//    public static void addNewStandardVisualisation(File file) {
-//        try {
-//            System.out.println("Opening file: " + file + " for a Standard Visualisation");
-//            addRenderScreen();
-//            StandardVisualisation visu = new StandardVisualisation(activeRenderScreen);
-//            visu.readFromFile(file);
-//            StandardVisualisationControlPane pane = new StandardVisualisationControlPane(visu);
-//            addNewVisualisation("basic", visu, pane);
-//        }
-//        catch (FileNotFoundException e) {
-//            System.out.println("Cannot add visualisation, cannot read File" + e);
-//        }
-//        catch (IOException e) {
-//            System.out.println("Cannot add visualisation, cannot read from File" + e);
-//        }
-//    }
-    
+
     /**
      * Adds a new ScanlinesVisualisationManger reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      */
-        public static void addNewScanlinesVisualisation(String filePath) {
+        public void addNewScanlinesVisualisation(String filePath) {
         try {
-            System.out.println("Creating Scanlines Visualisation");
-            ScanlinesVisualisationManager visuMan = new ScanlinesVisualisationManager(idCount++, mainFrame, isStereo3D);
+            println("Creating Scanlines Visualisation");
+            ScanlinesVisualisationManager visuMan = new ScanlinesVisualisationManager(idCount++, gui, isStereo3D);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            System.out.println("Cannot add visualisation, cannot read File" + e);
+            println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            System.out.println("Cannot add visualisation, cannot read from File" + e);
+            println("Cannot add visualisation, cannot read from File" + e);
         }
     }
         
@@ -238,18 +234,18 @@ public class Olivia {
      * Adds a new SegmenterVisualisationManger reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      */    
-    public static void addNewSegmenterVisualisation(String filePath) {
+    public void addNewSegmenterVisualisation(String filePath) {
         try {
-            System.out.println("Creating Scanlines Visualisation");
-            SegmenterVisualisationManager visuMan = new SegmenterVisualisationManager(idCount++, mainFrame, isStereo3D);
+            println("Creating Scanlines Visualisation");
+            SegmenterVisualisationManager visuMan = new SegmenterVisualisationManager(idCount++, gui, isStereo3D);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            System.out.println("Cannot add visualisation, cannot read File" + e);
+            println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            System.out.println("Cannot add visualisation, cannot read from File" + e);
+            println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
@@ -257,22 +253,108 @@ public class Olivia {
      * Adds a new ClassifierVisualisationManger reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      */
-    public static void addNewClassifierVisualisation(String filePath) {   
+    public void addNewClassifierVisualisation(String filePath) {   
         try {
-            System.out.println("Creating Classifier Visualisation");
-            ClassifierVisualisationManager visuMan = new ClassifierVisualisationManager(idCount++, mainFrame, isStereo3D,filePath);
+            println("Creating Classifier Visualisation");
+            ClassifierVisualisationManager visuMan = new ClassifierVisualisationManager(idCount++, gui, isStereo3D,filePath);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            System.out.println("Cannot add visualisation, cannot read File" + e);
+            println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            System.out.println("Cannot add visualisation, cannot read from File" + e);
+            println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
-    public static CommandParser getCommandParser(){
+    
+    public void loadNeighboursOverlay(File file){
+        NeighbourhoodArray neighs = new  NeighbourhoodArray(gui.getActiveVisualisation());
+        println("Opening neighbours file: " + file.getParent() + "/" + file.getName());
+        try {
+            neighs.readFromFiles(file.toPath());
+            gui.getActiveVisualisation().addOverlay(neighs);
+            neighs.listenToActionsOnScreen();
+            neighs.setSelectingCurrentByMouse(true);
+        }catch (IOException ex) {
+            println("Exception:" + ex);
+        }
+    }
+    
+    public void loadAreasOverlay(File file){
+        AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
+        println("Opening areas file: " + file.getParent() + "/" + file.getName());
+        try {
+            areas.readFromFiles(file.toPath());
+            gui.getActiveVisualisation().addOverlay(areas);
+        }catch (IOException ex) {
+            println("Exception:" + ex);
+        }
+    }
+    
+    public void loadLabelledCells(File file){
+        LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
+        println("Opening cell path file: " + file.getParent() + "/" + file.getName());
+        try {
+            cells.readFromFile(file.toPath());
+        gui.getActiveVisualisation().addOverlay(cells);
+        }catch (IOException ex) {
+            println("Exception:" + ex);
+        }
+    }
+    
+    public void loadVertex(File file){
+        println("TODO: cannot load vertex this way yet");
+    }
+    
+    public void loadAnimatedVertex(File file){
+        println("TODO: cannot load animated vertex this way yet");
+    }
+    
+    public void loadCircles(File file){
+        println("TODO: cannot load circles this way yet");
+    }
+    
+    public void loadanimatedCircles(File file){
+        println("TODO: cannot load animated circles this way yet");
+    }
+    
+    public void loadDensities(File file){
+        DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
+        println("Opening densities file: " + file.getParent() + "/" + file.getName());
+        try {
+            overlay.readFromFile(file.toPath());
+            gui.getActiveVisualisation().addOverlay(overlay);
+        }catch (IOException ex) {
+            println("Exception:" + ex);
+        }
+    }
+    
+    public void loadNormals(File file){
+        NormalsOverlay overlay = new NormalsOverlay(gui.getActiveVisualisation(),"Normals");
+        println("Opening normals file: " + file.getParent() + "/" + file.getName());
+        try {
+            overlay.readFromFile(file.toPath());
+            gui.getActiveVisualisation().addOverlay(overlay);
+        }catch (IOException ex) {
+            println("Exception:" + ex);
+        }
+    }
+    
+    public void takeScreenshoot(){
+        gui.getActiveVisualisation().getRenderScreen().getCapture().setCaptureImage(true);
+    }
+    
+    public void recordVideo(){
+        gui.getActiveVisualisation().getRenderScreen().getCapture().toggleCaptureVideo();
+    }
+    
+    public CommandParser getCommandParser(){
         return commandParser;
+    }
+    
+    public MainFrame getGUI(){
+        return gui;
     }
 }

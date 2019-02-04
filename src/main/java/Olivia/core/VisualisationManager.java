@@ -450,7 +450,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      * @param event The input event that interacted with the renderScreen
      */
     public void windowInteracted(InputEvent event){
-        if (Olivia.getLoadedVisualisations().contains(this) && this != gui.getActiveVisualisation()) {
+        if (gui.getOlivia().getLoadedVisualisations().contains(this) && this != gui.getActiveVisualisation()) {
                 gui.setActiveVisualisationManager(this);
                 gui.updateAll();
         }

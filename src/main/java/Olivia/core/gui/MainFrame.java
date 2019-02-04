@@ -2,7 +2,6 @@ package Olivia.core.gui;
 
 import Olivia.core.Olivia;
 import Olivia.core.gui.renderGUI.DesktopPane;
-import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
@@ -14,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+import java.io.File;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -47,6 +47,8 @@ public class MainFrame extends JFrame{
      * Title of the frame.
      */
     public static final String TITLE = "Olivia";
+    
+    protected Olivia olivia;
     /**
      * The OpenGL render screen.
      */
@@ -159,8 +161,8 @@ public class MainFrame extends JFrame{
     /**
      * Creates a GUI in single window mode, in 2D and decorated, must call to initialize() afterwards.
      */
-    public MainFrame(){
-        this(false,SINGLE_WINDOW,false);
+    public MainFrame(Olivia olivia){
+        this(olivia,false,SINGLE_WINDOW,false);
     }
 
     /**
@@ -169,7 +171,8 @@ public class MainFrame extends JFrame{
      * @param mode The mode, can be SINGLE_WINDOW, DETACHED_DESKTOP and DETACHED_INDEPENDENT
      * @param isUndecorated true to show windows without decoration
      */
-    public MainFrame(boolean isStereo3D, int mode, boolean isUndecorated) {
+    public MainFrame(Olivia olivia, boolean isStereo3D, int mode, boolean isUndecorated) {
+        this.olivia = olivia;
         this.isStereo3D = isStereo3D;
         this.isSingleWindow = this.isDetachedDesktop = this.isDetachedIndependent = false;
         if(mode==SINGLE_WINDOW){
@@ -321,7 +324,7 @@ public class MainFrame extends JFrame{
      * Updates the layout of the renderGUI, behaviour depends on the mode
      */
     public void updateRenderFrameLayout() {
-        if (getLoadedVisualisations().isEmpty()) {
+        if (olivia.getLoadedVisualisations().isEmpty()) {
             return;
         }
         renderGUI.updateRenderLayout();
@@ -353,7 +356,7 @@ public class MainFrame extends JFrame{
     protected void doCameraMirroring() {
         Point3D_id point = activeVisualisationManager.getRenderScreen().getSelectedPoint();
         activeVisualisationManager.getRenderScreen().setShowPosition(false);
-        for (VisualisationManager visuManager : getLoadedVisualisations()) {
+        for (VisualisationManager visuManager : olivia.getLoadedVisualisations()) {
             if (visuManager != activeVisualisationManager) {
                 visuManager.getRenderScreen().getCamera().copyActiveCamera();
                 //visuManager.getRenderScreen().setSelectedPoint(point);
@@ -367,7 +370,7 @@ public class MainFrame extends JFrame{
      * Makes sure all visualisations know the camera is not being mirrored anymore
      */
     protected void undoCameraMirroring(){
-        for (VisualisationManager visuManager : getLoadedVisualisations()) {
+        for (VisualisationManager visuManager : olivia.getLoadedVisualisations()) {
                 visuManager.getRenderScreen().setShowPosition(false);
         }
     }
@@ -391,7 +394,7 @@ public class MainFrame extends JFrame{
      * @param eventNames The array with the event names
      */
     public void doSelectionMirroring(String[] eventNames) {
-        for (VisualisationManager visuManager : getLoadedVisualisations()) {
+        for (VisualisationManager visuManager : olivia.getLoadedVisualisations()) {
             if (visuManager != activeVisualisationManager) {
                 /*activeVisualisationManager.getRenderScreen().getMouseListener().getMouseSelection().pick(activeVisualisationManager.getRenderScreen().getMouseListener().getWindowX(),
                         activeVisualisationManager.getRenderScreen().getMouseListener().getWindowY(),
@@ -411,7 +414,7 @@ public class MainFrame extends JFrame{
      */
     public void setActiveVisualisationManager(VisualisationManager visualisationManager) {
         activeVisualisationManager = visualisationManager;
-        if (getLoadedVisualisations().size() > 0) {
+        if (olivia.getLoadedVisualisations().size() > 0) {
             //this.renderScreen = activeVisualisationManager.getRenderScreen();
             //menuBar.renderScreen = activeVisualisationManager.getRenderScreen();
             //controlPanel.setupRenderScreen(activeVisualisationManager.getRenderScreen());
@@ -430,8 +433,8 @@ public class MainFrame extends JFrame{
      */
     public void removeActiveVisualisationManager(VisualisationManager visualisationManager) {
         if(activeVisualisationManager == visualisationManager){
-            if (getLoadedVisualisations().size() > 0){
-                setActiveVisualisationManager(getLoadedVisualisations().get(0));
+            if (olivia.getLoadedVisualisations().size() > 0){
+                setActiveVisualisationManager(olivia.getLoadedVisualisations().get(0));
             }else{
                 activeVisualisationManager = null;
                 splitPane2.setBottomComponent(null);
@@ -522,6 +525,23 @@ public class MainFrame extends JFrame{
         return(device.isFullScreenSupported());
     }
     
+    public Olivia getOlivia(){
+        return olivia;
+    }
+    
+    public void loadCamera(File file){
+        olivia.println("Opening camera file: " + file.getParent() + "/" + file.getName());
+        getActiveVisualisation().getRenderScreen().getCamera().readFromFile(file.getParent(), file.getName());
+    }
+    
+    public void saveCamera(File file){
+        olivia.println("Saving camera file to: " + file.getParent() + "/" + file.getName());
+        getActiveVisualisation().getRenderScreen().getCamera().writeToFile(file.getParent(), file.getName());
+    }
+    
+    public void showSelectedPoint(boolean showSelectedPoint){
+        getActiveVisualisation().setDrawMouseSelection(showSelectedPoint);
+    }
     
     
 }
