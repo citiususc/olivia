@@ -56,6 +56,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to open a classifier visualisation
      */
     protected JMenuItem openClassifierVisualisation;
+    /**
+     * The item to open a command file
+     */
+    protected JMenuItem openCommand;
 
     /**
      * The menu to load complex overlays
@@ -258,6 +262,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         openScanlineVisualisation = addMenuItem("Open Scanline", "Opens a Scanline Visualisation", "openScanline", true);
         openClassifierVisualisation = addMenuItem("Open Classifier", "Opens a Classifier Visualisation", "openClassifier", true);
         openSegmenterVisualisation = addMenuItem("Open Segmenter", "Opens a Segmenter Visualisation", "openSegmenter",true);
+        openCommand = addMenuItem("Command File", "Opens a command file", "openCommand",true);
         
         //fileMenu.add(openBasicVisualisation);
         //fileMenu.add(openEmptyVisualisation);
@@ -266,6 +271,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         fileMenu.add(openScanlineVisualisation);
         fileMenu.add(openClassifierVisualisation);
         fileMenu.add(openSegmenterVisualisation);
+        fileMenu.add(openCommand);
 
         // Load menu. To load common preprocessed stuff of LiDAR clouds for later displaying/tweaking
         loadMenu = addMenu("Load", "Load Menu", true);
@@ -448,6 +454,20 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     System.out.println("Open command cancelled by user.");
                 }
                 break;
+            case "openCommand":
+                returnVal = fileC.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileC.getSelectedFile();
+                    try {
+                        getCommandParser().readFromFile(file.toPath());
+                    }catch (IOException ex) {
+                        Olivia.core.Olivia.println("Exception:" + ex);
+                    }
+                } else {
+                    System.out.println("Open command cancelled by user.");
+                }
+                break;
+                
 //            case "loadNeighbours":
 //                returnVal = directoryFC.showOpenDialog(null);
 //                if (returnVal == JFileChooser.APPROVE_OPTION) {

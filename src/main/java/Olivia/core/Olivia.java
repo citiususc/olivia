@@ -30,6 +30,8 @@ public class Olivia {
     private static boolean isUndecorated;
     //private static boolean isMirroring;
     private static int idCount;
+    private static TextOutputter textOutputter;
+    private static CommandParser commandParser;
     
     /**
      * TODO
@@ -37,6 +39,8 @@ public class Olivia {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+        textOutputter = new ConsoleTextOutputter();
+        commandParser = new CommandParser();
         visualisationManagers = new ArrayList<>();
         visulisationType = null;
         isStereo3D = false;
@@ -100,6 +104,10 @@ public class Olivia {
                 }
             }
         });
+    }
+    
+    public static void println(String text){
+        textOutputter.println(text);
     }
     
     /**
@@ -262,5 +270,9 @@ public class Olivia {
         catch (IOException e) {
             System.out.println("Cannot add visualisation, cannot read from File" + e);
         }
+    }
+    
+    public static CommandParser getCommandParser(){
+        return commandParser;
     }
 }
