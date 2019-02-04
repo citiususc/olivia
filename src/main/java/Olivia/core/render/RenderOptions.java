@@ -113,11 +113,20 @@ public interface RenderOptions {
         "WHITE",
         "RED",
         "GREEN",
-        "BLUE"
+        "BLUE",
+        "YELLOW",
+        "ORANGE",
+        "PINK",
+        "GRAY",
+        "LIGHT_GRAY",
+        "DARK_GRAY",
+        "BLACK",
+        "CYAN",
+        "MAGENTA"
     };
     
     /**
-     * Gets the mode as an interger depending on its name
+     * Gets the mode as an integer depending on its name
      * @param name the name, should be one of SUPPORTED_PRIMITIVE_MODES_TEXT or SUPPORTED_RASTER_MODES_TEXT
      * @return a render o raster mode
      */
@@ -165,6 +174,15 @@ public interface RenderOptions {
             case "RED" : return Color.RED;
             case "GREEN" : return Color.GREEN;
             case "BLUE" : return Color.BLUE;
+            case "BLACK" : return Color.BLACK;
+            case "CYAN" : return Color.CYAN;
+            case "MAGENTA" : return Color.MAGENTA;
+            case "ORANGE" : return Color.ORANGE;
+            case "PINK" : return Color.PINK;
+            case "YELLOW" : return Color.YELLOW;
+            case "DARK_GRAY" : return Color.DARK_GRAY;
+            case "LIGHT_GRAY" : return Color.LIGHT_GRAY;
+            case "GRAY" : return Color.GRAY;
             default : return Color.WHITE;
         }
     }
@@ -179,6 +197,15 @@ public interface RenderOptions {
             if(color.equals(Color.RED)) return "RED";
             if(color.equals(Color.GREEN)) return "GREEN";
             if(color.equals(Color.BLUE)) return "BLUE";
+            if(color.equals(Color.BLACK)) return "BLACK";
+            if(color.equals(Color.CYAN)) return "CYAN";
+            if(color.equals(Color.MAGENTA)) return "MAGENTA";
+            if(color.equals(Color.ORANGE)) return "ORANGE";
+            if(color.equals(Color.PINK)) return "PINK";
+            if(color.equals(Color.YELLOW)) return "YELLOW";
+            if(color.equals(Color.DARK_GRAY)) return "DARK_GRAY";
+            if(color.equals(Color.LIGHT_GRAY)) return "LIGHT_GRAY";
+            if(color.equals(Color.GRAY)) return "GRAY";
             return "WHITE";
     }
     
@@ -236,21 +263,39 @@ public interface RenderOptions {
     public void setRasterMode(String rasterMode);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the colour
      */
     public void setDefaultColour(PointColour colour);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param name the colour name
      */
     public void setDefaultColour(String name);
     
     /**
-     * Sets teh default colour
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the colour
      */
     public void setDefaultColour(Color colour);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param colour the colour
+     */
+    public void changeColour(PointColour colour);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param name the colour name
+     */
+    public void changeColour(String name);
+    
+    /**
+     * Changes the colour (Changes the values in the default colour)
+     * @param colour the colour
+     */
+    public void changeColour(Color colour);
     
 }

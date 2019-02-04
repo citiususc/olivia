@@ -15,11 +15,27 @@ import javax.swing.border.TitledBorder;
  */
 public class BasicVisualisationControlPane extends JPanel implements ActionListener {
 
+    /**
+     * The visualisation this panel controls
+     */
     protected BasicVisualisationManager visualisationM;
+    /**
+     * A panel to store everything, probably redundant
+     */
     protected JPanel colourPane;
+    /**
+     * A button to select intensity colouring
+     */
     protected JButton intensityButton;
+    /**
+     * A button to select random colouring
+     */
     protected JButton randomButton;
 
+    /**
+     * Creates a control panel for a basic visualisation
+     * @param visualisationM The Basic Visualisation
+     */
     public BasicVisualisationControlPane(BasicVisualisationManager visualisationM) {
         this.visualisationM = visualisationM;
 
@@ -37,6 +53,10 @@ public class BasicVisualisationControlPane extends JPanel implements ActionListe
         setVisible(true);
     }
 
+    /**
+     * Performs the actions, changing the colours of the points
+     * @param ae 
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         switch (ae.getActionCommand()) {

@@ -62,8 +62,8 @@ public class BoundingBoxO implements Renderable{
      * Creates a new bounding box centered in (0,0,0)  and setting the bounds to MINIMUM_BOUNDS
      */
     public BoundingBoxO(){
-        maxX = maxY = maxZ = MINIMUM_BOUNDS;
-        minX = minY = minZ = -MINIMUM_BOUNDS;
+        maxX = maxY = maxZ = Double.MIN_VALUE;
+        minX = minY = minZ = Double.MAX_VALUE;
         centre = new Point3D(0.0,0.0,0.0);
     }
     
@@ -291,7 +291,7 @@ public class BoundingBoxO implements Renderable{
      * @param point A point to be the new centre
      */
     @Override
-    public void moveTo(Point3D point) {
+    public synchronized void moveTo(Point3D point) {
         maxX += point.getX() -centre.getX();
         minX += point.getX() -centre.getX();
         maxY += point.getY() -centre.getY();
@@ -319,7 +319,7 @@ public class BoundingBoxO implements Renderable{
      * @param point A point with the coordinates to substract
      */
     @Override
-    public void displace(Point3D point) {
+    public synchronized void displace(Point3D point) {
         maxX -= point.getX();
         minX -= point.getX();
         maxY -= point.getY();

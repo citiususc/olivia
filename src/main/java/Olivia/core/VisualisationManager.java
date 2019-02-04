@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import com.jogamp.newt.event.InputEvent;
 
 /**
  * This is the class that controls the Point Cloud visualisation, is has the data for the point cloud, the overlays and the render screen;
@@ -345,15 +346,16 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      * It is a different method from setDisplacement because there may be a need in the future of just setting the displacement and not moving everething, for now no
      * @param newDisplacement The new displacement
      */
-    public void changeDisplacement(Point3D newDisplacement){
+    protected synchronized void changeDisplacement(Point3D newDisplacement){
         if(newDisplacement.equals(displacement)) return;
-        System.out.println("CAUTION: Redisplacing a visualisation, original data coordinates of the points may be lost");
+        System.out.println("CAUTION: Redisplacing " + this.name +", original data coordinates of the points may be lost");
         Point3D undo_displacement = new Point3D(newDisplacement.getX()-displacement.getX(),newDisplacement.getY()-displacement.getY(),+newDisplacement.getZ()-displacement.getZ());
+        this.displacement = newDisplacement;
         for(int i=0; i<overlays.size();i++){
             overlays.get(i).displace(undo_displacement);     
         }
         this.pointCloud.displace(undo_displacement);
-        this.displacement = newDisplacement;
+        //this.displacement = newDisplacement; //If this is here sometimes it is executed twice, race condition???
         displacementSet = true;
         this.repack();
     }
@@ -376,7 +378,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     }
     
     /**
-     * Draws the overlays only, do not remember why now TODO
+     * Draws the overlays only, do not remember why now TODO (maybe because of EmptyVisualisation?)
      */
     public void draw(){
         //points.draw(renderScreen);
@@ -384,19 +386,30 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     }
     
     /**
-     * Because the point cloud uses VBOs, and thay are native programming, they need to be manually freed, this method does that, ONLY FOR THE MAIN POINT CLOUD
+     * Because the point cloud uses VBOs, and they are native programming, they need to be manually freed, this method does that, ONLY FOR THE MAIN POINT CLOUD, needs to be overridden if there are more VBOs in the child class
      */
     public void freeVBOs(){
         pointCloud.freeVBO(renderScreen);
     }
     
     /**
-     * Destroys the visualisation, not very well checked with the overlays, probable memory leaks somewhere TODO
+     * Destroys the visualisation, not very well checked with the overlays, probable memory leaks somewhere TODO.
+     * This is needed to free the VBOs that are native memory, but because there are so many references to the visualisation
+     * some may not be null, so to make sure memory is released all data is set to null, if a bug is found where the visualisation
+     * is still in use it will be fixed, meanwhile it is recommended that all child classes override this method, calling it
+     * with super and the setting to null all their particular data
      */
     public void destroy(){
+        renderScreen.animatorStop();
         freeVBOs();
         overlays.remove();
         pointCloud.clear();
+        overlays=null;
+        pointCloud=null;
+        renderScreen=null;
+        jMenu = null;
+        controlPane =null;
+        gui =null;
     }
     
     /**
@@ -430,6 +443,17 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Called when the renderScreen is interacted with, used to gain focus
+     * @param event The input event that interacted with the renderScreen
+     */
+    public void windowInteracted(InputEvent event){
+        if (Olivia.getLoadedVisualisations().contains(this) && this != gui.getActiveVisualisation()) {
+                gui.setActiveVisualisationManager(this);
+                gui.updateAll();
+        }
     }
 
 }

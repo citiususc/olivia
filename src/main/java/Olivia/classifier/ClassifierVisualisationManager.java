@@ -64,6 +64,8 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         activeClasses.add(BUILDING);
         activeClasses.add(WATER);
         activeClasses.add(ROAD);
+        activeClasses.add(WIRE);
+        activeClasses.add(ELECTRIC_TOWER);
         selectedGroup = null;
         selectedGroupPoints = new PointArray();
         System.out.println("Creating Overlay Array for " + name);
@@ -80,7 +82,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (!activeClasses.contains(classId)) {
             activeClasses.add(classId);
             flagSelectedPoints(selectedFlags);
-            pointCloud.repack();
+            pointCloud.doRepack();
         }
     }
 
@@ -88,7 +90,7 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (activeClasses.contains(classId)) {
             activeClasses.remove(activeClasses.indexOf(classId));
             flagSelectedPoints(selectedFlags);
-            pointCloud.repack();
+            pointCloud.doRepack();
         }
     }
 
@@ -117,15 +119,13 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         if (selectedGroup == null) {
             return;
         }
+        renderScreen.animatorPause();
         selectedGroupPoints.clear();
+        selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(selectedGroup.getPoints());
-        selectedGroupColours = new ColourArray(selectedGroupPoints) {
-        };
-        PointColour groupColour = ClassifierColourArray.getGroupColour(selectedGroup.getType());
-        for (int i = 0; i < selectedGroupPoints.size(); i++) {
-            selectedGroupColours.add(groupColour);
-        }
-        selectedGroupPoints.repack();
+        selectedGroupColours = new ClassifierColourArray(selectedGroupPoints,selectedGroup.getType());
+        selectedGroupPoints.doRepack();
+        renderScreen.animatorResume();
     }
 
     @Override
@@ -170,19 +170,39 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
 
     public void setIntensityColouring() {
         selectedColour = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setSegmenterColouring() {
         selectedColour = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to segmentation colouring");
     }
 
     public void setClassificationColouring() {
         selectedColour = 2;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to classification colouring");
+    }
+    
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedGroupPoints.freeVBO(renderScreen);
+    }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.activeClasses = null;
+        this.colours = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedFlags = null;
+        this.selectedGroup = null;
+        this.selectedGroupPoints = null;
+        this.selectedGroupColours = null;
+        this.textInfo = null;
     }
 }

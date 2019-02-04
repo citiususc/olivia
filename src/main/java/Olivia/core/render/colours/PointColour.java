@@ -50,6 +50,12 @@ public class PointColour {
         this.B = c;
     }
     
+    public void setRGB(PointColour colour){
+        this.R = colour.getR();
+        this.G = colour.getG();
+        this.B = colour.getB();
+    }
+    
     public Color toColor(){
         return new Color(R,G,B);
     }

@@ -9,6 +9,7 @@ import Olivia.core.Overlay;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
+import Olivia.core.gui.controls.overlays.AreasOptionPanel;
 import Olivia.core.render.colours.PointColour;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,11 +28,13 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
     
     protected PointColour colour;
     protected int areasRead;
+    protected int font;
     
     public AreasArray(VM visualisationManager) {
         super(visualisationManager);
         colour = new PointColour(0.0f,0.0f,1.0f);
         areasRead = 0;
+        this.font = TextOverlay.DEFAULT_FONT;
     }
 
     public PointColour getColour() {
@@ -40,6 +43,15 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
 
     public void setColour(PointColour colour) {
         this.colour = colour;
+    }
+
+    public void setFont(int font) {
+        this.font = font;
+    }
+    
+    public void changeColour(PointColour colour) {
+        this.colour.setRGB(colour);
+        this.repack(visualisationManager.getRenderScreen());
     }
     
     public void readFromFiles(Path path) throws FileNotFoundException, IOException {
@@ -70,6 +82,7 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
         //System.out.println("on creation" + label.getBounds().getCentre());
         label.setRasterPos(0.0f, 0.0f,0.0f);
         label.setColour(colour);
+        label.setFont(font);
         VertexOverlay polygonOverlay = new VertexOverlay(visualisationManager,"Area " + areasRead);
         polygonOverlay.setDefaultColour(colour);
         polygonOverlay.parsePolygon(polygon, delimiter);
@@ -85,6 +98,13 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
         }catch(Exception e){
             System.out.println("Area could not be read " + e);
         }
+    }
+    
+    @Override
+    protected void createOptionPanels() {
+        super.createOptionPanels();
+        AreasOptionPanel optionsPanel = new AreasOptionPanel(this);
+        this.optionPanels.add(optionsPanel);
     }
     
 }

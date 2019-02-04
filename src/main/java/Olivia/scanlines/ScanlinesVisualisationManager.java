@@ -71,6 +71,7 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
             return;
         }
         selectedScanPoints.clear();
+        selectedScanPoints.freeVBO(renderScreen);
         selectedScanPoints.addAll(selectedScan.getPoints());
         selectedScanColours = new ColourArray(selectedScanPoints) {
         };
@@ -78,7 +79,7 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
         for (int i = 0; i < selectedScanPoints.size(); i++) {
             selectedScanColours.add(groupColour);
         }
-        selectedScanPoints.repack();
+        selectedScanPoints.doRepack();
     }
 
     @Override
@@ -115,20 +116,38 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
 
     public void setIntensityColouring() {
         selectedColour = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setEdgesColouring() {
         selectedColour = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to edge colouring");
     }
 
     public void setRandomColouring() {
         selectedColour = 2;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to random colouring");
+    }
+    
+
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedScanPoints.freeVBO(renderScreen);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.colours = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedScan = null;
+        this.selectedScanColours = null;
+        this.selectedScanPoints = null;
     }
 
 }

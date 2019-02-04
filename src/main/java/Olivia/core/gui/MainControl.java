@@ -23,38 +23,66 @@ import javax.swing.border.TitledBorder;
 /**
  * Here are the common controls to all Visualisations
  * <p>
- * Note: Each time a item is added in this panel must be also added to
- * setRenderScreen() if it uses the render screen, otherwise its render screen
- * will not be set
- *
- * TODO create another class to handle threading instead doing it inside the
- * methods with invokeLater()
- * </p>
+ Note: Each time a item is added in this panel must be also added to
+ setupRenderScreen() if it uses the render screen, otherwise its render screen
+ will not be set
+
+ TODO create another class to handle threading instead doing it inside the
+ methods with invokeLater()
+ </p>
  *
  * @author oscar.garcia
  */
 public class MainControl extends JPanel implements ActionListener {
-
-    public static final int DEFAULT_HEIGHT = 90;
-    public static final int COMPONENTS_HEIGHT = DEFAULT_HEIGHT - 20;
     
-    public static final int HEIGHT_OFFSET = 20;
-    //protected OpenGLScreen renderScreen;
-    
+    /**
+     * The GUI
+     */
     protected MainFrame gui;
+    /**
+     * A label to show information about a point
+     */
     protected JLabel pointLabel;
+    /**
+     * A label to show information about a group
+     */
     protected JLabel groupLabel;
+    /**
+     * A button to center the visualisation at one point
+     */
     protected JButton centerAtPointB;
+    /**
+     * A panel to control the speed of the mouse movement
+     */
     protected SpeedArrowPanel speedArrowPanel;
+    /**
+     * A panel to set the general width of the lines in OpenGL
+     */
     protected LineWidthPanel lineWidthPanel;
+    /**
+     * A panel to set the general size of the points in OpenGL
+     */
     protected PointSizePanel pointSizePanel;
+    /**
+     * A panel to control the intra ocular distance for 3D OpenGL
+     */
     protected EyeDistPanel eyeDistPanel;
-    protected ActiveGeometryPanel activeGeoPanel;
+    /**
+     * No longer in use, A panel to control the geometries shown 
+     */
+    //protected ActiveGeometryPanel activeGeoPanel;
+    /**
+     * A panel to control the active visualisations
+     */
     protected SelectOverlayPanel selectOverlayPanel;
+    /**
+     * A text pane to show information (for example the console output)
+     */
     protected ConsoleTextPane consoleTextPane;
 
     /**
      * Create the main control panel. Must call to initialize() afterwards.
+     * @param gui 
      */
     public MainControl(MainFrame gui) {
         this.gui = gui;
@@ -88,6 +116,9 @@ public class MainControl extends JPanel implements ActionListener {
         //groupLabel.setPreferredSize(new Dimension(300, this.getHeight()-HEIGHT_OFFSET));
     }
 
+    /**
+     * Initializes all components of the panel
+     */
     public void initialize() {
         setBorder(new EmptyBorder(3, 3, 3, 3));
         setLayout(new GridBagLayout());
@@ -172,6 +203,10 @@ public class MainControl extends JPanel implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Performs the actions
+     * @param e An action event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -199,7 +234,8 @@ public class MainControl extends JPanel implements ActionListener {
                 @Override
                 public void run() {
                     //pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML(gui.getActiveVisualisation().getPointCloud().getCentreOriginal().toArray()));
-                    pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML());
+                    //pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML());
+                    pointLabel.setText(gui.getActiveVisualisation().getRenderScreen().getSelectedPoint().getDescriptionAsHTML(gui.getActiveVisualisation().getDisplacement()));
                 
                 }
             });
@@ -238,20 +274,27 @@ public class MainControl extends JPanel implements ActionListener {
      * @param renderScreen The OpenGL render screen
      */
     /*
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         this.renderScreen = renderScreen;
-        eyeDistPanel.setRenderScreen(renderScreen);
-        pointSizePanel.setRenderScreen(renderScreen);
-        lineWidthPanel.setRenderScreen(renderScreen);
-        speedArrowPanel.setRenderScreen(renderScreen);
-        activeGeoPanel.setRenderScreen(renderScreen);
+        eyeDistPanel.setupRenderScreen(renderScreen);
+        pointSizePanel.setupRenderScreen(renderScreen);
+        lineWidthPanel.setupRenderScreen(renderScreen);
+        speedArrowPanel.setupRenderScreen(renderScreen);
+        activeGeoPanel.setupRenderScreen(renderScreen);
     }
     */
 
+    /**
+     * Gets the console text pane, needed to be able to change what it shows
+     * @return the console text pane
+     */
     public ConsoleTextPane getConsolePane() {
         return consoleTextPane;
     }
     
+    /**
+     * Updates all components when changes have been made (currently only the overlays panel is updated)
+     */
     public void update(){
         selectOverlayPanel.update();
     }

@@ -53,13 +53,13 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
 
     public void setIntensityColouring() {
         selectedColours = 0;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to Intensity colouring");
     }
 
     public void setRandomColouring() {
         selectedColours = 1;
-        pointCloud.repack();
+        pointCloud.doRepack();
         System.out.println("set to random colouring");
     }
 
@@ -68,5 +68,12 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
         System.out.println("Opening directory: " + filePath + " for" + name);
         inputReader.readFromFiles(filePath, this);
         colours.add(new IntensityColourArray(pointCloud));
+    }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.colours = null;
+        this.inputReader = null;
     }
 }

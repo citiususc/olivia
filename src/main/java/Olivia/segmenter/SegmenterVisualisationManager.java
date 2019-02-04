@@ -86,6 +86,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
             return;
         }
         selectedGroupPoints.clear();
+        selectedGroupPoints.freeVBO(renderScreen);
         selectedGroupPoints.addAll(groups.get(selectedGroup.getId()).getPoints());
         selectedGroupColours = new ColourArray(selectedGroupPoints) {
         };
@@ -93,7 +94,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         for (int i = 0; i < selectedGroupPoints.size(); i++) {
             selectedGroupColours.add(groupColour);
         }
-        selectedGroupPoints.repack();
+        selectedGroupPoints.doRepack();       
     }
 
     public void flagSelectedPoints(boolean[] selectedFlags) {
@@ -117,13 +118,13 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
     public void toggleSegmented() {
         showSegmented = !showSegmented;
         flagSelectedPoints(selectedFlags);
-        pointCloud.repack();
+        pointCloud.doRepack();
     }
 
     public void toggleUnsegmented() {
         showUnsegmented = !showUnsegmented;
         flagSelectedPoints(selectedFlags);
-        pointCloud.repack();
+        pointCloud.doRepack();
     }
 
     @Override
@@ -162,7 +163,25 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
 
     public void setColouring(int colourIndex) {
         selectedColour = colourIndex;
-        pointCloud.repack();
+        pointCloud.doRepack();
+    }
+    
+    @Override
+    public void freeVBOs() {
+        super.freeVBOs();
+        this.selectedGroupPoints.freeVBO(renderScreen);
+    }
+    
+    @Override
+    public void destroy() {
+        super.destroy();
+        this.groupIds = null;
+        this.groups = null;
+        this.inputReader = null;
+        this.selectedFlags = null;
+        this.selectedGroup = null;
+        this.selectedGroupColours = null;
+        this.selectedGroupPoints = null;
     }
 
 }

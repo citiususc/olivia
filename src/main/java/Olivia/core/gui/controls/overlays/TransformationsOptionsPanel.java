@@ -48,12 +48,12 @@ public class TransformationsOptionsPanel extends JPanel implements ChangeListene
         this.setName("Transformations");
         this.renderable = renderable;
         
-        transXModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,1.0);
-        transYModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,1.0);
-        transZModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,1.0);
-        rotXModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 1.0);
-        rotYModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 1.0);
-        rotZModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 1.0);
+        transXModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,0.5);
+        transYModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,0.5);
+        transZModel = new SpinnerNumberModel(0.0,-1000000.0,1000000.0,0.5);
+        rotXModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 0.5);
+        rotYModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 0.5);
+        rotZModel = new SpinnerNumberModel(0.0,-360.0, 360.0, 0.5);
         
         rotXModel.setValue((double) renderable.getTransformations().getRotX());
         rotYModel.setValue((double) renderable.getTransformations().getRotY());

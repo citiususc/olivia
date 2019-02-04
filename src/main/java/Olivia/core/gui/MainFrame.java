@@ -1,32 +1,47 @@
 package Olivia.core.gui;
 
+import Olivia.core.Olivia;
+import Olivia.core.gui.renderGUI.DesktopPane;
 import static Olivia.core.Olivia.getLoadedVisualisations;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.controls.overlays.OverlaysOptionsFrame;
+import Olivia.core.gui.renderGUI.DetachedDesktopFrames;
+import Olivia.core.gui.renderGUI.IndependentFrames;
 import Olivia.core.render.OpenGLScreen;
-import Olivia.core.render.hi.NEWTMouseListener;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
-import java.beans.PropertyVetoException;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.border.TitledBorder;
 
 /**
- * This is the main frame for the controls, takes care of adding the components
- *
+ * This is the main frame for the Graphical User Interface, GUI
+ * It has three modes, SINGLE_WINDOW, DETACHED_DESKTOP and DETACHED_INDEPENDENT
+ * SINGLE_WINDOW has the entire GUI in one window, each visualisation render panel is added to an internal desktop
+ * DETACHED_DESKTOP has the GUI controls in one window and other windows may have internal desktops with many visualisations each one
+ * DETACHED_INDEPENDENT has the GUI controls in one window and other windows may have at most one visualisation each one
  * @author oscar.garcia
  */
 public class MainFrame extends JFrame{
+    
+    /**
+     * The SINGLE_WINDOW mode
+     */
+    public static int SINGLE_WINDOW = 0;
+    /**
+     * The DETACHED_DESKTOP mode
+     */
+    public static int DETACHED_DESKTOP = 1;
+    /**
+     * The DETACHED_INDEPENDENT mode
+     */
+    public static int DETACHED_INDEPENDENT = 2;
+    
 
     /**
      * Title of the frame.
@@ -45,57 +60,90 @@ public class MainFrame extends JFrame{
      */
     protected MainControl controlPanel;
     /**
-     * The pane holding the render screens
+     * The pane holding the render screen or screens
      */
-    protected JDesktopPane renderPane;
-    /**
-     * The array containing the different visualisation panels
-     */
-    //protected ArrayList<JPanel> visuPanels;
+    protected RenderGUI renderGUI;
     /**
      * The second split pane where visualisation panels are added
      */
     protected JSplitPane splitPane2;
     /**
-     * The frame holding the render screens when they are decoupled from the GUI
+     * To indicate whether it is mirroring the cameras of all the visualisations
      */
-    protected JFrame stereoFrame;
-    
     protected boolean isMirroring;
-    
+    /**
+     * The currently active visualisation that is being controlled
+     */
     private VisualisationManager activeVisualisationManager;
-    
+    /**
+     * The Frame that contains the controls for whichever overlay is being controlled
+     */
     protected OverlaysOptionsFrame overlayOptionsFrame;
+    /**
+     * The device (screen, usually) where the GUI is being rendered
+     */
+    protected GraphicsDevice device;
+    /**
+     * The size of the screen
+     */
+    protected Dimension screenSize;
+    /**
+     * The height of the OpenGL rendering window
+     */
+    protected int renderHeight;
+    /**
+     * Whether it is stereo 3D
+     */
+    protected boolean isStereo3D;
+    /**
+     * Whether it is in single window mode
+     */
+    protected boolean isSingleWindow;
+    /**
+     * Whether it is in detached independent mode
+     */
+    protected boolean isDetachedIndependent;
+    /**
+     * Whether it is in detached desktop mode
+     */
+    protected boolean isDetachedDesktop;
+    /**
+     * Whether the windows are decorated
+     */
+    protected boolean isUndecorated;
+    /**
+     * Whether it is in fullscreen mode
+     */
+    protected boolean isFullScreen;
     
-    private GraphicsDevice device;
     
-    private boolean isStereo3D; 
-    private boolean isFullScreen;
-
     /**
      * Initialize the components.
-     * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
      */
-    public void initialize(boolean isStereo3D) {
-        addWindowStateListener(new WindowStateListener() {
+    public void initialize(){
+        /*addWindowStateListener(new WindowStateListener() {
             @Override
             public void windowStateChanged(WindowEvent e) {
                 if (activeVisualisationManager != null && e.getNewState() == Frame.MAXIMIZED_BOTH) {
                     try {
-                        MainFrame.this.activeVisualisationManager.getRenderScreen().getFrame().setMaximum(true);
+                        //MainFrame.this.activeVisualisationManager.getRenderScreen().getFrame().setMaximum(true);
                     }
                     catch (PropertyVetoException ex) {
                     }
                 }
             }
-        });
-        this.isStereo3D = isStereo3D;
+        });*/
         //this.addKeyListener(keyListener);
         setContentPane(splitPane2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                renderGUI.close();
+            }
+        });
         setJMenuBar(menuBar);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        if (!isStereo3D) {
+        if (isSingleWindow) {
             //setSize(screenSize.width, screenSize.height);
             setSize(1600, 900); // HD+
             setTitle(TITLE);
@@ -105,55 +153,85 @@ public class MainFrame extends JFrame{
         }
         setVisible(true);
         setLocationRelativeTo(null);
+        renderGUI.init();
+    }
+    
+    /**
+     * Creates a GUI in single window mode, in 2D and decorated, must call to initialize() afterwards.
+     */
+    public MainFrame(){
+        this(false,SINGLE_WINDOW,false);
     }
 
     /**
-     * Create the main frame. Must call to initialize() afterwards.
-     *
+     * Creates a GUI , must call to initialize() afterwards.
      * @param isStereo3D The flag to indicate if stereoscopic 3D is enabled
+     * @param mode The mode, can be SINGLE_WINDOW, DETACHED_DESKTOP and DETACHED_INDEPENDENT
+     * @param isUndecorated true to show windows without decoration
      */
-    public MainFrame(boolean isStereo3D) {
+    public MainFrame(boolean isStereo3D, int mode, boolean isUndecorated) {
+        this.isStereo3D = isStereo3D;
+        this.isSingleWindow = this.isDetachedDesktop = this.isDetachedIndependent = false;
+        if(mode==SINGLE_WINDOW){
+            this.isSingleWindow = true;
+        }else if(mode==DETACHED_DESKTOP){
+            this.isDetachedDesktop = true;
+        }else if(mode==DETACHED_INDEPENDENT){
+            this.isDetachedIndependent = true;
+        }else{
+            this.isSingleWindow = true;
+        }
+        this.isUndecorated = isUndecorated;
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = env.getScreenDevices();
         device = devices[0];
         this.isFullScreen = false;
+        
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
+        renderHeight =Math.round(screenSize.height*0.75f);
    
         menuBar = new MainMenuBar(this);
         menuBar.initialize();
         controlPanel = new MainControl(this);
         controlPanel.initialize();
-        //visuPanels = new ArrayList();
-        renderPane = new JDesktopPane();
-        renderPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+        //buildRenderPane();
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
-        
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
-        int renderHeight =Math.round(screenSize.height*(3/4));
-        renderPane.setMinimumSize(new Dimension(screenSize.width, renderHeight));
 
-        if (!isStereo3D) {
+        if (isSingleWindow) {
+            DesktopPane desktopPane = new DesktopPane(this);
+            desktopPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+            desktopPane.setMinimumSize(new Dimension(Math.round(screenSize.width*0.25f), Math.round(renderHeight*0.25f)));
+            desktopPane.setPreferredSize(new Dimension(screenSize.width, renderHeight));
+            desktopPane.setSize(new Dimension(screenSize.width, renderHeight));
+            renderGUI = desktopPane;
             JSplitPane splitPane1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane1.setTopComponent(controlPanel);
-            controlPanel.setPreferredSize(new Dimension(screenSize.width, Math.round(screenSize.height*(1/4))));
+            controlPanel.setPreferredSize(new Dimension(screenSize.width, Math.round(screenSize.height*0.25f)));
+            controlPanel.setSize(new Dimension(screenSize.width, Math.round(screenSize.height*0.25f)));
             //splitPane1.setDividerSize(5);
-            splitPane1.setBottomComponent(renderPane);
+            splitPane1.setBottomComponent((Component)renderGUI);
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(splitPane1);
             splitPane2.setBottomComponent(null);
             splitPane2.setResizeWeight(1);
             //splitPane1.setDividerLocation(0.2);
-        } else {
-            /*stereoFrame = new JFrame();
-            stereoFrame.setContentPane(renderPane);
-            stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            stereoFrame.setSize(screenSize.width, screenSize.height);
-            stereoFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-            stereoFrame.setTitle(TITLE);
-            stereoFrame.setVisible(true);
-            stereoFrame.setLocationRelativeTo(null);*/
-            this.buildStereoFrame(screenSize, renderHeight);
+        } else if(isDetachedDesktop){
+            DetachedDesktopFrames detachedFrames = new DetachedDesktopFrames(this,screenSize,isUndecorated);
+            detachedFrames.scaleMinimumSize(0.2f);
+            detachedFrames.scalePreferredSize(0.8f);
+            renderGUI = detachedFrames;
+            splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+            splitPane2.setTopComponent(controlPanel);
+            splitPane2.setBottomComponent(null);
+            //splitPane2.setResizeWeight(1);
+            this.setTitle(TITLE + " control");
+        }else if(isDetachedIndependent){
+            IndependentFrames independentFrames = new IndependentFrames(this,screenSize,isUndecorated);
+            independentFrames.scaleMinimumSize(0.2f);
+            independentFrames.scalePreferredSize(0.8f);
+            renderGUI = independentFrames;
             splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane2.setTopComponent(controlPanel);
             splitPane2.setBottomComponent(null);
@@ -163,48 +241,28 @@ public class MainFrame extends JFrame{
         isMirroring = false;
     }
     
-    private void buildStereoFrame(Dimension screenSize, int renderHeight){
-        stereoFrame = new JFrame();
-        stereoFrame.setUndecorated(true);
-        stereoFrame.setContentPane(renderPane);
-        //stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stereoFrame.setSize(screenSize.width, screenSize.height);
-        stereoFrame.setMinimumSize(new Dimension(screenSize.width, renderHeight));
-        stereoFrame.setTitle(TITLE);
-        stereoFrame.setVisible(true);
-        stereoFrame.setLocationRelativeTo(null);
-        
-    }
-    
-    /*
-    protected void buildStereoFrame(){
-        stereoFrame = new JFrame();
-        stereoFrame.setContentPane(renderPane);
-        //stereoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        stereoFrame.setTitle(TITLE);
-        stereoFrame.setUndecorated(true);
-        //stereoFrame.setVisible(true);
-        //stereoFrame.setLocationRelativeTo(null);
-    }*/
-
     /**
-     * Add the visualisation panel
-     *
-     * @param title The title of the pane
-     * @param panel The control pane
+     * Creates a new render window (only in DETACHED_DESKTOP  mode)
      */
-    /*
-    public void addVisuPanel(String title, JPanel panel) {
-        panel.setPreferredSize(new Dimension(panel.getWidth(), 150));
-        TitledBorder border = new TitledBorder(title);
-        border.setTitleJustification(TitledBorder.CENTER);
-        border.setTitlePosition(TitledBorder.TOP);
-        panel.setBorder(border);
-        visuPanels.add(panel);
-        splitPane2.setBottomComponent(visuPanels.get(visuPanels.size() - 1));
+    public void createNewRenderWindow(){
+        if(isDetachedDesktop){
+            //buildRenderPane();
+            //buildDetachedFrame(isUndecorated);
+            renderGUI.createNewWindow();
+        }
     }
-    */
     
+    /**
+     * Shows all the loaded visualisations, whether minimised or obscured
+     */
+    public void showAll(){
+        renderGUI.showAll();
+    }
+    
+    /**
+     * Inits a visualistion, adding it to the GUI
+     * @param visuManager The visualisation to visualise
+     */
     public void initVisualisation(VisualisationManager visuManager) {
         System.out.println("Main Frame inits " + visuManager.getName());
         visuManager.getControlPane().setPreferredSize(new Dimension(visuManager.getControlPane().getWidth(), 150));
@@ -214,66 +272,41 @@ public class MainFrame extends JFrame{
         visuManager.getControlPane().setBorder(border);
         //visuPanels.add(visuManager.getControlPane());
         //splitPane2.setBottomComponent(visuPanels.get(visuPanels.size() - 1));
-        visuManager.getRenderScreen().createRenderFrame();
+        //visuManager.getRenderScreen().createRenderFrame();
+        renderGUI.addVisualisation(visuManager);
     }
 
     /**
-     * setter
-     *
+     * Sets up the render screen, adding the GUI listeners
      * @param renderScreen The OpenGL render screen
      */
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         //this.renderScreen = renderScreen;
         //menuBar.renderScreen = renderScreen;
-        //controlPanel.setRenderScreen(renderScreen);
+        //controlPanel.setupRenderScreen(renderScreen);
         renderScreen.addActionListener(controlPanel);
         renderScreen.addActionListener(menuBar);
     }
     
-        /**
-     * getter
+     /**
+     * Gets the active render screen
      *
-     * @return The active render screen
+     * @return The active render screen, may be null
      */
     public VisualisationManager getActiveVisualisation() {
         return activeVisualisationManager;
     }
 
     /**
-     * Set the given visualisation panel as visible
-     *
-     * @param index Position of the visualisation panel in the panel list
-     */
-    /*
-    public void setVisibleVisuPanel(int index) {
-        splitPane2.setBottomComponent(visuPanels.get(index));
-    }
-    */
-
-    /**
-     * Remove the visualisation panel and set the first one as visible
-     *
-     * @param index Position of the visualisation panel in the panel list
-     */
-    /*
-    public void removeVisuPanel(int index) {
-        visuPanels.remove(index);
-        if (!visuPanels.isEmpty()) {
-            splitPane2.setBottomComponent(visuPanels.get(0));
-        } else {
-            splitPane2.setBottomComponent(null);
-        }
-    }
-    */
-
-    /**
      * getter
      *
      * @return The pane holding the render screens
      */
+    /*
     public JDesktopPane getRenderPane() {
-        return renderPane;
+        return renderGUI;
     }
+    */
 
     /**
      * Add the line into the output console (with line break)
@@ -284,20 +317,14 @@ public class MainFrame extends JFrame{
         controlPanel.getConsolePane().addText(line + '\n');
     }
     
-        /**
-     * Resizes the render screens to fit them all inside the render frame
+    /**
+     * Updates the layout of the renderGUI, behaviour depends on the mode
      */
     public void updateRenderFrameLayout() {
         if (getLoadedVisualisations().isEmpty()) {
             return;
         }
-        int width = this.getWidth() / getLoadedVisualisations().size();
-        int height = this.getRenderPane().getHeight();
-        for (int i = 0; i < getLoadedVisualisations().size(); i++) {
-            getLoadedVisualisations().get(i).getRenderScreen().getFrame().setSize(width, height);
-            Point pos = getLoadedVisualisations().get(i).getRenderScreen().getFrame().getLocation();
-            getLoadedVisualisations().get(i).getRenderScreen().getFrame().setLocation(i * width, pos.y);
-        }
+        renderGUI.updateRenderLayout();
     }
     
      /**
@@ -345,9 +372,9 @@ public class MainFrame extends JFrame{
         }
     }
     
-    /*
-    * To invoke when the camera has moved
-    */
+    /**
+     * To invoke when the camera has moved
+     */
     public void cameraMoved(){
         if(isMirroring){
             doCameraMirroring();
@@ -379,24 +406,28 @@ public class MainFrame extends JFrame{
     }
     
     /**
-     * setter
-     *
+     * Sets the active visualisation manager, the visualisation has to be loaded, the GUI controls are changed to reflect the new visualisation being controlled
+     * @param visualisationManager the visualisation manager that will be active
      */
     public void setActiveVisualisationManager(VisualisationManager visualisationManager) {
         activeVisualisationManager = visualisationManager;
         if (getLoadedVisualisations().size() > 0) {
             //this.renderScreen = activeVisualisationManager.getRenderScreen();
             //menuBar.renderScreen = activeVisualisationManager.getRenderScreen();
-            //controlPanel.setRenderScreen(activeVisualisationManager.getRenderScreen());
+            //controlPanel.setupRenderScreen(activeVisualisationManager.getRenderScreen());
             activeVisualisationManager.getRenderScreen().addActionListener(controlPanel);
             activeVisualisationManager.getRenderScreen().addActionListener(menuBar);
-            //mainFrame.setRenderScreen(activeVisualisationManager);
+            //mainFrame.setupRenderScreen(activeVisualisationManager);
             splitPane2.setBottomComponent(activeVisualisationManager.getControlPane());
             //mainFrame.setVisibleVisuPanel(visualisations.indexOf(activeVisualisationManager));
             menuBar.setEnabledVisualisationMenus(true);
         }
     }
     
+    /**
+     * Removes the active visualisation manager from the GUI (does not unload it)
+     * @param visualisationManager 
+     */
     public void removeActiveVisualisationManager(VisualisationManager visualisationManager) {
         if(activeVisualisationManager == visualisationManager){
             if (getLoadedVisualisations().size() > 0){
@@ -409,90 +440,64 @@ public class MainFrame extends JFrame{
         }
     }
     
-
-    
+    /**
+     * Checks whether a visualisation is being controlled in this this moment
+     * @param visualisationManager
+     * @return true if visualisationManager is the active visualisation
+     */
     public boolean isActiveVisualisationManager(VisualisationManager visualisationManager) {
-        System.out.println("Main Frame setting " + visualisationManager.getName() + " as active");
+        //System.out.println("Main Frame setting " + visualisationManager.getName() + " as active");
         return visualisationManager == activeVisualisationManager;
     }
     
-    
-       /**
-     * Iconifies or de-iconifies the inactive render screens
-     *
-     * @param iconify The flag to minimize (true) or de-minize (false) the frame
+    /**
+     * Sets whether the overlay options frame is visible or not
+     * @param visible whether the overlay options frame is visible or not
      */
-    public void setInactiveScreensIconify(boolean iconify) {
-        for (VisualisationManager visuManager : getLoadedVisualisations()) {
-            if (visuManager != activeVisualisationManager) {
-                try {
-                    visuManager.getRenderScreen().getFrame().setIcon(iconify);
-                }
-                catch (PropertyVetoException ex) {
-                }
-            }
-        }
-    }
-    
     public void setOverlayOptionsVisible(boolean visible){
         this.overlayOptionsFrame.setVisible(visible);
     }
     
+    /**
+     * Gets whether the overlay options frame is visible or not
+     * @return whether the overlay options frame is visible or not
+     */
     public boolean isOverlayOptionsVisible(){
         return this.overlayOptionsFrame.isVisible();
     }
     
+    /**
+     * Updates the control panel and the overlay options frame to reflect changes
+     */
     public void updateControlPanes(){
         this.controlPanel.update();
         this.overlayOptionsFrame.update();
     }
     
+    /**
+     * Updates the control panel, the menu bar and the overlay options frame to reflect changes
+     */
     public void updateAll(){
         this.controlPanel.update();
         this.menuBar.update();
         this.overlayOptionsFrame.update();
     }
+
+    /**
+     * Checks whether DETACHED_DESKTOP mode is active
+     * @return whether DETACHED_DESKTOP mode is active
+     */
+    public boolean isDetachedDesktop() {
+        return isDetachedDesktop;
+    }
     
     /**
-     * To be used with MainFRame the main frame should be a different class
-     * @param isFullScreen 
+     * Sets the MainFrame to fullscreen, does not work with detached windows
+     * @param isFullScreen whether the GUI is fullscreen
      */
-    /*
-    public void setFullscreen(boolean isFullScreen){
-        if(isStereo3D){
-            if(!device.isFullScreenSupported()) return;
-            //this.dispose();
-            //setUndecorated(isFullScreen);
-            //setResizable(!isFullScreen);
-            if (isFullScreen) {
-                // Full-screen mode
-                this.buildStereoFrame();
-                device.setFullScreenWindow(this.stereoFrame);
-                device.
-                validate();
-            } else {
-                // Windowed mode
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                //int renderHeight = screenSize.height - menuBar.getHeight() - controlPanel.getHeight();
-                int renderHeight =Math.round(screenSize.height*(3/4));
-                this.buildStereoFrame(screenSize, renderHeight);
-                pack();
-                setVisible(true);
-            }
-        }
-    }
-*/
-    
     public void setFullscreen(boolean isFullScreen){
         if(!device.isFullScreenSupported()) return;
-        if(this.isStereo3D){
-            if(isFullScreen){
-                device.setFullScreenWindow(stereoFrame);
-            }else{
-                device.setFullScreenWindow(null);
-            }
-            stereoFrame.validate(); 
-        }else{
+        if(this.isSingleWindow){
             if(isFullScreen){
                 device.setFullScreenWindow(this);
             }else{
@@ -509,6 +514,10 @@ public class MainFrame extends JFrame{
     }
     */
     
+    /**
+     * Checks whether fullscreen mode is enabled in the graphics device
+     * @return 
+     */
     public boolean isFullScreenEnabled(){
         return(device.isFullScreenSupported());
     }

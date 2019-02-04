@@ -158,7 +158,7 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
      * @param point 
      */
     @Override
-    public void moveTo(Point3D point){
+    public synchronized void moveTo(Point3D point){
         bounds.moveTo(point);
     }
     
@@ -168,7 +168,7 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
      * @param point 
      */
     @Override
-    public void displace(Point3D point){
+    public synchronized void displace(Point3D point){
         bounds.displace(point);
     }
 

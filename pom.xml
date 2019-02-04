@@ -4,8 +4,8 @@
     <groupId>Olivia</groupId>
     <artifactId>Olivia</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.1030</version>
-    <name>Olivia</name>
+    <version>1.2</version>
+    <name>Olivia_public</name>
     <url>http://maven.apache.org</url>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>

@@ -26,8 +26,12 @@ public class Olivia {
     //private static VisualisationManager activeVisualisationManager;
     private static String visulisationType;
     private static boolean isStereo3D;
+    private static int desktopMode;
+    private static boolean isUndecorated;
     //private static boolean isMirroring;
     private static int idCount;
+    private static TextOutputter textOutputter;
+    private static CommandParser commandParser;
     
     /**
      * TODO
@@ -35,9 +39,13 @@ public class Olivia {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+        textOutputter = new ConsoleTextOutputter();
+        commandParser = new CommandParser();
         visualisationManagers = new ArrayList<>();
         visulisationType = null;
         isStereo3D = false;
+        desktopMode = MainFrame.SINGLE_WINDOW;
+        isUndecorated = false;
         //isMirroring = false;
         idCount = 0;
         SwingUtilities.invokeLater(new Runnable() {
@@ -50,6 +58,15 @@ public class Olivia {
                     switch (args[i]) {
                         case "-stereo":
                             isStereo3D = true;
+                            break;
+                        case "-detachedD":
+                            desktopMode = MainFrame.DETACHED_DESKTOP;
+                            break;
+                        case "-detachedI":
+                            desktopMode = MainFrame.DETACHED_INDEPENDENT;
+                            break;
+                        case "-U":
+                            isUndecorated = true;
                             break;
                         case "-neighbours":
                         case "-basic":
@@ -64,8 +81,8 @@ public class Olivia {
                             break;
                     }
                 }
-                mainFrame = new MainFrame(isStereo3D);
-                mainFrame.initialize(isStereo3D);
+                mainFrame = new MainFrame(isStereo3D, desktopMode, isUndecorated);
+                mainFrame.initialize();
                 if (visulisationType != null) {
                     switch (visulisationType) {
                         case "-basic":
@@ -89,6 +106,10 @@ public class Olivia {
         });
     }
     
+    public static void println(String text){
+        textOutputter.println(text);
+    }
+    
     /**
      * Gets all the visualisationManger that have been loaded
      * @return an arrayList with all the visualisationManagers, it may be empty
@@ -103,7 +124,9 @@ public class Olivia {
         //activeVisualisation.getRenderScreen().setVisualisation(visu);
         //mainFrame.addVisuPanel(visuManager.getName(), visuManager.getControlPane());
         if(visuManager.checkCorrectness()){
-            System.out.println("Adding " + visuManager.getName() + " to loaded visualisations");
+            System.out.println("Adding " + visuManager.getName() + " to loaded visualisations"
+                    + "\n\tDisplacement:" + visuManager.getDisplacement().toString()
+                                );
             visualisationManagers.add(visuManager);
             mainFrame.initVisualisation(visuManager);
             mainFrame.setActiveVisualisationManager(visuManager);
@@ -119,10 +142,13 @@ public class Olivia {
      */
     public static void removeVisualisation(VisualisationManager visualisationManager) {
         //mainFrame.removeVisuPanel(visualisationManagers.indexOf(visualisationManager));
+        System.out.println("Removing visualisation " + visualisationManager.getName());
+        //visualisationManager.getRenderScreen().animatorPause();
         visualisationManagers.remove(visualisationManager);
         mainFrame.removeActiveVisualisationManager(visualisationManager);
         visualisationManager.destroy();
         mainFrame.updateRenderFrameLayout();
+        //System.gc();
     }
 
     /**
@@ -244,5 +270,9 @@ public class Olivia {
         catch (IOException e) {
             System.out.println("Cannot add visualisation, cannot read from File" + e);
         }
+    }
+    
+    public static CommandParser getCommandParser(){
+        return commandParser;
     }
 }

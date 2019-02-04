@@ -21,7 +21,7 @@ public class EyeDistPanel extends BasicArrowPanel implements ActionListener {
     }
 
     /*
-    public void setRenderScreen(OpenGLScreen renderScreen) {
+    public void setupRenderScreen(OpenGLScreen renderScreen) {
         this.renderScreen = renderScreen;
     }
     */

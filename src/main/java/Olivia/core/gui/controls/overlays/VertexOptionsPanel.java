@@ -88,7 +88,7 @@ public class VertexOptionsPanel extends JPanel implements ActionListener{
         if((overlay!=null)&(this.isShowing())){//To avoid passing argument before being displayed
             overlay.setRenderMode(primitiveModeComboBox.getItemAt(primitiveModeComboBox.getSelectedIndex()));
             overlay.setRasterMode(rasterModeComboBox.getItemAt(rasterModeComboBox.getSelectedIndex()));
-            overlay.setDefaultColour(colourComboBox.getItemAt(colourComboBox.getSelectedIndex()));
+            overlay.changeColour(colourComboBox.getItemAt(colourComboBox.getSelectedIndex()));
             if(!textFieldName.getText().equals("")){
                 overlay.setName(textFieldName.getText());
             }

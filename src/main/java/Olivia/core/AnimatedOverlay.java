@@ -10,7 +10,7 @@ import Olivia.core.render.OpenGLScreen;
 import java.util.ArrayList;
 
 /**
- * A especial case of OverlayArray which cycles thorugh it overlays with the passage of time, making an animation.
+ * A especial case of OverlayArray which cycles through it overlays with the passage of time, making an animation.
  * In this class each overlay in the array can be considered a "frame" of the animation
  * It counts time in milliseconds.
  * CAREFUL: If you add the same overlay to many frames move and displace operations will be done many times.
@@ -222,32 +222,24 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
     }
 
     /**
-     * Sets the animation to a determined timestamp (in milliseconds), the current frame will be set as the one with the closed timestamp, rounding down; checks that it is a valid timestamp
-     * @param timestamp a timestamp (in milliseconds) between zero and duration
-     */
-    public void gotoTime(long timestamp) {
-        if((timestamp>duration)||(timestamp<=0)){
-            System.out.println("Animation is not that long");
-        }else{
-            int i;
-            for(i=0;i<timestamps.size()-1;i++){
-                if(timestamp>=timestamps.get(i)){
-                    if(timestamp<timestamps.get(i+1)){
-                        this.setCurrentOverlay(i);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Adds a new Overlay, its timestamp is set to the current duration, and the duration is increased by DEFAULT_STEP
      * @param e The Overlay to be a frame in the animation
      * @return success
      */
     @Override
     public boolean add(O e) {
-        if(super.add(e)){
+        return this.add(e, true);
+    }
+
+    /**
+     * Adds a new Overlay, its timestamp is set to the current duration, and the duration is increased by DEFAULT_STEP
+     * @param e The Overlay to be a frame in the animation
+     * @param isSelected whether the overlay will be shown
+     * @return success
+     */
+    @Override
+    public boolean add(O e, boolean isSelected) {
+        if(super.add(e,isSelected)){
             Long newTimestamp = duration;//starts in 0
             duration += DEFAULT_STEP;
             return timestamps.add(newTimestamp);
@@ -263,13 +255,38 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
      */
     public boolean add(O e, long timestamp) {
         if(super.add(e)){
+            if(duration<timestamp) duration = timestamp;
             return timestamps.add(timestamp);
         }
         return false;
     }
     
     /**
-     * Advances the animation time (if it is play, !paused, !ended), sets the current overlay accoding to their timestamps;
+     * Sets the animation to a determined timestamp (in milliseconds), the current frame will be set as the one with the closed timestamp, rounding down; checks that it is a valid timestamp
+     * @param timestamp a timestamp (in milliseconds) between zero and duration
+     */
+    public void gotoTime(long timestamp) {
+        if(timestamps.size()!=overlays.size()){
+            System.out.println("Error in animated overlay, timestamps and overlays do not match");
+            return;
+        }
+        if((timestamp>duration)||(timestamp<0)){
+            System.out.println("Animation is not that long");
+        }else{
+            int i;
+            for(i=0;i<timestamps.size()-1;i++){
+                if(timestamp>=timestamps.get(i)){
+                    if(timestamp<timestamps.get(i+1)){
+                        this.setCurrentOverlay(i);
+                    }
+                }
+            }
+            if(timestamp>timestamps.get(timestamps.size()-1)) this.setCurrentOverlay(timestamps.size()-1);
+        }
+    }
+    
+    /**
+     * Advances the animation time (if it is play, !paused, !ended), sets the current overlay according to their timestamps;
      * if it reaches duration and is not loop, sets ended to true, if it is loop resets the currentTime to zero
      */
     protected void advanceTime(){
@@ -289,7 +306,9 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
                 return;
             }
         } 
-        if(overlays.size()>1){
+        
+        gotoTime(currentTime);
+        /*if(overlays.size()>1){
             for(int i=0;i<overlays.size()-1;i++){
                 if(currentTime>=timestamps.get(i)){
                     if(currentTime<timestamps.get(i+1)){
@@ -300,7 +319,7 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
             if(currentTime>timestamps.get(timestamps.size()-1)) current = timestamps.size()-1;
         }else{
             current = 0;
-        }
+        }*/
     }
 
     /**

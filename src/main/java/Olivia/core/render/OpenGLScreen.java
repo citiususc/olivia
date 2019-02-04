@@ -8,13 +8,10 @@ import Olivia.core.render.hi.NEWTZoomGestureHandler;
 import Olivia.core.render.hi.NEWTScrollGestureHandler;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
-import Olivia.core.gui.FrameEventListener;
-import Olivia.core.render.hi.AWTKeyListener;
-import Olivia.core.render.hi.AWTMouseListener;
 import Olivia.core.render.hi.PositionShowOverlay;
+import com.jogamp.newt.event.InputEvent;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.DoubleBuffer;
@@ -28,16 +25,10 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.awt.GLJPanel;
-import com.jogamp.newt.awt.NewtCanvasAWT;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import javax.swing.JInternalFrame;
 
 /**
  * This is the render screen, it takes care of most of the openGL operations It
@@ -86,14 +77,6 @@ public class OpenGLScreen implements GLEventListener {
     protected NEWTZoomGestureHandler gestureHandlerNEWT;
     protected NEWTScrollGestureHandler scrollHandlerNEWT;
     /**
-     * The key listener when using AWT
-     */
-    protected AWTKeyListener keyListenerAWT;
-    /**
-     * The mouse listener when using AWT, contains the point selection
-     */
-    protected AWTMouseListener mouseListenerAWT;
-    /**
      * An overlay to show a posiiton on hte screen, maily used for mirroring
      */
     protected PositionShowOverlay positionOverlay;
@@ -123,11 +106,6 @@ public class OpenGLScreen implements GLEventListener {
      *
      */
     protected Animator animator;
-
-    /**
-     * We store the Frame to access frame size and position (capture methods)
-     */
-    protected JInternalFrame frame;
 
     /*
      * Display variables
@@ -174,7 +152,10 @@ public class OpenGLScreen implements GLEventListener {
     
     //protected double aspectRatio;
     
-    protected boolean usingNEWT=true;
+    /**
+     * We store the Window to access frame size and position (capture methods)
+     */
+    protected GLWindow window;
     
     
     /**
@@ -191,6 +172,7 @@ public class OpenGLScreen implements GLEventListener {
     /**
      * Creates an AWT frame to render the visualisation
      */
+    /*
     public void createRenderFrame() {
         if(usingNEWT){
             createRenderFrameNEWT();
@@ -198,6 +180,7 @@ public class OpenGLScreen implements GLEventListener {
             createRenderFrameAWT();
         }
     }
+    */
 
     /**
      * Creates an AWT frame to render the visualisation
@@ -205,7 +188,7 @@ public class OpenGLScreen implements GLEventListener {
     public void createRenderFrameNEWT() {
         //final GLCanvas canvas = new GLCanvas(createCapabilites());
         //GLJPanel canvas = new GLJPanel(createCapabilites());
-        GLWindow window = GLWindow.create(createCapabilites());
+        window = GLWindow.create(createCapabilites());
         window.addGLEventListener(this);
         scrollHandlerNEWT = new NEWTScrollGestureHandler(this,1,500);
         window.addGestureHandler(scrollHandlerNEWT);
@@ -214,12 +197,12 @@ public class OpenGLScreen implements GLEventListener {
         window.addGestureListener(gestureListenerNEWT);
         gestureHandlerNEWT = new NEWTZoomGestureHandler(this,window,false);
         window.addGestureHandler(gestureHandlerNEWT);
-        NewtCanvasAWT canvas = new NewtCanvasAWT(window);
+        //canvas = new NewtCanvasAWT(window);
         animator = new Animator(window);
-        frame = new JInternalFrame(visualisationManager.getName(), true, true, true, true);
+        //frame = new JInternalFrame(visualisationManager.getName(), true, true, true, true);
         /*animator = new Animator(canvas);
         canvas.addGLEventListener(this);*/
-        frame.add(canvas);
+        /*frame.add(canvas);
         frame.setResizable(true);
         frame.addInternalFrameListener(new FrameEventListener(visualisationManager));
         frame.addComponentListener(new ComponentAdapter() {
@@ -240,42 +223,11 @@ public class OpenGLScreen implements GLEventListener {
         visualisationManager.getGUI().getRenderPane().add(frame);
         frame.setVisible(true);
         canvas.setVisible(true);
+        */
         animator.start();
-        canvas.requestFocusInWindow();
+        //canvas.requestFocusInWindow();
     }
-    
-    /**
-     * Creates an AWT frame to render the visualisation
-     */
-    public void createRenderFrameAWT() {
-        final GLCanvas canvas = new GLCanvas(createCapabilites());
-        //GLJPanel canvas = new GLJPanel(createCapabilites());
-        animator = new Animator(canvas);
-        canvas.addGLEventListener(this);
-        frame = new JInternalFrame(visualisationManager.getName(), true, true, true, true);
-        frame.add(canvas);
-        frame.setResizable(true);
-        frame.addInternalFrameListener(new FrameEventListener(visualisationManager));
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                if (visualisationManager.getGUI().isActiveVisualisationManager(visualisationManager)) {
-                    if (((JInternalFrame) e.getComponent()).isMaximum()) {
-                        System.out.println(visualisationManager.getId() + " Maximized");
-                        visualisationManager.getGUI().setInactiveScreensIconify(true); // Iconify hidden render screens to stop them for being rendered                     
-                    } else {
-                        System.out.println(visualisationManager.getId() + " Un-maximized");
-                        visualisationManager.getGUI().setInactiveScreensIconify(false); // Undo the previous iconify
-                        visualisationManager.getGUI().updateRenderFrameLayout();
-                    }
-                }
-            }
-        });
-        visualisationManager.getGUI().getRenderPane().add(frame);
-        frame.setVisible(true);
-        animator.start();
-        canvas.requestFocusInWindow();
-    }
+
 
     /**
      * Initialises many things
@@ -292,14 +244,9 @@ public class OpenGLScreen implements GLEventListener {
         //eyeDistOffset = 0;
         glut = new GLUT();
         glu = new GLU();
-        if(usingNEWT){
-            keyListenerNEWT = new NEWTKeyListener(this);
-            mouseListenerNEWT = new NEWTMouseListener(visualisationManager);
-            gestureListenerNEWT = new NEWTGestureListener();
-        }else{
-            keyListenerAWT = new AWTKeyListener(this);
-            mouseListenerAWT = new AWTMouseListener(visualisationManager);
-        }
+        keyListenerNEWT = new NEWTKeyListener(this);
+        mouseListenerNEWT = new NEWTMouseListener(visualisationManager);
+        gestureListenerNEWT = new NEWTGestureListener();
         listeners = new ArrayList<>();
         camera = new Camera(visualisationManager);
         capture = new Capture(visualisationManager);
@@ -456,16 +403,12 @@ public class OpenGLScreen implements GLEventListener {
         }
         visualisationManager.draw();
         if(visualisationManager.isDrawMouseSelection()){
-            mouseListenerAWT.getMouseSelection().drawSelected3();
+            mouseListenerNEWT.getMouseSelection().drawSelected3();
             //mouseListener.getMouseSelection().drawRay();
         }
         if(showPosition){
             positionOverlay.draw(this);
         }
-        //visualisation.getGeometry().draw();
-        //visualisation.getNeighbourhood().drawNeighbours();
-        //mouseListener.getMouseSelection().drawSelected();
-        //mouseListener.getMouseSelection().drawRay();
     }
 
     /**
@@ -475,14 +418,10 @@ public class OpenGLScreen implements GLEventListener {
      */
     @Override
     public void init(GLAutoDrawable glad) {
-        if(usingNEWT){
-            initNEWT(glad);
-        }else{
-            initAWT(glad);
-        }
+        initNEWT(glad);
     }
     
-    public void initNEWT(GLAutoDrawable glad) {
+    protected void initNEWT(GLAutoDrawable glad) {
         glad.getAnimator().setUpdateFPSFrames(1, null);
         gl2 = glad.getGL().getGL2();
         gl2.glShadeModel(GLLightingFunc.GL_SMOOTH);
@@ -491,30 +430,9 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glEnable(GL2.GL_DEPTH_TEST);
         gl2.glDepthFunc(GL2.GL_LEQUAL);
         gl2.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-        /*((Component) glad).addKeyListener(keyListenerNEWT);
-        ((Component) glad).addMouseListener(mouseListenerNEWT);
-        ((Component) glad).addMouseWheelListener(mouseListenerNEWT);
-        ((Component) glad).addMouseMotionListener(mouseListenerNEWT);*/
         
         System.out.println("Drawing...");
     }
-    
-    protected void initAWT(GLAutoDrawable glad) {
-        glad.getAnimator().setUpdateFPSFrames(1, null);
-        gl2 = glad.getGL().getGL2();
-        gl2.glShadeModel(GLLightingFunc.GL_SMOOTH);
-        gl2.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl2.glClearDepth(1.0f);
-        gl2.glEnable(GL2.GL_DEPTH_TEST);
-        gl2.glDepthFunc(GL2.GL_LEQUAL);
-        gl2.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-        ((Component) glad).addKeyListener(keyListenerAWT);
-        ((Component) glad).addMouseListener(mouseListenerAWT);
-        ((Component) glad).addMouseWheelListener(mouseListenerAWT);
-        ((Component) glad).addMouseMotionListener(mouseListenerAWT);
-        System.out.println("Drawing...");
-    }
-
 
     /**
      * What to do on close
@@ -542,6 +460,7 @@ public class OpenGLScreen implements GLEventListener {
 
         gl2 = glad.getGL().getGL2();
         gl2.glEnable(GL2.GL_POINT_SMOOTH);
+        gl2.glEnable(GL2.GL_BLEND);
         //gl2.glEnable(GL2.GL_POINT_SPRITE);
         gl2.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl2.glPointSize(pointSize);
@@ -563,19 +482,6 @@ public class OpenGLScreen implements GLEventListener {
                 cap.recordVideo();
             }
         } else {
-            /*double eyeDistStep = 0.20;
-            eyeDist = (float) (1.0 + eyeDistOffset * eyeDistStep); //This HALF the eyedistance, normally 0.5/2
-            double aspect = camera.getAspectRatio();
-            double fov = 50;
-            //double zNear = 10;
-            double zNear = 1;
-            double zFar = 5000.0;
-            double top = Math.tan(fov * Math.PI / 360.0) * zNear;
-            double bottom = -top;
-            double left = aspect * bottom;
-            double right = aspect * top;
-            double fustrumShift = eyeDist*zNear/(camera.getzDepth());
-            */
 
             gl2.glDrawBuffer(GL2GL3.GL_BACK_LEFT);
             gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -656,11 +562,7 @@ public class OpenGLScreen implements GLEventListener {
      * @return The mouse selected point, null if none
      */
     public Point3D_id getSelectedPoint() {
-        if(usingNEWT){
             return mouseListenerNEWT.getMouseSelection().getSelectedPoint();
-        }else{
-            return mouseListenerAWT.getMouseSelection().getSelectedPoint();
-        }
     }
 
     /**
@@ -669,11 +571,7 @@ public class OpenGLScreen implements GLEventListener {
      * @return The mouse selected point, null if none
      */
     public int getSelectedPointIndex() {
-        if(usingNEWT){
             return mouseListenerNEWT.getMouseSelection().getSelectedIndex();
-        }else{
-           return mouseListenerAWT.getMouseSelection().getSelectedIndex(); 
-        }
     }
     
     /**
@@ -682,11 +580,7 @@ public class OpenGLScreen implements GLEventListener {
      * @return true if there is a point in the main cloud close enough to point
      */
     public boolean setSelectedPoint(Point3D_id point){
-        if(usingNEWT){
             return mouseListenerNEWT.getMouseSelection().setSelectedPoint(point);
-        }else{
-            return mouseListenerAWT.getMouseSelection().setSelectedPoint(point);
-        }
     }
     
     /**
@@ -740,9 +634,11 @@ public class OpenGLScreen implements GLEventListener {
      *
      * @return Frame
      */
+    /*
     public JInternalFrame getFrame() {
         return frame;
     }
+    */
 
     /**
      * getter
@@ -888,46 +784,51 @@ public class OpenGLScreen implements GLEventListener {
         return capture;
     }
 
-    /**
-     * getter
-     *
-     * @return The main frame
-     */
-    /*
-    public MainFrame getMainFrame() {
-        return mainFrame;
-    }
-    */
-
-    /**
-     * getter
-     *
-     * @return The main frame
-     */
-    /*
-    public NEWTMouseListener getMouseListener() {
-        return mouseListenerNEWT;
-    }
-    */
     
     public void doMouseSelection(){
-        if(usingNEWT){
             mouseListenerNEWT.getMouseSelection().pick(mouseListenerNEWT.getWindowX(),
                         mouseListenerNEWT.getWindowY(),
                         NEWTMouseListener.MOUSE_PICK_RADIUS,
                         NEWTMouseListener.MOUSE_PICK_EPSILON);
-        }else{
-            mouseListenerAWT.getMouseSelection().pick(mouseListenerAWT.getWindowX(),
-                        mouseListenerAWT.getWindowY(),
-                        AWTMouseListener.MOUSE_PICK_RADIUS,
-                        AWTMouseListener.MOUSE_PICK_EPSILON);
-        }
     }
 
     public void destroy() {
-        frame.dispose();
+        window.destroy();
         if (visualisationManager != null) {
             visualisationManager.destroy();
         }
     }
+
+    public GLWindow getWindow() {
+        return window;
+    }
+    
+    public void windowInteracted(InputEvent event){
+        visualisationManager.windowInteracted(event);
+    }
+    
+    public void animatorPause(){
+        animator.pause();
+        while(animator.isAnimating()){
+            System.out.print(".");
+        };
+        System.out.println("Animator Paused");
+    }
+    
+    public void animatorResume(){
+        animator.resume();
+    }
+    
+    public void animatorStop(){
+        animator.stop();
+        while(animator.isAnimating()){
+            System.out.print(".");
+        };
+        System.out.println("Animator Stopped");
+    }
+    
+    public boolean animatorIsAnimating(){
+        return animator.isAnimating();
+    }
+    
 }

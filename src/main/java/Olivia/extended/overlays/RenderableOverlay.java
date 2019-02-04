@@ -124,34 +124,73 @@ public abstract class RenderableOverlay<VM extends VisualisationManager> extends
     }
 
     /**
-     * Sets the default colour and repacks the overlay
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the new default colour
      */
     @Override
     public void setDefaultColour(PointColour colour){
         this.defaultColour = colour;
-        this.repack(visualisationManager.getRenderScreen());
+        /*this.defaultColour.setR(colour.getR());
+        this.defaultColour.setG(colour.getG());
+        this.defaultColour.setB(colour.getB());
+        this.repack(visualisationManager.getRenderScreen());*/
     }
     
     /**
-     * Sets the default colour and repacks the overlay
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param name the new default colour in name as given in RenderOptions
      * @see Olivia.core.render.RenderOptions
      */
     @Override
     public void setDefaultColour(String name){
-        this.defaultColour = new PointColour(RenderOptions.getColor(name));
-        this.repack(visualisationManager.getRenderScreen());
+        PointColour col = new PointColour(RenderOptions.getColor(name));
+        this.setDefaultColour(col);
+        /*this.defaultColour.setR(col.getR());
+        this.defaultColour.setG(col.getG());
+        this.defaultColour.setB(col.getB());
+        this.repack(visualisationManager.getRenderScreen());*/
     }
     
     /**
-     * Sets the default colour and repacks the overlay
+     * Sets the default colour (CHANGES THE REFERENCE!)
      * @param colour the new default colour
      */
     @Override
     public void setDefaultColour(Color colour){
         this.defaultColour = new PointColour(colour);
+        //this.repack(visualisationManager.getRenderScreen());
+    }
+    
+    /**
+     * Changes the colour (Changes the values in the default colour) and repacks the overlay
+     * @param colour the colour
+     */
+    @Override
+    public void changeColour(PointColour colour){
+        this.defaultColour.setR(colour.getR());
+        this.defaultColour.setG(colour.getG());
+        this.defaultColour.setB(colour.getB());
         this.repack(visualisationManager.getRenderScreen());
+    }
+    
+    /**
+     * Changes the colour (Changes the values in the default colour) and repacks the overlay
+     * @param name the new default colour in name as given in RenderOptions
+     */
+    @Override
+    public void changeColour(String name){
+        PointColour col = new PointColour(RenderOptions.getColor(name));
+        this.changeColour(col);
+    }
+    
+    /**
+     * Changes the colour (Changes the values in the default colour) and repacks the overlay
+     * @param colour the colour
+     */
+    @Override
+    public void changeColour(Color colour){
+        PointColour col = new PointColour(colour);
+        this.changeColour(col);
     }
     
 }
