@@ -32,12 +32,11 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
     StandardInputReader inputReader;
     ArrayList<ColourArray> colours;
     protected int selectedColours, intensityIndex, returnsIndex, scanlineIndex, classificationIndex, rgbIndex, gradientIndex, decimation;
-    
-    
-    public StandardVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath, int decimation) throws IOException,FileNotFoundException{
+   
+    public StandardVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath, String name, int decimation) throws IOException,FileNotFoundException{
         super(id, gui, isStereo3D);
         this.decimation = decimation;
-        this.name = "Standard " + id;
+        this.name = name;
         System.out.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         System.out.println("Creating Visualisation for " + name);
@@ -51,6 +50,11 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
         overlays = new OverlayArray<>(this);
         System.out.println("Creating Control Pane for " + name);
         controlPane = new StandardVisualisationControlPane(this);
+    }
+    
+    
+    public StandardVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath, int decimation) throws IOException,FileNotFoundException{
+        this(id, gui, isStereo3D, filePath, "Standard" + id, decimation);
     }
     
     public StandardVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath) throws IOException,FileNotFoundException{

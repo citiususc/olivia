@@ -3,11 +3,7 @@ package Olivia.core;
 import Olivia.basic.BasicVisualisationManager;
 import Olivia.classifier.ClassifierVisualisationManager;
 import Olivia.core.gui.MainFrame;
-import Olivia.extended.overlays.AreasArray;
-import Olivia.extended.overlays.DensitiesOverlay;
-import Olivia.extended.overlays.LabeledCellArray;
 import Olivia.extended.overlays.NeighbourhoodArray;
-import Olivia.extended.overlays.NormalsOverlay;
 import Olivia.scanlines.ScanlinesVisualisationManager;
 import Olivia.segmenter.SegmenterVisualisationManager;
 import Olivia.standard.StandardVisualisationManager;
@@ -193,14 +189,24 @@ public class Olivia {
     }
     
     /**
-     * Adds a new StandardVisualisationManger, used to show the point cloud with offical LAS fields, reading its data from the folder in filePath
+     * Adds a new StandardVisualisationManger, used to show the point cloud with offical LAS fields, reading its data from the folder in filePath; it name will be Standard+id
      * @param filePath The folder where all the data are
      * @param decimation the decimation to be done to the file, for example, a decimation of 5 would pick 1 in 5 points int he file for the visualisation
      */
     public void addNewStandardVisualisation(String filePath, int decimation) {
+        addNewStandardVisualisation(filePath, "Standard" + (idCount+1), decimation);
+    }
+    
+        /**
+     * Adds a new StandardVisualisationManger, used to show the point cloud with offical LAS fields, reading its data from the folder in filePath
+     * @param filePath The folder where all the data are
+     * @param decimation the decimation to be done to the file, for example, a decimation of 5 would pick 1 in 5 points int he file for the visualisation
+     * @param name the name of the standard visualisation file
+     */
+    public void addNewStandardVisualisation(String filePath, String name, int decimation) {
         try {
             println("Creating Standard Visualisation");
-            StandardVisualisationManager visuMan = new StandardVisualisationManager(idCount++, gui, isStereo3D,filePath,decimation);
+            StandardVisualisationManager visuMan = new StandardVisualisationManager(idCount++, gui, isStereo3D,filePath,name,decimation);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
@@ -210,6 +216,8 @@ public class Olivia {
             println("Cannot add visualisation, cannot read from File" + e);
         }
     }
+    
+    
 
     /**
      * Adds a new ScanlinesVisualisationManger reading its data from the folder in filePath
@@ -267,89 +275,6 @@ public class Olivia {
             println("Cannot add visualisation, cannot read from File" + e);
         }
     }
-    
-    
-    public void loadNeighboursOverlay(File file){
-        NeighbourhoodArray neighs = new  NeighbourhoodArray(gui.getActiveVisualisation());
-        println("Opening neighbours file: " + file.getParent() + "/" + file.getName());
-        try {
-            neighs.readFromFiles(file.toPath());
-            gui.getActiveVisualisation().addOverlay(neighs);
-            neighs.listenToActionsOnScreen();
-            neighs.setSelectingCurrentByMouse(true);
-        }catch (IOException ex) {
-            println("Exception:" + ex);
-        }
-    }
-    /*
-    public void loadAreasOverlay(File file){
-        AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
-        println("Opening areas file: " + file.getParent() + "/" + file.getName());
-        try {
-            areas.readFromFiles(file.toPath());
-            gui.getActiveVisualisation().addOverlay(areas);
-        }catch (IOException ex) {
-            println("Exception:" + ex);
-        }
-    }
-    
-    public void loadLabelledCells(File file){
-        LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
-        println("Opening cell path file: " + file.getParent() + "/" + file.getName());
-        try {
-            cells.readFromFile(file.toPath());
-        gui.getActiveVisualisation().addOverlay(cells);
-        }catch (IOException ex) {
-            println("Exception:" + ex);
-        }
-    }
-    
-    public void loadVertex(File file){
-        println("TODO: cannot load vertex this way yet");
-    }
-    
-    public void loadAnimatedVertex(File file){
-        println("TODO: cannot load animated vertex this way yet");
-    }
-    
-    public void loadCircles(File file){
-        println("TODO: cannot load circles this way yet");
-    }
-    
-    public void loadanimatedCircles(File file){
-        println("TODO: cannot load animated circles this way yet");
-    }
-    
-    public void loadDensities(File file){
-        DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
-        println("Opening densities file: " + file.getParent() + "/" + file.getName());
-        try {
-            overlay.readFromFile(file.toPath());
-            gui.getActiveVisualisation().addOverlay(overlay);
-        }catch (IOException ex) {
-            println("Exception:" + ex);
-        }
-    }
-    
-    public void loadNormals(File file){
-        NormalsOverlay overlay = new NormalsOverlay(gui.getActiveVisualisation(),"Normals");
-        println("Opening normals file: " + file.getParent() + "/" + file.getName());
-        try {
-            overlay.readFromFile(file.toPath());
-            gui.getActiveVisualisation().addOverlay(overlay);
-        }catch (IOException ex) {
-            println("Exception:" + ex);
-        }
-    }
-    
-    public void takeScreenshoot(){
-        gui.getActiveVisualisation().getRenderScreen().getCapture().setCaptureImage(true);
-    }
-    
-    public void recordVideo(){
-        gui.getActiveVisualisation().getRenderScreen().getCapture().toggleCaptureVideo();
-    }
-    */
     
     public CommandParser getCommandParser(){
         return commandParser;

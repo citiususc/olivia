@@ -39,8 +39,12 @@ public class CommandParser {
         cols = line.split(delimiter);
         switch (cols[0]){
             case "standard" :
-                if(cols.length>2){
+                if(cols.length==3){
                     olivia.addNewStandardVisualisation(cols[1], Integer.parseInt(cols[2]));
+                }else if (cols.length==4){
+                    olivia.addNewStandardVisualisation(cols[1], cols[2], Integer.parseInt(cols[3]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
                 }
                 break;
             case "segmenter" :

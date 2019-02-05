@@ -477,7 +477,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = directoryFC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = directoryFC.getSelectedFile();
-                    gui.getOlivia().loadNeighboursOverlay(file);
+                    gui.getActiveVisualisation().loadNeighboursOverlay(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
