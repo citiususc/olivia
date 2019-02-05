@@ -5,6 +5,9 @@
  */
 package Olivia.core;
 
+import Olivia.core.render.RenderOptions;
+import Olivia.core.render.colours.PointColour;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,6 +53,69 @@ public class CommandParser {
                     olivia.addNewClassifierVisualisation(cols[1]);
                 }
                 break;
+            case "loadNeighbours" :
+                if(cols.length>1){
+                    olivia.getGUI().getActiveVisualisation().loadNeighboursOverlay(new File(cols[1]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadAreas" :
+                if(cols.length>1){
+                    olivia.getGUI().getActiveVisualisation().loadAreasOverlay(new File(cols[1]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadLabeledCells" :
+                if(cols.length>1){
+                    olivia.getGUI().getActiveVisualisation().loadLabelledCells(new File(cols[1]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadDensities" :
+                if(cols.length>1){
+                    olivia.getGUI().getActiveVisualisation().loadDensities(new File(cols[1]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadNormals" :
+                if(cols.length>1){
+                    olivia.getGUI().getActiveVisualisation().loadNormals(new File(cols[1]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadVertex" :
+                if(cols.length>5){
+                    olivia.getGUI().getActiveVisualisation().loadVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadAnimatedVertex" :
+                if(cols.length>6){
+                    olivia.getGUI().getActiveVisualisation().loadAnimatedVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])), Long.parseLong(cols[6]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadCircles" :
+                if(cols.length>2){
+                    olivia.getGUI().getActiveVisualisation().loadCircles(new File(cols[1]), cols[2]);
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
+            case "loadAnimatedCircles" :
+                if(cols.length>2){
+                    olivia.getGUI().getActiveVisualisation().loadAnimatedCircles(new File(cols[1]), cols[2], Long.parseLong(cols[3]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
             case "loadCamera" :
                 if(cols.length>1){
                     olivia.getGUI().loadCamera(new File(cols[1]));
@@ -65,6 +131,9 @@ public class CommandParser {
                 break;
             case "fullscreen" :
                 olivia.getGUI().setFullscreen(true);
+                break;
+            case "maximize" :
+                olivia.getGUI().setExtendedState( olivia.getGUI().getExtendedState()|Frame.MAXIMIZED_BOTH );
                 break;
             default :
                 olivia.println("Command: Unrecognised command " + line);

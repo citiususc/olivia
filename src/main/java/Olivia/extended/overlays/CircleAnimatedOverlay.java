@@ -20,11 +20,16 @@ import java.util.List;
 public class CircleAnimatedOverlay<VM extends VisualisationManager> extends AnimatedOverlay<CircleOverlay<VM>,VM> {
     
     public CircleAnimatedOverlay(VM visualisationManager, String name) {
-        super(visualisationManager, name);
+        this(visualisationManager, name, 1l);
     }
     
     public CircleAnimatedOverlay(VM visualisationManager) {
-        super(visualisationManager, "Animated circle overlay");
+        this(visualisationManager, "Animated circle overlay", 1l);
+    }
+    
+    public CircleAnimatedOverlay(VM visualisationManager, String name, Long speed) {
+        super(visualisationManager, name);
+        this.speed = speed;
     }
     
     public void readFromFile(Path path) throws FileNotFoundException,IOException{

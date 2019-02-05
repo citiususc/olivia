@@ -281,7 +281,7 @@ public class Olivia {
             println("Exception:" + ex);
         }
     }
-    
+    /*
     public void loadAreasOverlay(File file){
         AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
         println("Opening areas file: " + file.getParent() + "/" + file.getName());
@@ -349,6 +349,7 @@ public class Olivia {
     public void recordVideo(){
         gui.getActiveVisualisation().getRenderScreen().getCapture().toggleCaptureVideo();
     }
+    */
     
     public CommandParser getCommandParser(){
         return commandParser;

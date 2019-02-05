@@ -487,7 +487,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = directoryFC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = directoryFC.getSelectedFile();
-                    gui.getOlivia().loadAreasOverlay(file);
+                    gui.getActiveVisualisation().loadAreasOverlay(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -496,7 +496,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    gui.getOlivia().loadLabelledCells(file);
+                    gui.getActiveVisualisation().loadLabelledCells(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -541,11 +541,11 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 fileC.setAccessory(defaultFileCA);
                 break;
             case "drawCircles":
-                CircleOverlayArray cOverlays = new CircleOverlayArray(gui.getActiveVisualisation(),ae.getActionCommand());
+                //CircleOverlayArray cOverlays = new CircleOverlayArray(gui.getActiveVisualisation(),ae.getActionCommand());
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
+                    /*System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
                     try {
                         cOverlays.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(cOverlays);
@@ -553,23 +553,25 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                         cOverlays.setDrawAll(true);
                     }catch (IOException ex) {
                         System.out.println("Exception:" + ex);
-                    }
+                    }*/
+                    gui.getActiveVisualisation().loadCircles(file, ae.getActionCommand());
                 } else {
                     System.out.println("Load command cancelled by user.");
                 }
                 break;
             case "drawAnimatedCircles":
-                CircleAnimatedOverlay caOverlays = new CircleAnimatedOverlay(gui.getActiveVisualisation(),ae.getActionCommand());
+                //CircleAnimatedOverlay caOverlays = new CircleAnimatedOverlay(gui.getActiveVisualisation(),ae.getActionCommand());
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
+                    /*System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
                     try {
                         caOverlays.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(caOverlays);
                     }catch (IOException ex) {
                         System.out.println("Exception:" + ex);
-                    }
+                    }*/
+                    gui.getActiveVisualisation().loadAnimatedCircles(file, ae.getActionCommand(),1l);
                 } else {
                     System.out.println("Load command cancelled by user.");
                 }
@@ -578,7 +580,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    gui.getOlivia().loadDensities(file);
+                    gui.getActiveVisualisation().loadDensities(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -587,7 +589,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    gui.getOlivia().loadNormals(file);
+                    gui.getActiveVisualisation().loadNormals(file);
                 } else {
                     System.out.println("Open command cancelled by user.");
                 }
@@ -617,10 +619,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 gui.toogleMirroring();
                 break;
             case "takeScreenshot":
-                gui.getOlivia().takeScreenshoot();
+                gui.getActiveVisualisation().takeScreenshoot();
                 break;
             case "recordVideo":
-                gui.getOlivia().recordVideo();
+                gui.getActiveVisualisation().recordVideo();
                 break;
             case "showSelectedPoint":
                 gui.showSelectedPoint(showSelectedPoint.isSelected());

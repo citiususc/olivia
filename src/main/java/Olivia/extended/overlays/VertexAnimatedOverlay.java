@@ -27,13 +27,21 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
     protected int rasterMode; 
     
     public VertexAnimatedOverlay(VM visualisationManager) {
-        super(visualisationManager, "Vertex Animated Overlay");
+        this(visualisationManager, "Vertex Animated Overlay", RenderOptions.GL_POINTS, RenderOptions.GL_POINT, new PointColour(1.0f,1.0f,1.0f),1l);
     }
     
     public VertexAnimatedOverlay(VM visualisationManager, String name) {
-        super(visualisationManager);
+        this(visualisationManager, name, RenderOptions.GL_POINTS, RenderOptions.GL_POINT, new PointColour(1.0f,1.0f,1.0f), 1l);
     }
     
+    public VertexAnimatedOverlay(VM visualisationManager, String name, int renderMode, int rasterMode, PointColour defaultColour, Long speed) {
+        super(visualisationManager, name);
+        this.renderMode = renderMode;
+        this.rasterMode = rasterMode;
+        this.defaultColour = defaultColour;
+        this.speed = speed;
+    }
+       
     protected VertexOverlay readTriangle(List<String> lines, String delimiter, int rasterMode, PointColour defaultColour, int numFrame) throws IOException{
         VertexOverlay overlay = new VertexOverlay(visualisationManager,"Frame" + numFrame);
         overlay.setRasterMode(rasterMode);

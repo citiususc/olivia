@@ -10,11 +10,22 @@ import Olivia.core.data.Point3D_id;
 import Olivia.core.data.PointArray;
 import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
+import Olivia.core.render.colours.PointColour;
+import Olivia.extended.overlays.AreasArray;
+import Olivia.extended.overlays.CircleAnimatedOverlay;
+import Olivia.extended.overlays.CircleOverlayArray;
+import Olivia.extended.overlays.DensitiesOverlay;
+import Olivia.extended.overlays.LabeledCellArray;
+import Olivia.extended.overlays.NeighbourhoodArray;
+import Olivia.extended.overlays.NormalsOverlay;
+import Olivia.extended.overlays.VertexAnimatedOverlay;
+import Olivia.extended.overlays.VertexOverlay;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import com.jogamp.newt.event.InputEvent;
+import java.io.File;
 
 /**
  * This is the class that controls the Point Cloud visualisation, is has the data for the point cloud, the overlays and the render screen;
@@ -454,6 +465,119 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
                 gui.setActiveVisualisationManager(this);
                 gui.updateAll();
         }
+    }
+    
+    public void loadNeighboursOverlay(File file){
+        NeighbourhoodArray neighs = new  NeighbourhoodArray(gui.getActiveVisualisation());
+        gui.getOlivia().println("Opening neighbours file: " + file.getParent() + "/" + file.getName());
+        try {
+            neighs.readFromFiles(file.toPath());
+            addOverlay(neighs);
+            neighs.listenToActionsOnScreen();
+            neighs.setSelectingCurrentByMouse(true);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadAreasOverlay(File file){
+        AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
+        gui.getOlivia().println("Opening areas file: " + file.getParent() + "/" + file.getName());
+        try {
+            areas.readFromFiles(file.toPath());
+            addOverlay(areas);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadLabelledCells(File file){
+        LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
+        gui.getOlivia().println("Opening cell path file: " + file.getParent() + "/" + file.getName());
+        try {
+            cells.readFromFile(file.toPath());
+            addOverlay(cells);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadVertex(File file, String name, int renderMode, int rasterMode, PointColour defaultColour){
+        VertexOverlay vOverlay = new VertexOverlay(this,name,renderMode,rasterMode,defaultColour);
+        gui.getOlivia().println("Opening point file for a vertex overlay: " + file.getParent() + "/" + file.getName());
+        try {
+            vOverlay.readFromFile(file.toPath());
+            addOverlay(vOverlay);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadAnimatedVertex(File file, String name, int renderMode, int rasterMode, PointColour defaultColour, Long speed){
+        VertexAnimatedOverlay vAOverlay = new VertexAnimatedOverlay(this,name,renderMode,rasterMode,defaultColour, speed);
+        gui.getOlivia().println("Opening point file for an animated vertex overlay " + file.getParent() + "/" + file.getName());
+        try {
+            vAOverlay.readFromFile(file.toPath());
+            addOverlay(vAOverlay);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadCircles(File file, String name){
+        CircleOverlayArray cOverlays = new CircleOverlayArray(this,name);
+        gui.getOlivia().println("Opening circles file: " + file.getParent() + "/" + file.getName());
+        try {
+            cOverlays.readFromFile(file.toPath());
+            this.addOverlay(cOverlays);
+            cOverlays.setDrawModesToFalse();
+            cOverlays.setDrawAll(true);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadAnimatedCircles(File file, String name, Long speed){
+        CircleAnimatedOverlay caOverlays = new CircleAnimatedOverlay(this,name,speed);
+        gui.getOlivia().println("Opening animated circles file: " + file.getParent() + "/" + file.getName());
+        try {
+            caOverlays.readFromFile(file.toPath());
+            this.addOverlay(caOverlays);
+            caOverlays.setDrawModesToFalse();
+            caOverlays.setDrawAll(true);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadDensities(File file){
+        DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
+        gui.getOlivia().println("Opening densities file: " + file.getParent() + "/" + file.getName());
+        try {
+            overlay.readFromFile(file.toPath());
+            addOverlay(overlay);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void loadNormals(File file){
+        NormalsOverlay overlay = new NormalsOverlay(gui.getActiveVisualisation(),"Normals");
+        gui.getOlivia().println("Opening normals file: " + file.getParent() + "/" + file.getName());
+        try {
+            overlay.readFromFile(file.toPath());
+            addOverlay(overlay);
+        }catch (IOException ex) {
+            gui.getOlivia().println("Exception:" + ex);
+        }
+    }
+    
+    public void takeScreenshoot(){
+        renderScreen.getCapture().setCaptureImage(true);
+    }
+    
+    public void recordVideo(){
+        renderScreen.getCapture().toggleCaptureVideo();
     }
 
 }
