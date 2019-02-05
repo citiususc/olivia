@@ -116,6 +116,13 @@ public class CommandParser {
                     olivia.println(cols[0] + " command is incorrect, arguments do not match");
                 }
                 break;
+            case "transformLastOverlay" :
+                if(cols.length>6){
+                    olivia.getGUI().getActiveVisualisation().transformLastOverlay(Float.parseFloat(cols[1]), Float.parseFloat(cols[2]), Float.parseFloat(cols[3]), Float.parseFloat(cols[4]), Float.parseFloat(cols[5]), Float.parseFloat(cols[6]));
+                }else{
+                    olivia.println(cols[0] + " command is incorrect, arguments do not match");
+                }
+                break;
             case "loadCamera" :
                 if(cols.length>1){
                     olivia.getGUI().loadCamera(new File(cols[1]));

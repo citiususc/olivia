@@ -513,6 +513,15 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
         }
     }
     
+    public void transformLastOverlay(float transX, float transY, float transZ, float rotX, float rotY, float rotZ){
+        overlays.get(overlays.size()-1).transformations.addToTransX(transX);
+        overlays.get(overlays.size()-1).transformations.addToTransY(transY);
+        overlays.get(overlays.size()-1).transformations.addToTransZ(transZ);
+        overlays.get(overlays.size()-1).transformations.addToRotX(rotX);
+        overlays.get(overlays.size()-1).transformations.addToRotY(rotY);
+        overlays.get(overlays.size()-1).transformations.addToRotZ(rotZ);
+    }
+    
     public void loadAnimatedVertex(File file, String name, int renderMode, int rasterMode, PointColour defaultColour, Long speed){
         VertexAnimatedOverlay vAOverlay = new VertexAnimatedOverlay(this,name,renderMode,rasterMode,defaultColour, speed);
         gui.getOlivia().println("Opening point file for an animated vertex overlay " + file.getParent() + "/" + file.getName());

@@ -140,7 +140,16 @@ public class Transformations {
     }
     
     /**
-     * Gets teh rotation on Y
+     * Adds amount to the rotation in Y
+     *
+     * @param amount The amount to be added to the rotation in Y
+     */
+    public void addToRotY(float amount) {
+        rotY += amount;
+    }
+    
+    /**
+     * Gets the rotation on Y
      * @return the rotation on Y
      */
     public float getRotY() {
