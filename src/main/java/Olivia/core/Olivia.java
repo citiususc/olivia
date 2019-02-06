@@ -93,7 +93,7 @@ public class Olivia {
                             //addNewClassifierVisualisation(file.getAbsolutePath());
                             break;
                         default:
-                            System.out.println("Error: " + visulisationType + "is not a correct visualisation");
+                            System.out.textOutputter.println("Error: " + visulisationType + "is not a correct visualisation");
                             System.exit(0);
                     }
                 }*/
@@ -114,9 +114,8 @@ public class Olivia {
     }
     
     
-    
-    public void println(String text){
-        textOutputter.println(text);
+    public TextOutputter getOutputter(){
+        return textOutputter;
     }
     
     /**
@@ -133,7 +132,7 @@ public class Olivia {
         //activeVisualisation.getRenderScreen().setVisualisation(visu);
         //mainFrame.addVisuPanel(visuManager.getName(), visuManager.getControlPane());
         if(visuManager.checkCorrectness()){
-            println("Adding " + visuManager.getName() + " to loaded visualisations"
+            textOutputter.println("Adding " + visuManager.getName() + " to loaded visualisations"
                     + "\n\tDisplacement:" + visuManager.getDisplacement().toString()
                                 );
             visualisationManagers.add(visuManager);
@@ -141,7 +140,7 @@ public class Olivia {
             gui.setActiveVisualisationManager(visuManager);
             gui.updateRenderFrameLayout();
         }else{
-            println("Problem detected adding " + visuManager.getName() + " to loaded visualisations");
+            textOutputter.println("Problem detected adding " + visuManager.getName() + " to loaded visualisations");
         }
     }
 
@@ -151,7 +150,7 @@ public class Olivia {
      */
     public void removeVisualisation(VisualisationManager visualisationManager) {
         //mainFrame.removeVisuPanel(visualisationManagers.indexOf(visualisationManager));
-        println("Removing visualisation " + visualisationManager.getName());
+        textOutputter.println("Removing visualisation " + visualisationManager.getName());
         //visualisationManager.getRenderScreen().animatorPause();
         visualisationManagers.remove(visualisationManager);
         gui.removeActiveVisualisationManager(visualisationManager);
@@ -166,16 +165,16 @@ public class Olivia {
      */
     public void addNewBasicVisualisation(String filePath) {   
         try {
-            println("Creating Basic Visualisation");
+            textOutputter.println("Creating Basic Visualisation");
             BasicVisualisationManager visuMan = new BasicVisualisationManager(idCount++, gui, isStereo3D);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            println("Cannot add visualisation, cannot read File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            println("Cannot add visualisation, cannot read from File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
@@ -183,7 +182,7 @@ public class Olivia {
      * Adds an empty visualisation, used to show overlays without point cloud data (not working well at the moment)
      */
     public void addNewEmptyVisualisation(){
-        println("Creating Empty Visualisation");
+        textOutputter.println("Creating Empty Visualisation");
         EmptyVisualisationManager visuMan = new EmptyVisualisationManager(idCount++, gui, isStereo3D);
         addNewVisualisationManager(visuMan);
     }
@@ -201,59 +200,75 @@ public class Olivia {
      * Adds a new StandardVisualisationManger, used to show the point cloud with offical LAS fields, reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      * @param decimation the decimation to be done to the file, for example, a decimation of 5 would pick 1 in 5 points int he file for the visualisation
-     * @param name the name of the standard visualisation file
+     * @param name the name of this standard visualisation 
      */
     public void addNewStandardVisualisation(String filePath, String name, int decimation) {
         try {
-            println("Creating Standard Visualisation");
+            textOutputter.println("Creating Standard Visualisation");
             StandardVisualisationManager visuMan = new StandardVisualisationManager(idCount++, gui, isStereo3D,filePath,name,decimation);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            println("Cannot add visualisation, cannot read File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            println("Cannot add visualisation, cannot read from File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
-    
+    /**
+     * Adds a new ScanlinesVisualisationManger reading its data from the folder in filePath
+     * @param filePath The file where all the data are
+     */
+    public void addNewScanlinesVisualisation(String filePath) {
+        addNewScanlinesVisualisation(filePath, "Scanlines" + (idCount+1));
+    }
 
     /**
      * Adds a new ScanlinesVisualisationManger reading its data from the folder in filePath
-     * @param filePath The folder where all the data are
+     * @param filePath The file where all the data are
+     * @param name the name of this scanlines visualisation
      */
-        public void addNewScanlinesVisualisation(String filePath) {
+    public void addNewScanlinesVisualisation(String filePath, String name) {
         try {
-            println("Creating Scanlines Visualisation");
-            ScanlinesVisualisationManager visuMan = new ScanlinesVisualisationManager(idCount++, gui, isStereo3D);
+            textOutputter.println("Creating Scanlines Visualisation");
+            ScanlinesVisualisationManager visuMan = new ScanlinesVisualisationManager(idCount++, gui, isStereo3D, name);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            println("Cannot add visualisation, cannot read File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            println("Cannot add visualisation, cannot read from File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
     }
-        
+    
     /**
      * Adds a new SegmenterVisualisationManger reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      */    
     public void addNewSegmenterVisualisation(String filePath) {
+        addNewSegmenterVisualisation(filePath, "Segmenter" + (idCount+1));
+    }
+        
+    /**
+     * Adds a new SegmenterVisualisationManger reading its data from the folder in filePath
+     * @param filePath The folder where all the data are
+     * @param name The name of this segmenter visualisation
+     */    
+    public void addNewSegmenterVisualisation(String filePath, String name) {
         try {
-            println("Creating Scanlines Visualisation");
-            SegmenterVisualisationManager visuMan = new SegmenterVisualisationManager(idCount++, gui, isStereo3D);
+            textOutputter.println("Creating Segementer Visualisation");
+            SegmenterVisualisationManager visuMan = new SegmenterVisualisationManager(idCount++, gui, isStereo3D, name);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            println("Cannot add visualisation, cannot read File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            println("Cannot add visualisation, cannot read from File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     
@@ -261,18 +276,27 @@ public class Olivia {
      * Adds a new ClassifierVisualisationManger reading its data from the folder in filePath
      * @param filePath The folder where all the data are
      */
-    public void addNewClassifierVisualisation(String filePath) {   
+    public void addNewClassifierVisualisation(String filePath){
+        addNewClassifierVisualisation(filePath, "Classifier" + (idCount+1));
+    }
+    
+    /**
+     * Adds a new ClassifierVisualisationManger reading its data from the folder in filePath
+     * @param filePath The folder where all the data are
+     * @param name The name of this classifier visualisation
+     */
+    public void addNewClassifierVisualisation(String filePath, String name) {   
         try {
-            println("Creating Classifier Visualisation");
-            ClassifierVisualisationManager visuMan = new ClassifierVisualisationManager(idCount++, gui, isStereo3D,filePath);
+            textOutputter.println("Creating Classifier Visualisation");
+            ClassifierVisualisationManager visuMan = new ClassifierVisualisationManager(idCount++, gui, isStereo3D,filePath,name);
             visuMan.readFromFiles(filePath);
             addNewVisualisationManager(visuMan);
         }
         catch (FileNotFoundException e) {
-            println("Cannot add visualisation, cannot read File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
         }
         catch (IOException e) {
-            println("Cannot add visualisation, cannot read from File" + e);
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
     }
     

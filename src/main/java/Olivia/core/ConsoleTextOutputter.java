@@ -15,6 +15,11 @@ public class ConsoleTextOutputter implements TextOutputter{
     public void println(String text) {
         System.out.println(text);
     }
+
+    @Override
+    public void print(String text) {
+        System.out.print(text);
+    }
     
     
 }

@@ -35,10 +35,14 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
      * Text that a visualisation can provide
      */
     protected String textInfo;
+    
+    public ScanlinesVisualisationManager(int id, MainFrame gui, boolean isStereo3D){
+        this(id, gui, isStereo3D, "Scanlines " + id);
+    }
 
-    public ScanlinesVisualisationManager(int id, MainFrame gui, boolean isStereo3D) {
+    public ScanlinesVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String name) {
         super(id, gui, isStereo3D);
-        this.name = "Scanlines " + id;
+        this.name = name;
         System.out.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         renderScreen.addActionListener(this);

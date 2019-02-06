@@ -12,5 +12,6 @@ package Olivia.core;
 public interface TextOutputter {
     
     public void println(String text);
+    public void print(String text);
     
 }

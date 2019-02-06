@@ -45,9 +45,13 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
      */
     protected String textInfo;
 
-    public ClassifierVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath) {
+    public ClassifierVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath){
+        this( id, gui, isStereo3D, filePath, "Classification " + id);
+    }
+    
+    public ClassifierVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath, String name) {
         super(id, gui, isStereo3D);
-        this.name = "Classification " + id;
+        this.name = name;
         System.out.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         renderScreen.addActionListener(this);

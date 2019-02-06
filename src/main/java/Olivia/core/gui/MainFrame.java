@@ -530,12 +530,12 @@ public class MainFrame extends JFrame{
     }
     
     public void loadCamera(File file){
-        olivia.println("Opening camera file: " + file.getParent() + "/" + file.getName());
+        olivia.getOutputter().println("Opening camera file: " + file.getParent() + "/" + file.getName());
         getActiveVisualisation().getRenderScreen().getCamera().readFromFile(file.getParent(), file.getName());
     }
     
     public void saveCamera(File file){
-        olivia.println("Saving camera file to: " + file.getParent() + "/" + file.getName());
+        olivia.getOutputter().println("Saving camera file to: " + file.getParent() + "/" + file.getName());
         getActiveVisualisation().getRenderScreen().getCamera().writeToFile(file.getParent(), file.getName());
     }
     

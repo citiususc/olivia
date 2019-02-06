@@ -467,7 +467,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     try {
                         gui.getOlivia().getCommandParser().readFromFile(file.toPath());
                     }catch (IOException ex) {
-                        gui.getOlivia().println("Exception:" + ex);
+                        gui.getOlivia().getOutputter().println("Exception:" + ex);
                     }
                 } else {
                     System.out.println("Open command cancelled by user.");

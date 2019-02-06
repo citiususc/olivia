@@ -707,6 +707,14 @@ public class OpenGLScreen implements GLEventListener {
     public void setPointSize(int pointSize) {
         this.pointSize = pointSize;
     }
+    
+    /**
+     * Sets the line width of OpenGL
+     * @param lineWidth The new line width
+     */
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
 
     /**
      * setter
