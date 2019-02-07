@@ -159,6 +159,8 @@ public class OpenGLScreen implements GLEventListener {
     
     protected boolean blend;
     
+    protected boolean pointSmooth;
+    
     
     /**
      * Create a custom OpenGL capabilities mainly to enable stereoscopic 3D
@@ -255,6 +257,7 @@ public class OpenGLScreen implements GLEventListener {
         positionOverlay = new PositionShowOverlay(visualisationManager);
         showPosition = false;
         blend = true;
+        pointSmooth = true;
         isStereo3D = this.visualisationManager.isStereo3D();
         //aspectRatio = 16/9.0;
     }
@@ -463,7 +466,11 @@ public class OpenGLScreen implements GLEventListener {
         Capture cap = visualisationManager.getRenderScreen().getCapture();
 
         gl2 = glad.getGL().getGL2();
-        gl2.glEnable(GL2.GL_POINT_SMOOTH);
+        if(pointSmooth){
+            gl2.glEnable(GL2.GL_POINT_SMOOTH);
+        }else{
+            gl2.glDisable(GL2.GL_POINT_SMOOTH);
+        }
         if(blend){
             gl2.glEnable(GL2.GL_BLEND);
         }else{
@@ -849,9 +856,34 @@ public class OpenGLScreen implements GLEventListener {
         this.blend = blend;
     }
     
+       /**
+     * Toggles GL_POINT_SMOOTH between true and false
+     * @return The new value of GL_POINT_SMOOTH
+     */
+    public boolean togglePointSmooth(){
+        this.pointSmooth = !this.pointSmooth;
+        return pointSmooth;
+    }
+    
+    /**
+     * Returns the current value of GL_POINT_SMOOTH
+     * @return The current value of GL_POINT_SMOOTH
+     */
+    public boolean getPointSmooth(){
+        return pointSmooth;
+    }
+
+    /**
+     * Sets the value of GL_POINT_SMOOTH
+     * @param pointSmooth The new value of GL_POINT_SMOOTH
+     */
+    public void setPointSmooth(boolean pointSmooth) {
+        this.pointSmooth = pointSmooth;
+    }
+    
         /**
-     * Toggles blend between true and false
-     * @return The new value of blend
+     * Toggles isStereo3D between true and false
+     * @return The new value of isStereo3D
      */
     public boolean toggleStereo3D(){
         if(visualisationManager.isStereo3D()) this.isStereo3D = !this.isStereo3D;
@@ -859,16 +891,16 @@ public class OpenGLScreen implements GLEventListener {
     }
     
     /**
-     * Returns the current value of blend
-     * @return The current value of blend
+     * Returns the current value of isStereo3D
+     * @return The current value of isStereo3D
      */
     public boolean getStereo3D(){
         return isStereo3D;
     }
 
     /**
-     * Sets the value of blend
-     * @param blend The new value of blend
+     * Sets the value of isStereo3D
+     * @param isStereo3D The new value of isStereo3D
      */
     public void setStereo3D(boolean isStereo3D) {
         if(visualisationManager.isStereo3D()) this.isStereo3D = isStereo3D;

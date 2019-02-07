@@ -159,6 +159,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      */
     protected JCheckBoxMenuItem blendActive;
     /**
+     * The item to toggle the GL_POINT_SMOOTH option in OpenGL
+     */
+    protected JCheckBoxMenuItem smoothActive;
+    /**
      * The item to show all the loaded visualisations
      */
     protected JMenuItem showAll;
@@ -336,11 +340,13 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         fullscreen.setEnabled(gui.isFullScreenEnabled());
         // 3D Indicator. To indicate if 3D is currently enabled   
         if (gui.getActiveVisualisation() != null) {
-            stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", gui.getActiveVisualisation().getRenderScreen().getStereo3D(), gui.getActiveVisualisation().isStereo3D());
+            stereoActive = addCheckBoxMenuItem("stereo3D", "Indicates if stereoscopic 3D is enabled", "3d", gui.getActiveVisualisation().getRenderScreen().getStereo3D(), gui.getActiveVisualisation().isStereo3D());
             blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", gui.getActiveVisualisation().getRenderScreen().getBlend(), true);
+            smoothActive = addCheckBoxMenuItem("GL_POINT_SMOOTH", "Indicates if GL_POINT_SMOOTH is enabled", "smooth", gui.getActiveVisualisation().getRenderScreen().getPointSmooth(), true);
         }else{
-            stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
+            stereoActive = addCheckBoxMenuItem("stereo3D", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
             blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", false, true);
+            smoothActive = addCheckBoxMenuItem("GL_POINT_SMOOTH", "Indicates if GL_POINT_SMOOTH is enabled", "smooth",false, true);
         }
         showAll = addMenuItem("Show All", "Shows all visualisations", "showAll", true);
         newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
@@ -350,6 +356,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         optionsMenu.add(fullscreen);
         optionsMenu.add(stereoActive);
         optionsMenu.add(blendActive);
+        optionsMenu.add(smoothActive);
         optionsMenu.add(showAll);
         optionsMenu.add(newWindow);
         
@@ -639,6 +646,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "blend":
                 gui.getActiveVisualisation().getRenderScreen().setBlend(blendActive.isSelected());
                 break;
+            case "smooth":
+                gui.getActiveVisualisation().getRenderScreen().setPointSmooth(smoothActive.isSelected());
+                break;
             case "showAll":
                 gui.showAll();
                 break;
@@ -689,6 +699,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             stereoActive.setEnabled(gui.getActiveVisualisation().isStereo3D());
             stereoActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getStereo3D());
             blendActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getBlend());
+            smoothActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getPointSmooth());
         }else{
             this.remove(activeVisualisationMenu);
             this.add(activeVisualisationMenu = clearVisualisationMenu);
