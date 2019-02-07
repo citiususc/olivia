@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -84,8 +82,10 @@ public class CommandParser {
                 }
                 break;
             case "loadAreas" :
-                if(cols.length>1){
+                if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().loadAreasOverlay(new File(cols[1]));
+                } if(cols.length==4){
+                    olivia.getGUI().getActiveVisualisation().loadAreasOverlay(new File(cols[1]),cols[2],new PointColour(RenderOptions.getColor(cols[3])));
                 }else{
                     olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match");
                 }

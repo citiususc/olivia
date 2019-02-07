@@ -480,15 +480,22 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
         }
     }
     
-    public void loadAreasOverlay(File file){
+
+    public void loadAreasOverlay(File file, String name, PointColour defaultColour){
         AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
         gui.getOlivia().getOutputter().println("Opening areas file: " + file.getParent() + "/" + file.getName());
         try {
             areas.readFromFiles(file.toPath());
+            areas.setName(name);
+            areas.changeColour(defaultColour);
             addOverlay(areas);
         }catch (IOException ex) {
             gui.getOlivia().getOutputter().println("Exception:" + ex);
         }
+    }
+    
+    public void loadAreasOverlay(File file){
+        loadAreasOverlay(file, file.getName(), new PointColour(1.0f,0.0f,0.0f));
     }
     
     public void loadLabelledCells(File file){

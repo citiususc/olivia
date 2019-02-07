@@ -1,17 +1,10 @@
 package Olivia.core.gui;
 
-import static Olivia.core.Olivia.*;
-import Olivia.extended.overlays.AreasArray;
-import Olivia.extended.overlays.LabeledCellArray;
-import Olivia.extended.overlays.CircleAnimatedOverlay;
-import Olivia.extended.overlays.CircleOverlayArray;
-import Olivia.extended.overlays.DensitiesOverlay;
-import Olivia.extended.overlays.NeighbourhoodArray;
-import Olivia.extended.overlays.NormalsOverlay;
 import Olivia.extended.overlays.VertexAnimatedOverlay;
 import Olivia.extended.overlays.VertexOverlay;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -161,6 +154,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to show (in the future toggle?) 3D rendering
      */
     protected JCheckBoxMenuItem stereoActive;
+    /**
+     * The item to toggle the GL_Blend option in OpenGL
+     */
+    protected JCheckBoxMenuItem blendActive;
     /**
      * The item to show all the loaded visualisations
      */
@@ -339,9 +336,11 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         fullscreen.setEnabled(gui.isFullScreenEnabled());
         // 3D Indicator. To indicate if 3D is currently enabled   
         if (gui.getActiveVisualisation() != null) {
-            stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", gui.getActiveVisualisation().isStereo3D(), gui.getActiveVisualisation().isStereo3D());
+            stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", gui.getActiveVisualisation().getRenderScreen().getStereo3D(), gui.getActiveVisualisation().isStereo3D());
+            blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", gui.getActiveVisualisation().getRenderScreen().getBlend(), true);
         }else{
             stereoActive = addCheckBoxMenuItem("3DS", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
+            blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", false, true);
         }
         showAll = addMenuItem("Show All", "Shows all visualisations", "showAll", true);
         newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
@@ -350,6 +349,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         optionsMenu.add(showOverlayOptions);
         optionsMenu.add(fullscreen);
         optionsMenu.add(stereoActive);
+        optionsMenu.add(blendActive);
         optionsMenu.add(showAll);
         optionsMenu.add(newWindow);
         
@@ -633,6 +633,12 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "fullscreen":
                 gui.setFullscreen(fullscreen.isSelected());
                 break;
+            case "3d":
+                gui.getActiveVisualisation().getRenderScreen().setStereo3D(stereoActive.isSelected());
+                break;
+            case "blend":
+                gui.getActiveVisualisation().getRenderScreen().setBlend(blendActive.isSelected());
+                break;
             case "showAll":
                 gui.showAll();
                 break;
@@ -680,6 +686,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             this.remove(activeVisualisationMenu);
             this.add(activeVisualisationMenu = gui.getActiveVisualisation().getjMenu());
             showSelectedPoint.setSelected(gui.getActiveVisualisation().isDrawMouseSelection());
+            stereoActive.setEnabled(gui.getActiveVisualisation().isStereo3D());
+            stereoActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getStereo3D());
+            blendActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getBlend());
         }else{
             this.remove(activeVisualisationMenu);
             this.add(activeVisualisationMenu = clearVisualisationMenu);

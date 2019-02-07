@@ -144,7 +144,7 @@ public class OpenGLScreen implements GLEventListener {
     /**
      * Flag to enable/disable stereoscopic 3D visualisation
      */
-    //protected boolean isStereo3D;
+    protected boolean isStereo3D;
     /**
      *
      */
@@ -156,6 +156,8 @@ public class OpenGLScreen implements GLEventListener {
      * We store the Window to access frame size and position (capture methods)
      */
     protected GLWindow window;
+    
+    protected boolean blend;
     
     
     /**
@@ -252,11 +254,13 @@ public class OpenGLScreen implements GLEventListener {
         capture = new Capture(visualisationManager);
         positionOverlay = new PositionShowOverlay(visualisationManager);
         showPosition = false;
+        blend = true;
+        isStereo3D = this.visualisationManager.isStereo3D();
         //aspectRatio = 16/9.0;
     }
 
     /**
-     * Gets whether it is showing a higlight in a position
+     * Gets whether it is showing a highlight in a position
      * @return true if an overlay is being rendered in a position
      */
     public boolean isShowPosition() {
@@ -349,7 +353,7 @@ public class OpenGLScreen implements GLEventListener {
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "FPS: " + String.format("%.0f", time));
         gl2.glWindowPos2i(x, viewport.array()[3] - y * 4);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "AVG: " + String.format("%.0f", gLDrawable.getAnimator().getTotalFPS()));
-        if (visualisationManager.isStereo3D()) {
+        if (isStereo3D) {
             gl2.glWindowPos2i(x, viewport.array()[3] - y * 5);
             //glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "EYE: " + String.format("%.2f", eyeDist));
             glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, "EYE: " + String.format("%.2f", camera.getIntraOcularDistance()));
@@ -460,12 +464,16 @@ public class OpenGLScreen implements GLEventListener {
 
         gl2 = glad.getGL().getGL2();
         gl2.glEnable(GL2.GL_POINT_SMOOTH);
-        gl2.glEnable(GL2.GL_BLEND);
+        if(blend){
+            gl2.glEnable(GL2.GL_BLEND);
+        }else{
+            gl2.glDisable(GL2.GL_BLEND);
+        }
         //gl2.glEnable(GL2.GL_POINT_SPRITE);
         gl2.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl2.glPointSize(pointSize);
 
-        if (!visualisationManager.isStereo3D()) {
+        if (!isStereo3D) {
             gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
             gl2.glLoadIdentity();
             cam.doTranslateAndRotate(this);
@@ -541,7 +549,7 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, matProjection);
         gl2.glGetIntegerv(GL2.GL_VIEWPORT, viewport);
         gl2.glLoadIdentity();
-        if (!visualisationManager.isStereo3D()) {
+        if (!isStereo3D) {
             //System.out.println("Resizing, new aspect ratio: " +  aspectRatio);
             //glu.gluPerspective(50.0f, camera.getAspectRatio(), 1.0, 5000.0);
             glu.gluPerspective(camera.getFieldOfView(), camera.getAspectRatio(), camera.getzNear(), camera.getzFar());
@@ -689,17 +697,6 @@ public class OpenGLScreen implements GLEventListener {
     }
 
     /**
-     * getter
-     *
-     * @return stereoscopic 3D flag
-     */
-    /*
-    public boolean isStereo3D() {
-        return isStereo3D;
-    }
-    */
-
-    /**
      * setter
      *
      * @param pointSize Desired point size
@@ -715,18 +712,6 @@ public class OpenGLScreen implements GLEventListener {
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
     }
-
-    /**
-     * setter
-     *
-     * @param isStereo3D flag to enable/disable stereoscopic mode
-     */
-    /*
-    public void setStereo3D(boolean isStereo3D) {
-        this.isStereo3D = isStereo3D;
-        System.out.println("Enable stereoscopic 3D");
-    }
-    */
 
     /**
      * Increases the point size in one unit
@@ -837,6 +822,56 @@ public class OpenGLScreen implements GLEventListener {
     
     public boolean animatorIsAnimating(){
         return animator.isAnimating();
+    }
+    
+    /**
+     * Toggles blend between true and false
+     * @return The new value of blend
+     */
+    public boolean toggleBlend(){
+        this.blend = !this.blend;
+        return blend;
+    }
+    
+    /**
+     * Returns the current value of blend
+     * @return The current value of blend
+     */
+    public boolean getBlend(){
+        return blend;
+    }
+
+    /**
+     * Sets the value of blend
+     * @param blend The new value of blend
+     */
+    public void setBlend(boolean blend) {
+        this.blend = blend;
+    }
+    
+        /**
+     * Toggles blend between true and false
+     * @return The new value of blend
+     */
+    public boolean toggleStereo3D(){
+        if(visualisationManager.isStereo3D()) this.isStereo3D = !this.isStereo3D;
+        return isStereo3D;
+    }
+    
+    /**
+     * Returns the current value of blend
+     * @return The current value of blend
+     */
+    public boolean getStereo3D(){
+        return isStereo3D;
+    }
+
+    /**
+     * Sets the value of blend
+     * @param blend The new value of blend
+     */
+    public void setStereo3D(boolean isStereo3D) {
+        if(visualisationManager.isStereo3D()) this.isStereo3D = isStereo3D;
     }
     
 }
