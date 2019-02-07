@@ -210,6 +210,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      */
     private JMenu addMenu(String name, String description, boolean enabled) {
         JMenu menu = new JMenu(name);
+        menu.getPopupMenu().setLightWeightPopupEnabled(false);
         menu.getAccessibleContext().setAccessibleDescription(description);
         menu.setEnabled(enabled);
         menu.addActionListener(this);
@@ -655,25 +656,6 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "newWindow":
                 gui.createNewRenderWindow();
                 break;
-//            case "visuActive":
-//                drawMenu.setEnabled(true);
-//                cameraMenu.setEnabled(true);
-//                captureMenu.setEnabled(true);
-//                break;
-//            case "noVisuActive":
-//                drawMenu.setEnabled(false);
-//                cameraMenu.setEnabled(false);
-//                captureMenu.setEnabled(false);
-//                break;//            case "visuActive":
-//                drawMenu.setEnabled(true);
-//                cameraMenu.setEnabled(true);
-//                captureMenu.setEnabled(true);
-//                break;
-//            case "noVisuActive":
-//                drawMenu.setEnabled(false);
-//                cameraMenu.setEnabled(false);
-//                captureMenu.setEnabled(false);
-//                break;
         }
     }
     
