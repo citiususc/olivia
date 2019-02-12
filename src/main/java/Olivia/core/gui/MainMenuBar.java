@@ -4,7 +4,6 @@ import Olivia.extended.overlays.VertexAnimatedOverlay;
 import Olivia.extended.overlays.VertexOverlay;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -150,6 +149,18 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to toggle fullscreen
      */
     protected JCheckBoxMenuItem fullscreen;
+        /**
+     * The item to show all the loaded visualisations
+     */
+    protected JMenuItem showAll;
+    /**
+     * The item to create a new render window
+     */
+    protected JMenuItem newWindow;
+    /**
+     * A submenu to hold the render options
+     */
+    protected JMenu renderOptions;
     /**
      * The item to show (in the future toggle?) 3D rendering
      */
@@ -163,13 +174,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      */
     protected JCheckBoxMenuItem smoothActive;
     /**
-     * The item to show all the loaded visualisations
+     * The item to toggle whether to show the stats or not
      */
-    protected JMenuItem showAll;
-    /**
-     * The item to create a new render window
-     */
-    protected JMenuItem newWindow;
+    protected JCheckBoxMenuItem showStats;
     
     /**
      * The menu for visualisation specific items
@@ -339,27 +346,32 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             KeyEvent.VK_F, ActionEvent.ALT_MASK)
         );
         fullscreen.setEnabled(gui.isFullScreenEnabled());
+        showAll = addMenuItem("Show All", "Shows all visualisations", "showAll", true);
+        newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
+        renderOptions = addMenu("Render", "Render options",true);
         // 3D Indicator. To indicate if 3D is currently enabled   
         if (gui.getActiveVisualisation() != null) {
             stereoActive = addCheckBoxMenuItem("stereo3D", "Indicates if stereoscopic 3D is enabled", "3d", gui.getActiveVisualisation().getRenderScreen().getStereo3D(), gui.getActiveVisualisation().isStereo3D());
             blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", gui.getActiveVisualisation().getRenderScreen().getBlend(), true);
             smoothActive = addCheckBoxMenuItem("GL_POINT_SMOOTH", "Indicates if GL_POINT_SMOOTH is enabled", "smooth", gui.getActiveVisualisation().getRenderScreen().getPointSmooth(), true);
+            showStats = addCheckBoxMenuItem("Show Stats", "Indicates wheter to show the stats of the render", "stats", gui.getActiveVisualisation().getRenderScreen().getShowStats(), true);
         }else{
             stereoActive = addCheckBoxMenuItem("stereo3D", "Indicates if stereoscopic 3D is enabled", "3d", false, false);
             blendActive = addCheckBoxMenuItem("GL_BLEND", "Indicates if GL_BLEND is enabled", "blend", false, true);
             smoothActive = addCheckBoxMenuItem("GL_POINT_SMOOTH", "Indicates if GL_POINT_SMOOTH is enabled", "smooth",false, true);
+            showStats = addCheckBoxMenuItem("Show Stats", "Indicates wheter to show the stats of the render", "stats",false, true);
         }
-        showAll = addMenuItem("Show All", "Shows all visualisations", "showAll", true);
-        newWindow = addMenuItem("New Window", "Creates a new window for rendering", "newWindow", gui.isDetachedDesktop());
         
         optionsMenu.add(showSelectedPoint);
         optionsMenu.add(showOverlayOptions);
         optionsMenu.add(fullscreen);
-        optionsMenu.add(stereoActive);
-        optionsMenu.add(blendActive);
-        optionsMenu.add(smoothActive);
         optionsMenu.add(showAll);
         optionsMenu.add(newWindow);
+        renderOptions.add(stereoActive);
+        renderOptions.add(blendActive);
+        renderOptions.add(smoothActive);
+        renderOptions.add(showStats);
+        optionsMenu.add(renderOptions);
         
         clearVisualisationMenu = new JMenu("");
         clearVisualisationMenu.getAccessibleContext().setAccessibleDescription("Menu for the especific visualisation being rendered");
@@ -641,6 +653,12 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "fullscreen":
                 gui.setFullscreen(fullscreen.isSelected());
                 break;
+            case "showAll":
+                gui.showAll();
+                break;
+            case "newWindow":
+                gui.createNewRenderWindow();
+                break;
             case "3d":
                 gui.getActiveVisualisation().getRenderScreen().setStereo3D(stereoActive.isSelected());
                 break;
@@ -650,11 +668,8 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "smooth":
                 gui.getActiveVisualisation().getRenderScreen().setPointSmooth(smoothActive.isSelected());
                 break;
-            case "showAll":
-                gui.showAll();
-                break;
-            case "newWindow":
-                gui.createNewRenderWindow();
+            case "stats":
+                gui.getActiveVisualisation().getRenderScreen().setShowStats(showStats.isSelected());
                 break;
         }
     }
@@ -682,6 +697,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             stereoActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getStereo3D());
             blendActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getBlend());
             smoothActive.setSelected(gui.getActiveVisualisation().getRenderScreen().getPointSmooth());
+            showStats.setSelected(gui.getActiveVisualisation().getRenderScreen().getShowStats());
         }else{
             this.remove(activeVisualisationMenu);
             this.add(activeVisualisationMenu = clearVisualisationMenu);

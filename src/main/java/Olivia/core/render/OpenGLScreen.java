@@ -161,6 +161,8 @@ public class OpenGLScreen implements GLEventListener {
     
     protected boolean pointSmooth;
     
+    protected boolean showStats;
+    
     
     /**
      * Create a custom OpenGL capabilities mainly to enable stereoscopic 3D
@@ -258,6 +260,7 @@ public class OpenGLScreen implements GLEventListener {
         showPosition = false;
         blend = true;
         pointSmooth = true;
+        showStats = true;
         isStereo3D = this.visualisationManager.isStereo3D();
         //aspectRatio = 16/9.0;
     }
@@ -374,32 +377,32 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glEnd();
     }
 
-//    private void drawAxis(GLAutoDrawable gLDrawable) {
-//        double length = 0.125;
-//        double offset = length / 2.0;
-//        double coords[] = new double[4];
-//        double xWindow = 100;
-//        double yWindow = frame.getHeight() / 2.0;
-//        yWindow = viewport.array()[3] - yWindow;
-//
-//        gl2 = gLDrawable.getGL().getGL2();
-//        glu.gluUnProject(xWindow, yWindow, 0.1, matModelView.array(), 0, matProjection.array(), 0, viewport.array(), 0, coords, 0);
-//        double x = coords[0], y = coords[1], z = coords[2];
-//
-//        gl2.glColor3f(1, 0, 0);
-//        gl2.glBegin(GL2.GL_LINES);
-//        gl2.glVertex3d(x - offset, y, z);
-//        gl2.glVertex3d(x + offset, y, z);
-//        gl2.glColor3f(0, 1, 0);
-//        gl2.glVertex3d(x, y - offset, z);
-//        gl2.glVertex3d(x, y + offset, z);
-//        gl2.glColor3f(0, 0, 1);
-//        gl2.glVertex3d(x, y, z - offset);
-//        gl2.glVertex3d(x, y, z + offset);
-//        gl2.glEnd();
-//        gl2.glColor3f(1, 1, 1);
-//        drawCircle(x, y, z, offset, 30);
-//    }
+    private void drawAxis(GLAutoDrawable gLDrawable) {
+        double length = 0.125;
+        double offset = length / 2.0;
+        double coords[] = new double[4];
+        double xWindow = 100;
+        double yWindow = 10;
+        yWindow = viewport.array()[3] - yWindow;
+
+        gl2 = gLDrawable.getGL().getGL2();
+        glu.gluUnProject(xWindow, yWindow, 0.1, matModelView.array(), 0, matProjection.array(), 0, viewport.array(), 0, coords, 0);
+        double x = coords[0], y = coords[1], z = coords[2];
+
+        gl2.glColor3f(1, 0, 0);
+        gl2.glBegin(GL2.GL_LINES);
+        gl2.glVertex3d(x - offset, y, z);
+        gl2.glVertex3d(x + offset, y, z);
+        gl2.glColor3f(0, 1, 0);
+        gl2.glVertex3d(x, y - offset, z);
+        gl2.glVertex3d(x, y + offset, z);
+        gl2.glColor3f(0, 0, 1);
+        gl2.glVertex3d(x, y, z - offset);
+        gl2.glVertex3d(x, y, z + offset);
+        gl2.glEnd();
+        gl2.glColor3f(1, 1, 1);
+        drawCircle(x, y, z, offset, 30);
+    }
 
     /**
      * Here is where all drawing is done Requires some visuData
@@ -488,8 +491,7 @@ public class OpenGLScreen implements GLEventListener {
             gl2.glGetIntegerv(GL2.GL_VIEWPORT, viewport);
             gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, matModelView);
             drawScene();
-            drawStats(glad);
-            //drawAxis(glad);
+            if(showStats) drawStats(glad);
             if (cap.isCaptureImage()) {
                 cap.screenshot();
             }
@@ -512,7 +514,7 @@ public class OpenGLScreen implements GLEventListener {
             gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, matModelView);
 
             drawScene();
-            drawStats(glad);
+            if(showStats) drawStats(glad);
             if (cap.isCaptureVideo()) {
                 cap.recordVideo3D(Capture.RIGHT_SIDE);
             }
@@ -527,7 +529,7 @@ public class OpenGLScreen implements GLEventListener {
             gl2.glPushMatrix();
 
             drawScene();
-            drawStats(glad);
+            if(showStats) drawStats(glad);
             if (cap.isCaptureVideo()) {
                 cap.recordVideo3D(Capture.LEFT_SIDE);
             }
@@ -856,7 +858,7 @@ public class OpenGLScreen implements GLEventListener {
         this.blend = blend;
     }
     
-       /**
+    /**
      * Toggles GL_POINT_SMOOTH between true and false
      * @return The new value of GL_POINT_SMOOTH
      */
@@ -879,6 +881,31 @@ public class OpenGLScreen implements GLEventListener {
      */
     public void setPointSmooth(boolean pointSmooth) {
         this.pointSmooth = pointSmooth;
+    }
+    
+        /**
+     * Toggles whether to show the statistics of the render between true and false
+     * @return The new value of GL_POINT_SMOOTH
+     */
+    public boolean toggleShowStats(){
+        this.showStats = !this.showStats;
+        return showStats;
+    }
+    
+    /**
+     * Returns whether it is showing the statistics of the render
+     * @return whether it is showing the statistics of the render
+     */
+    public boolean getShowStats(){
+        return showStats;
+    }
+
+    /**
+     * Sets whether it will showing the statistics of the render
+     * @param showStats whether it will showing the statistics of the render
+     */
+    public void setShowStats(boolean showStats) {
+        this.showStats = showStats;
     }
     
         /**
