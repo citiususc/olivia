@@ -10,6 +10,7 @@ import Olivia.core.VisualisationManager;
 import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.ColourArray;
+import Olivia.exec.ExecutionMenu;
 import Olivia.extended.GradientColourArray;
 import Olivia.extended.IntensityColourArray;
 import Olivia.extended.PointStandard;
@@ -50,6 +51,9 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
         overlays = new OverlayArray<>(this);
         System.out.println("Creating Control Pane for " + name);
         controlPane = new StandardVisualisationControlPane(this);
+        ExecutionMenu executionMenu = new ExecutionMenu(this);
+        this.jMenu.add(executionMenu);
+        jMenu.setEnabled(true);
     }
     
     
@@ -70,6 +74,7 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
     }
     
     public void readFromFiles(String filePath, int decimation) throws FileNotFoundException, IOException {
+        this.mainFilePath = filePath;
         inputReader.readFromFiles(filePath, this,decimation);
         intensityIndex = returnsIndex = scanlineIndex = classificationIndex = rgbIndex = gradientIndex = -1;
         int counter=0;

@@ -105,6 +105,8 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      */
     protected String name;
     
+    protected String mainFilePath;
+    
     /*
     public VisualisationManager(A pointCloud, R renderScreen, OA overlays, CP controlPane){
         if(pointCloud == null){
@@ -150,6 +152,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
         this.gui = gui;
         this.isStereo3D = isStereo3D;
         this.name = name;
+        this.mainFilePath = "";
         jMenu = new JMenu(name);
         jMenu.setEnabled(false);
     }
@@ -594,6 +597,10 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     
     public void recordVideo(){
         renderScreen.getCapture().toggleCaptureVideo();
+    }
+    
+    public String getMainFilePath(){
+        return this.mainFilePath;
     }
 
 }

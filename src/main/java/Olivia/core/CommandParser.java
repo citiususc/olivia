@@ -164,6 +164,7 @@ public class CommandParser {
                 break;
             case "maximize" :
                 olivia.getGUI().setExtendedState( olivia.getGUI().getExtendedState()|Frame.MAXIMIZED_BOTH );
+                assert olivia.getGUI().getExtendedState() == Frame.MAXIMIZED_BOTH;
                 break;
             case "pointSize" :
                 if(cols.length==2){

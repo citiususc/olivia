@@ -55,11 +55,13 @@ public class ConsoleTextPane extends JScrollPane {
         this.setViewportView(textPane);
     }
 
-    /*
-    public JPanel getTextPane() {
-        return panel;
+    
+    public JTextPane getTextPane() {
+        return textPane;
     }
-    */
+    
+    
+    
 
     public void addText(String line) {
         StyledDocument doc = textPane.getStyledDocument();
