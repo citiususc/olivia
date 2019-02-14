@@ -52,6 +52,7 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
         System.out.println("Creating Control Pane for " + name);
         controlPane = new StandardVisualisationControlPane(this);
         ExecutionMenu executionMenu = new ExecutionMenu(this);
+        this.jMenu.setText(this.name);
         this.jMenu.add(executionMenu);
         jMenu.setEnabled(true);
     }

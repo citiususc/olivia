@@ -7,6 +7,7 @@ package Olivia.exec;
 
 import Olivia.core.gui.controls.ConsoleTextPane;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,12 +43,19 @@ public class CommandWorker extends SwingWorker<List<String>, String>{
         ProcessBuilder builder = new ProcessBuilder(commands);
         builder.redirectErrorStream(true);
 
-        Process p = builder.start();
+        Process p;
+        try{
+            p= builder.start();
+        }catch(IOException e){
+            output.add("***\nERROR EXECUTING COMMAND:\n"+commands+"\n"+e+"\n***\n");
+            publish("***\nERROR EXECUTING COMMAND:\n"+commands+"\n"+e+"\n***\n");
+            return output;
+        }
         try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
             String line = null;
             while ((line = r.readLine()) != null) {
                 //test2++;
-                setProgress(test2);
+                //setProgress(test2);
                 output.add(line);
                 publish(line);
             }
@@ -57,7 +65,7 @@ public class CommandWorker extends SwingWorker<List<String>, String>{
 
     @Override
     protected void process(List<String> chunks) {
-        test++;
+        //test++;
         for (String text : chunks) {
             //ta.append(text);
             //ta.append("\n");

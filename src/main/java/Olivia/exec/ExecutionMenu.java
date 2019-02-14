@@ -37,7 +37,7 @@ public class ExecutionMenu extends JMenu implements ActionListener {
         
         this.add(execLanding);
         
-        outputScreen = new OutputScreen();
+        outputScreen = new OutputScreen(vM.getGUI().getOlivia());
         outputScreen.setVisible(false);
         
     }
@@ -50,7 +50,8 @@ public class ExecutionMenu extends JMenu implements ActionListener {
                     vM.getGUI().getOlivia().addNewSegmenterVisualisation("/home/oscar.garcia/NetBeansProjects/Olivia_public/olivia_public/jogl/results.xyz", "Segmentation Result");
                 };*/
                 outputScreen.setVisible(true);
-                outputScreen.performSegment(vM.getMainFilePath());
+                outputScreen.setUp("segment", vM.getMainFilePath());
+                //outputScreen.performSegment(vM.getMainFilePath());
                 break;
         }
     }
