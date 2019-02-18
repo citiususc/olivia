@@ -22,18 +22,18 @@ import javax.swing.text.Style;
  *
  * @author oscar.garcia
  */
-public class CommandWorker extends SwingWorker<List<String>, String>{
+public class ExecutablesWorker extends SwingWorker<List<String>, String>{
     //protected JTextArea ta;
-    protected OutputScreen ta;
+    protected ExecutionOutputScreen ta;
     protected List<String> commands;
     protected int test=0,test2=0;
 
-    public CommandWorker(OutputScreen ta, List<String> commands) {
+    public ExecutablesWorker(ExecutionOutputScreen ta, List<String> commands) {
         this.ta = ta;
         this.commands = commands;
     }
 
-    public CommandWorker(OutputScreen ta, String... commands) {
+    public ExecutablesWorker(ExecutionOutputScreen ta, String... commands) {
         this(ta, Arrays.asList(commands));
     }
 

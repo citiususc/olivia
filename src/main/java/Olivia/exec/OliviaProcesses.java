@@ -5,6 +5,8 @@
  */
 package Olivia.exec;
 
+import java.io.File;
+import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 /**
@@ -13,21 +15,39 @@ import javax.swing.SwingUtilities;
  */
 public class OliviaProcesses {
     public final static String DEAFAULT_OUTPUT_FOLDER = "output";
-    protected CommandWorker cw;
+    protected ExecutablesWorker cw;
     boolean isWindows;
     //boolean isLinux;
     protected String executablesFolder;
     protected String outputFolder;
-    OutputScreen outputScreen;
+    ExecutionOutputScreen outputScreen;
+    protected ArrayList<String> availableCommands;
     
-    public OliviaProcesses(OutputScreen outputScreen, String executablesFolder){
+    public OliviaProcesses(ExecutionOutputScreen outputScreen, String executablesFolder){
         this.executablesFolder = executablesFolder;
         isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         this.outputScreen = outputScreen;
         this.outputFolder = DEAFAULT_OUTPUT_FOLDER;
         //outputScreen.setVisible(false);
         //isLinux
+        availableCommands = new ArrayList<>();
+        File folder = new File(executablesFolder);
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+            }else {
+                switch(fileEntry.getName()){
+                    case "segment" :
+                        availableCommands.add("segment");
+                        
+                }
+            }
+        }
     }
+    
+    public ArrayList<String> getAvailableCommands(){
+        return availableCommands;
+    }
+
 
     public String getOutputFolder() {
         return outputFolder;
@@ -43,14 +63,14 @@ public class OliviaProcesses {
     
     public int executeSegment(String filePath, String args){
         //ProcessBuilder builder = new ProcessBuilder();
-        CommandWorker worker;
+        ExecutablesWorker worker;
         outputScreen.setVisible(true);
         if (isWindows) {
             //builder.command("cmd.exe", "/c", "dir");
             return -1;
         } else {
             //builder.command(executablesFolder + "segment", "-i" +filePath, "-n 1000000");
-            worker = new CommandWorker(outputScreen, executablesFolder + "segment", "-i" +filePath, "-O"+outputFolder, args);
+            worker = new ExecutablesWorker(outputScreen, executablesFolder + "segment", "-i" +filePath, "-O"+outputFolder, args);
         }
         outputScreen.addText("Executing segmentation on " + filePath);
         worker.addPropertyChangeListener(outputScreen);

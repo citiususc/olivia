@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -14,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 /**
  * This is the menu bar holding the main options of the visualisation tool
@@ -486,6 +490,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     try {
                         gui.getOlivia().getCommandParser().readFromFile(file.toPath());
+                        SwingUtilities.invokeLater(gui.getOlivia().getCommandParser());
                     }catch (IOException ex) {
                         gui.getOlivia().getOutputter().println("Exception:" + ex);
                     }

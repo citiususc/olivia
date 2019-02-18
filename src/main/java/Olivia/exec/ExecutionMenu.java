@@ -19,9 +19,9 @@ public class ExecutionMenu extends JMenu implements ActionListener {
     protected VisualisationManager vM;
     //protected OliviaProcessBuilder pB;
     //protected OliviaProcesses pB;
-    protected OutputScreen outputScreen;
+    protected ExecutionOutputScreen outputScreen;
     
-    protected JMenuItem execLanding;
+    protected JMenuItem execSegment;
     
     public ExecutionMenu(VisualisationManager vM){
         super("Execute");
@@ -29,15 +29,15 @@ public class ExecutionMenu extends JMenu implements ActionListener {
         //pB = new OliviaProcessBuilder("/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
         //pB = new OliviaProcesses("/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
         
-        execLanding = new JMenuItem("segment");
-        execLanding.getAccessibleContext().setAccessibleDescription("Executes the segmentation on this file");
-        execLanding.setActionCommand("segment");
-        execLanding.setEnabled(true);
-        execLanding.addActionListener(this);
+        execSegment = new JMenuItem("segment");
+        execSegment.getAccessibleContext().setAccessibleDescription("Executes the segmentation on this file");
+        execSegment.setActionCommand("segment");
+        execSegment.addActionListener(this);
         
-        this.add(execLanding);
+        this.add(execSegment);
         
-        outputScreen = new OutputScreen(vM.getGUI().getOlivia());
+        outputScreen = new ExecutionOutputScreen(vM.getGUI().getOlivia());
+        execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment"));
         outputScreen.setVisible(false);
         
     }

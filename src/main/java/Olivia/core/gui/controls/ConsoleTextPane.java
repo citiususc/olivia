@@ -59,14 +59,16 @@ public class ConsoleTextPane extends JScrollPane {
     public JTextPane getTextPane() {
         return textPane;
     }
-    
-    
-    
+      
 
     public void addText(String line) {
+        addText(line, Color.white);
+    }
+    
+    public void addText(String line, Color color) {
         StyledDocument doc = textPane.getStyledDocument();
         Style style = textPane.addStyle("Color Style", null);
-        StyleConstants.setForeground(style, Color.white);
+        StyleConstants.setForeground(style, color);
         try {
             doc.insertString(doc.getLength(), line, style);
         }

@@ -25,14 +25,14 @@ import static javax.swing.SwingWorker.StateValue.DONE;
  *
  * @author oscar.garcia
  */
-public class OutputScreen extends JFrame implements PropertyChangeListener, ActionListener{
+public class ExecutionOutputScreen extends JFrame implements PropertyChangeListener, ActionListener{
     protected Olivia olivia;
             
     protected JPanel panel;
     protected ConsoleTextPane consoleTextPane;
     //protected JTextArea tA;
     //protected TextPaneOutputStream tpOStream;
-    protected OliviaProcesses pB;
+    protected OliviaProcesses oliviaProcesses;
     protected JTextField inputField;
     protected JLabel inputLabel;
     protected JTextField outputField;
@@ -44,7 +44,7 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
     protected JButton showButton;
     protected JButton exitButton;
     
-    public OutputScreen(Olivia olivia){
+    public ExecutionOutputScreen(Olivia olivia){
         super("Execution");
         this.olivia = olivia;
         panel = new JPanel();
@@ -55,7 +55,7 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
         int fill = GridBagConstraints.BOTH;
         int anchor = GridBagConstraints.CENTER;
         int ipadx = 10;
-        float labelWeight = 0.2f;
+        double labelWeight = 0.1;
         
         inputField = new JTextField("input");
         inputField.setEditable(false);
@@ -155,16 +155,16 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
         panel.add(executeButton, c);
         
         c.fill = fill;
-        c.anchor = anchor;
-        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.0;
         c.gridx = 0;
         c.gridy = 5;
         c.ipadx = ipadx;
         panel.add(showButton, c);
         
         c.fill = fill;
-        c.anchor = anchor;
-        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.0;
         c.gridx = 1;
         c.gridy = 5;
         c.ipadx = ipadx;
@@ -186,7 +186,7 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
         //this.add(panel);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(600, 400);
-        pB = new OliviaProcesses(this,"/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
+        oliviaProcesses = new OliviaProcesses(this,"/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
     }
     
     public void addText(String text){
@@ -197,7 +197,7 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
     
     public void setUp(String command, String inputFile){
         executeLabel.setText(command);
-        argsField.setText(pB.getArgsForCommand(command));
+        argsField.setText(oliviaProcesses.getArgsForCommand(command));
         inputField.setText(inputFile);
         executeButton.setEnabled(true);
         showButton.setEnabled(false);
@@ -206,7 +206,7 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
     }
     
     protected void performSegment(String filePath){
-        pB.executeSegment(filePath);
+        oliviaProcesses.executeSegment(filePath);
     }
 
     @Override
@@ -234,10 +234,10 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
                 executeButton.setEnabled(false);
                 outputField.setEditable(false);
                 argsField.setEditable(false);
-                pB.setOutputFolder(outputField.getText());
+                oliviaProcesses.setOutputFolder(outputField.getText());
                 switch(executeLabel.getText()){
                     case "segment":
-                        pB.executeSegment(inputField.getText(),argsField.getText());
+                        oliviaProcesses.executeSegment(inputField.getText(),argsField.getText());
                         break;
                 }
                 break;
@@ -258,5 +258,10 @@ public class OutputScreen extends JFrame implements PropertyChangeListener, Acti
                 break;
         }
     }
+
+    public OliviaProcesses getOliviaProcesses() {
+        return oliviaProcesses;
+    }
+    
     
 }
