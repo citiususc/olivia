@@ -1,10 +1,8 @@
 package Olivia.core.gui.controls;
 
-import Olivia.core.gui.MainControl;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.PrintStream;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;

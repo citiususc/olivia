@@ -217,6 +217,7 @@ public class CommandParser implements Runnable{
             olivia.getOutputter().println("Command: " + line,Color.YELLOW);
             runCommand(line);
         }
+        olivia.getOutputter().println("Command: All commands executed",Color.green);
     }
     
 }
