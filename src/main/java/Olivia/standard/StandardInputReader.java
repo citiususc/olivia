@@ -1,21 +1,10 @@
 package Olivia.standard;
 
-import Olivia.core.data.PointArray;
+import Olivia.core.Olivia;
 import Olivia.extended.PointStandard;
 import Olivia.core.InputReader;
-import com.google.common.base.Charsets;
-import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import com.google.common.io.CharSource;
-import com.google.common.io.Files;
-import com.google.common.io.LineReader;
-import com.google.common.io.MoreFiles;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.nio.file.StandardOpenOption;
 
 /**
  * This class manages the reading of 
@@ -35,7 +24,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
         line = buffer.readLine();
         cols = line.split(delimiter);
         switch(cols.length) {
-            case 3 : System.out.println("Found 'X Y Z' file");
+            case 3 : Olivia.textOutputter.println("Found 'X Y Z' file");
                      while (line != null) {
                          if(decimation_counter==0){
                             decimation_counter=decimation;
@@ -52,7 +41,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                             line = buffer.readLine();
                         }
                      break;
-            case 4 : System.out.println("Found 'X Y Z I' file");
+            case 4 : Olivia.textOutputter.println("Found 'X Y Z I' file");
                      points.setHave_intensity(true);
                      while (line != null) {
                         if(decimation_counter==0){
@@ -69,7 +58,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                         line = buffer.readLine();
                     }
                      break;
-            case 6 : System.out.println("Found 'X Y Z I rn nor' file");
+            case 6 : Olivia.textOutputter.println("Found 'X Y Z I rn nor' file");
                      points.setHave_intensity(true);
                      points.setHave_returns(true);
                      while (line != null) {
@@ -89,7 +78,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                         line = buffer.readLine();
                     }
                      break;
-            case 8 : System.out.println("Found 'X Y Z I rn nor dir edge' file");
+            case 8 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge' file");
                      points.setHave_intensity(true);
                      points.setHave_returns(true);
                      points.setHave_scanlines(true);
@@ -112,7 +101,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                         line = buffer.readLine();
                     }
                      break;
-            case 9 : System.out.println("Found 'X Y Z I rn nor dir edge class' file");
+            case 9 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class' file");
                      points.setHave_intensity(true);
                      points.setHave_returns(true);
                      points.setHave_scanlines(true);
@@ -137,7 +126,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                         line = buffer.readLine();
                         }
                      break;
-            case 10 : System.out.println("Found 'X Y Z I rn nor dir edge class ???' file");
+            case 10 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class ???' file");
                      points.setHave_intensity(true);
                      points.setHave_returns(true);
                      points.setHave_scanlines(true);
@@ -162,7 +151,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
                         line = buffer.readLine();
                         }
                      break;
-            case 12 : System.out.println("Found 'X Y Z I rn nor dir edge class R G B' file");
+            case 12 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class R G B' file");
                      points.setHave_intensity(true);
                      points.setHave_returns(true);
                      points.setHave_scanlines(true);
@@ -196,7 +185,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
         
         
         
-        System.out.println("Read " + numPointsRead + " points");
+        Olivia.textOutputter.println("Read " + numPointsRead + " points");
         //points.centerPoints();
         
         buffer.close();
@@ -215,27 +204,27 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        cols = firstLine.split(delimiter);
 //        StandardPointArray<PointStandard> points = new StandardPointArray<>();
 //        switch(cols.length) {
-//            case 3 : System.out.println("Found 'X Y Z' file");
+//            case 3 : Olivia.textOutputter.println("Found 'X Y Z' file");
 //                     break;
-//            case 4 : System.out.println("Found 'X Y Z I' file");
+//            case 4 : Olivia.textOutputter.println("Found 'X Y Z I' file");
 //                     points.setHave_intensity(true);
 //                     break;
-//            case 6 : System.out.println("Found 'X Y Z I rn nor' file");
+//            case 6 : Olivia.textOutputter.println("Found 'X Y Z I rn nor' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     break;
-//            case 8 : System.out.println("Found 'X Y Z I rn nor dir edge' file");
+//            case 8 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
 //                     break;
-//            case 9 : System.out.println("Found 'X Y Z I rn nor dir edge class' file");
+//            case 9 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
 //                     points.setHave_classification(true);
 //                     break;
-//            case 12 : System.out.println("Found 'X Y Z I rn nor dir edge class R G B' file");
+//            case 12 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class R G B' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
@@ -248,7 +237,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        
 //        source.forEachLine(lineConsumer);
 //        
-//        System.out.println("Read " + numPointsRead + " points");
+//        Olivia.textOutputter.println("Read " + numPointsRead + " points");
 //        points.centerPoints();
 //  
 //        return points;
@@ -258,7 +247,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        
 //        reader = new FileReader(file);
 //        buffer = new BufferedReader(reader);
-//        System.out.println("Reading " + file.getName() + "...");
+//        Olivia.textOutputter.println("Reading " + file.getName() + "...");
 //        String firstLine = buffer.readLine();
 //        buffer.close();
 //        reader.close();
@@ -267,27 +256,27 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        String[] cols;
 //        cols = firstLine.split(delimiter);
 //        switch(cols.length) {
-//            case 3 : System.out.println("Found 'X Y Z' file");
+//            case 3 : Olivia.textOutputter.println("Found 'X Y Z' file");
 //                     break;
-//            case 4 : System.out.println("Found 'X Y Z I' file");
+//            case 4 : Olivia.textOutputter.println("Found 'X Y Z I' file");
 //                     points.setHave_intensity(true);
 //                     break;
-//            case 6 : System.out.println("Found 'X Y Z I rn nor' file");
+//            case 6 : Olivia.textOutputter.println("Found 'X Y Z I rn nor' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     break;
-//            case 8 : System.out.println("Found 'X Y Z I rn nor dir edge' file");
+//            case 8 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
 //                     break;
-//            case 9 : System.out.println("Found 'X Y Z I rn nor dir edge class' file");
+//            case 9 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
 //                     points.setHave_classification(true);
 //                     break;
-//            case 12 : System.out.println("Found 'X Y Z I rn nor dir edge class R G B' file");
+//            case 12 : Olivia.textOutputter.println("Found 'X Y Z I rn nor dir edge class R G B' file");
 //                     points.setHave_intensity(true);
 //                     points.setHave_returns(true);
 //                     points.setHave_scanlines(true);
@@ -300,7 +289,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        
 //        java.nio.file.Files.lines(file.toPath()).forEach(lineConsumer);
 //        
-//        System.out.println("Read " + numPointsRead + " points");
+//        Olivia.textOutputter.println("Read " + numPointsRead + " points");
 //        points.centerPoints();
 //        
 //        return points;
@@ -313,7 +302,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
         timeS = System.nanoTime();
         StandardPointArray<PointStandard> points = readPointCloudFile(filePath,1);
         timeE = System.nanoTime();
-        System.out.println("Time to read file " + ((timeE-timeS)/1000000000.0));
+        Olivia.textOutputter.println("Time to read file " + ((timeE-timeS)/1000000000.0));
         visualisationM.setPointCloud(points);
     }
     
@@ -322,7 +311,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
         timeS = System.nanoTime();
         StandardPointArray<PointStandard> points = readPointCloudFile(filePath,decimation);
         timeE = System.nanoTime();
-        System.out.println("Time to read file " + ((timeE-timeS)/1000000000.0));
+        Olivia.textOutputter.println("Time to read file " + ((timeE-timeS)/1000000000.0));
         visualisationM.setPointCloud(points);
     }
     
@@ -332,7 +321,7 @@ public class StandardInputReader extends InputReader<StandardVisualisationManage
 //        StandardPointArray<PointStandard> points = readPointCloudFileG(file);
 //        //PointArray<PointStandard> points = readPointCloudFile(file);
 //        timeE = System.nanoTime();
-//        System.out.println("Time to read file " + ((timeE-timeS)/1000000000.0));
+//        Olivia.textOutputter.println("Time to read file " + ((timeE-timeS)/1000000000.0));
 //        visualisation.setPointCloud(points);
 //    }
 }

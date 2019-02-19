@@ -1,5 +1,6 @@
 package Olivia.basic;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.PointArray;
 import Olivia.extended.PointI;
 import Olivia.core.InputReader;
@@ -39,7 +40,7 @@ public class BasicInputReader extends InputReader<BasicVisualisationManager> {
             }
             numPointsRead++;
         }
-        System.out.println("Read " + numPointsRead + " points");
+        Olivia.textOutputter.println("Read " + numPointsRead + " points");
         return points;
     }
 

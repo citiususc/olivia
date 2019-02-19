@@ -24,19 +24,19 @@ public class EmptyVisualisationManager extends VisualisationManager<EmptyVisuali
     public EmptyVisualisationManager(int id, MainFrame gui, boolean isStereo3D) {
         super(id, gui, isStereo3D);
         name = "Clear " + id;
-        System.out.println("Creating Render Screen for " + name);
+        Olivia.textOutputter.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
-        System.out.println("Creating points for " + name + " (there are none)");
+        Olivia.textOutputter.println("Creating points for " + name + " (there are none)");
         pointCloud = new PointArray();
-        System.out.println("Creating Overlay Array for " + name);
+        Olivia.textOutputter.println("Creating Overlay Array for " + name);
         overlays = new OverlayArray<>(this);
-        System.out.println("Creating Control Pane for " + name);
+        Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new JPanel();
     }
     
     @Override
     public void readFromFiles(String filePath) throws FileNotFoundException, IOException {
-        System.out.println("Nothing to read");
+        Olivia.textOutputter.println("Nothing to read");
     }
     
 }

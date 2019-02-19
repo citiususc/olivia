@@ -29,7 +29,7 @@ public class Olivia {
     protected boolean isUndecorated;
     //private static boolean isMirroring;
     protected int idCount;
-    protected ConsoleTextOutputter textOutputter;
+    public static ConsoleTextOutputter textOutputter;
     protected CommandParser commandParser;
     
     /**
@@ -111,10 +111,11 @@ public class Olivia {
         idCount = 0;
     }
     
-    
+    /*
     public ConsoleTextOutputter getOutputter(){
         return textOutputter;
     }
+    */
     
     /**
      * Gets all the visualisationManger that have been loaded

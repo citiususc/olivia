@@ -1,5 +1,6 @@
 package Olivia.core.render;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.render.hi.NEWTKeyListener;
 import Olivia.core.render.hi.NEWTMouseListener;
@@ -216,10 +217,10 @@ public class OpenGLScreen implements GLEventListener {
             public void componentResized(ComponentEvent e) {
                 if (visualisationManager.getGUI().isActiveVisualisationManager(visualisationManager)) {
                     if (((JInternalFrame) e.getComponent()).isMaximum()) {
-                        System.out.println(visualisationManager.getId() + " Maximized");
+                        Olivia.textOutputter.println(visualisationManager.getId() + " Maximized");
                         visualisationManager.getGUI().setInactiveScreensIconify(true); // Iconify hidden render screens to stop them for being rendered                     
                     } else {
-                        System.out.println(visualisationManager.getId() + " Un-maximized");
+                        Olivia.textOutputter.println(visualisationManager.getId() + " Un-maximized");
                         visualisationManager.getGUI().setInactiveScreensIconify(false); // Undo the previous iconify
                         visualisationManager.getGUI().updateRenderFrameLayout();
                     }
@@ -292,7 +293,7 @@ public class OpenGLScreen implements GLEventListener {
     public void setVisualisation(Visualisation visualisation) {
         this.visualisation = visualisation;
         visualisation.setSelected(true);
-        System.out.println("Setting centre at "
+        Olivia.textOutputter.println("Setting centre at "
                 + visualisation.getPointCloud().getCenterOfMass()[0] + " "
                 + visualisation.getPointCloud().getCenterOfMass()[1] + " "
                 + visualisation.getPointCloud().getCenterOfMass()[2]);
@@ -441,7 +442,7 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glDepthFunc(GL2.GL_LEQUAL);
         gl2.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         
-        System.out.println("Drawing...");
+        Olivia.textOutputter.println("Drawing...");
     }
 
     /**
@@ -452,7 +453,7 @@ public class OpenGLScreen implements GLEventListener {
     @Override
     public void dispose(GLAutoDrawable glad) {
         visualisationManager.freeVBOs();
-        System.out.println("Exiting...");
+        Olivia.textOutputter.println("Exiting...");
     }
 
     /**
@@ -559,11 +560,11 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glGetIntegerv(GL2.GL_VIEWPORT, viewport);
         gl2.glLoadIdentity();
         if (!isStereo3D) {
-            //System.out.println("Resizing, new aspect ratio: " +  aspectRatio);
+            //Olivia.textOutputter.println("Resizing, new aspect ratio: " +  aspectRatio);
             //glu.gluPerspective(50.0f, camera.getAspectRatio(), 1.0, 5000.0);
             glu.gluPerspective(camera.getFieldOfView(), camera.getAspectRatio(), camera.getzNear(), camera.getzFar());
         }else{
-            //System.out.println("Resizing with 3d, new aspect ratio: " + aspectRatio);
+            //Olivia.textOutputter.println("Resizing with 3d, new aspect ratio: " + aspectRatio);
         }
         gl2.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, matModelView);
@@ -812,9 +813,9 @@ public class OpenGLScreen implements GLEventListener {
     public void animatorPause(){
         animator.pause();
         while(animator.isAnimating()){
-            System.out.print(".");
+            Olivia.textOutputter.print(".");
         };
-        System.out.println("Animator Paused");
+        Olivia.textOutputter.println("Animator Paused");
     }
     
     public void animatorResume(){
@@ -824,9 +825,9 @@ public class OpenGLScreen implements GLEventListener {
     public void animatorStop(){
         animator.stop();
         while(animator.isAnimating()){
-            System.out.print(".");
+            Olivia.textOutputter.print(".");
         };
-        System.out.println("Animator Stopped");
+        Olivia.textOutputter.println("Animator Stopped");
     }
     
     public boolean animatorIsAnimating(){

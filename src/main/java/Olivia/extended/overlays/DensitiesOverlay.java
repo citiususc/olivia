@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.Overlay;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
@@ -61,8 +62,8 @@ public class DensitiesOverlay<VM extends VisualisationManager> extends OverlayAr
             String[] cols;
             List<String> lines = Files.readAllLines(path);
             String delimiter = "\t";
-            System.out.println("Read " + lines.size());
-            System.out.println(lines.get(0));
+            Olivia.textOutputter.println("Read " + lines.size());
+            Olivia.textOutputter.println(lines.get(0));
             for(i=1;i<lines.size();i++){
                 cols = lines.get(i).split("\t");
                 double x = Double.parseDouble(cols[0]);
@@ -75,9 +76,9 @@ public class DensitiesOverlay<VM extends VisualisationManager> extends OverlayAr
                 this.add(label);
             }
         }catch (IOException ex) {
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
         }
-        System.out.println("Densities Overlay read");
+        Olivia.textOutputter.println("Densities Overlay read");
     }
 
     @Override

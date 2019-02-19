@@ -60,10 +60,10 @@ public class DesktopPane extends JDesktopPane implements RenderGUI{
             public void componentResized(ComponentEvent e) {
                 if (gui.isActiveVisualisationManager(visualisationM)) {
                     if (((JInternalFrame) e.getComponent()).isMaximum()) {
-                        System.out.println(visualisationM.getId() + " Maximized");
+                        Olivia.textOutputter.println(visualisationM.getId() + " Maximized");
                         setInactiveScreensIconify(true); // Iconify hidden render screens to stop them for being rendered                     
                     } else {
-                        System.out.println(visualisationM.getId() + " Un-maximized");
+                        Olivia.textOutputter.println(visualisationM.getId() + " Un-maximized");
                         setInactiveScreensIconify(false); // Undo the previous iconify
                         gui.updateRenderFrameLayout();
                     }

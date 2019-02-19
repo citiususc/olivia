@@ -46,7 +46,7 @@ public class CommandParser implements Runnable{
                 }else if (cols.length==4){
                     olivia.addNewStandardVisualisation(cols[1], cols[2], Integer.parseInt(cols[3]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "segmenter" :
@@ -55,7 +55,7 @@ public class CommandParser implements Runnable{
                 }else if(cols.length==3){
                     olivia.addNewSegmenterVisualisation(cols[1], cols[2]);
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "classifier" :
@@ -64,7 +64,7 @@ public class CommandParser implements Runnable{
                 }else if(cols.length==3){
                     olivia.addNewClassifierVisualisation(cols[1], cols[2]);
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "scanlines" :
@@ -73,14 +73,14 @@ public class CommandParser implements Runnable{
                 }else if(cols.length==3){
                     olivia.addNewScanlinesVisualisation(cols[1], cols[2]);
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadNeighbours" :
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadNeighboursOverlay(new File(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadAreas" :
@@ -89,63 +89,63 @@ public class CommandParser implements Runnable{
                 } if(cols.length==4){
                     olivia.getGUI().getActiveVisualisation().loadAreasOverlay(new File(cols[1]),cols[2],new PointColour(RenderOptions.getColor(cols[3])));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadLabeledCells" :
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadLabelledCells(new File(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadDensities" :
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadDensities(new File(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadNormals" :
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadNormals(new File(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadVertex" :
                 if(cols.length>5){
                     olivia.getGUI().getActiveVisualisation().loadVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadAnimatedVertex" :
                 if(cols.length>6){
                     olivia.getGUI().getActiveVisualisation().loadAnimatedVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])), Long.parseLong(cols[6]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadCircles" :
                 if(cols.length>2){
                     olivia.getGUI().getActiveVisualisation().loadCircles(new File(cols[1]), cols[2]);
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadAnimatedCircles" :
                 if(cols.length>2){
                     olivia.getGUI().getActiveVisualisation().loadAnimatedCircles(new File(cols[1]), cols[2], Long.parseLong(cols[3]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "transformLastOverlay" :
                 if(cols.length>6){
                     olivia.getGUI().getActiveVisualisation().transformLastOverlay(Float.parseFloat(cols[1]), Float.parseFloat(cols[2]), Float.parseFloat(cols[3]), Float.parseFloat(cols[4]), Float.parseFloat(cols[5]), Float.parseFloat(cols[6]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "loadCamera" :
@@ -172,52 +172,52 @@ public class CommandParser implements Runnable{
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().setPointSize(Integer.parseInt(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
                 }
                 break;
             case "lineWidth" :
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().setLineWidth(Integer.parseInt(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                 }
                 break;
             case "eyeDist" :
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().getCamera().setIntraOcularDistance(Double.parseDouble(cols[1]));
                 }else{
-                    olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
+                    Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
                 }
                 break;
             case "#" :
                 break;
             default :
-                olivia.getOutputter().println("Command: Unrecognised command " + line, Color.red);
+                Olivia.textOutputter.println("Command: Unrecognised command " + line, Color.red);
                 break;
         }
         
     }
     
     public void readFromFile(Path path) throws FileNotFoundException, IOException {
-        olivia.getOutputter().println("Command: Reading commands from " + path,Color.YELLOW);
+        Olivia.textOutputter.println("Command: Reading commands from " + path,Color.YELLOW);
         //List<String> lines = Files.readAllLines(path);
-        //olivia.getOutputter().println("Command: read " + lines.size());
+        //Olivia.textOutputter.println("Command: read " + lines.size());
         commands = Files.readAllLines(path);
-        olivia.getOutputter().println("Command: read " + commands.size() + " commands",Color.green);
-        olivia.getOutputter().println("Commands will now execute, this will freeze the GUI and take some time",Color.green);
+        Olivia.textOutputter.println("Command: read " + commands.size() + " commands",Color.green);
+        Olivia.textOutputter.println("Commands will now execute, this will freeze the GUI and take some time",Color.green);
         /*for(String line:lines){
                 runCommand(line);
         }*/
-        //olivia.getOutputter().println("Command: Command list ended");
+        //Olivia.textOutputter.println("Command: Command list ended");
     }
     
     @Override
     public void run() {
         for(String line:commands){
-            olivia.getOutputter().println("Command: " + line,Color.YELLOW);
+            Olivia.textOutputter.println("Command: " + line,Color.YELLOW);
             runCommand(line);
         }
-        olivia.getOutputter().println("Command: All commands executed",Color.green);
+        Olivia.textOutputter.println("Command: All commands executed",Color.green);
     }
     
 }

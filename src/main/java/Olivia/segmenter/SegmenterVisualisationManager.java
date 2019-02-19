@@ -1,5 +1,6 @@
 package Olivia.segmenter;
 
+import Olivia.core.Olivia;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
@@ -50,7 +51,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
     public SegmenterVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String name) {
         super(id, gui, isStereo3D);
         this.name = name;
-        System.out.println("Creating Render Screen for " + name);
+        Olivia.textOutputter.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         renderScreen.addActionListener(this);
         colours = new ArrayList<>();
@@ -62,9 +63,9 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         showUnsegmented = false;
         selectedGroup = null;
         selectedGroupPoints = new PointArray();
-        System.out.println("Creating Overlay Array for " + name);
+        Olivia.textOutputter.println("Creating Overlay Array for " + name);
         overlays = new OverlayArray<>(this);
-        System.out.println("Creating Control Pane for " + name);
+        Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new SegmenterControlPane(this);
     }
 
@@ -161,8 +162,8 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         flagSelectedPoints(selectedFlags);
         colours.add(new IntensityColourArray(pointCloud));
         colours.add(new SegmenterColourArray(pointCloud, groupIds));
-        System.out.println("Read " + pointCloud.size() + " points");
-        System.out.println("Read " + groups.size() + " groups");
+        Olivia.textOutputter.println("Read " + pointCloud.size() + " points");
+        Olivia.textOutputter.println("Read " + groups.size() + " groups");
     }
 
     public void setColouring(int colourIndex) {

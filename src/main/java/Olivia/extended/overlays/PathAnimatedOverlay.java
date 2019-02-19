@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.Overlay;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
@@ -82,11 +83,11 @@ public class PathAnimatedOverlay<O extends Overlay<VM>,VM extends VisualisationM
     @Override
     public void gotoTime(long timestamp) {
         if((timestamps.size()!=frameInTimestamp.size())&(timestamps.size()!=positions.size())){
-            System.out.println("Error in path animated overlay, timestamps and positions do not match");
+            Olivia.textOutputter.println("Error in path animated overlay, timestamps and positions do not match");
             return;
         }
         if((timestamp>duration)||(timestamp<0)){
-            System.out.println("Animation is not that long");
+            Olivia.textOutputter.println("Animation is not that long");
         }else{
             int i;
             for(i=0;i<timestamps.size()-1;i++){

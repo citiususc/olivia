@@ -119,7 +119,7 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
             this.drawShape(renderScreen);
             renderScreen.getGl2().glPopMatrix();
         }else{
-            System.out.println("This object can only be rendered in its own render screen");
+            Olivia.textOutputter.println("This object can only be rendered in its own render screen");
         }
     }
 

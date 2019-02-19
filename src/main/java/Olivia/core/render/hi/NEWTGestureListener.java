@@ -16,7 +16,7 @@ public class NEWTGestureListener implements GestureListener{
 
     @Override
     public void gestureDetected(GestureHandler.GestureEvent ge) {
-        //System.out.println(ge.toString());
+        //Olivia.textOutputter.println(ge.toString());
     }
     
 }

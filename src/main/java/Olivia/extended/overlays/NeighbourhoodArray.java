@@ -1,5 +1,6 @@
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
 import java.io.FileNotFoundException;
@@ -31,7 +32,7 @@ public class NeighbourhoodArray<VM extends VisualisationManager> extends Overlay
     public NeighbourhoodArray(VM visualisationManager) {
         super(visualisationManager, "neighbourhood");
         if(visualisationManager.getPointCloud().size()<1){
-            System.out.println("There are no points for which to show neighbours!!");
+            Olivia.textOutputter.println("There are no points for which to show neighbours!!");
         }else{
             for(int i=0; i<visualisationManager.getPointCloud().size();i++){
                 Neighbourhood<VM> neighbourhood = new Neighbourhood<>(visualisationManager,i);
@@ -60,10 +61,10 @@ public class NeighbourhoodArray<VM extends VisualisationManager> extends Overlay
         String line;
         String[] cols;
         if(lines.size()!=overlays.size()){
-            System.out.println("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
+            Olivia.textOutputter.println("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
             throw new IOException("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
         }
-        System.out.println("Read " + lines.size() + " lines in neighbour identifiers file");
+        Olivia.textOutputter.println("Read " + lines.size() + " lines in neighbour identifiers file");
         for (int i=0;i<lines.size();i++) {
             line = lines.get(i);
             cols = line.split(delimiter);
@@ -73,7 +74,7 @@ public class NeighbourhoodArray<VM extends VisualisationManager> extends Overlay
             }
             overlays.get(i).setNeighbours(ids);
         }
-        System.out.println("Neigbours for " + overlays.size() + " points read");
+        Olivia.textOutputter.println("Neigbours for " + overlays.size() + " points read");
     }
     
 
@@ -84,10 +85,10 @@ public class NeighbourhoodArray<VM extends VisualisationManager> extends Overlay
         String line;
         String[] cols;
         if(lines.size()!=overlays.size()){
-            System.out.println("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
+            Olivia.textOutputter.println("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
             throw new IOException("Read " + lines.size() + ", not enough for " + overlays.size() + " neighbourhoods");
         }
-        System.out.println("Read " + lines.size() + " lines in neighbour distances file");
+        Olivia.textOutputter.println("Read " + lines.size() + " lines in neighbour distances file");
         for (int i=0;i<lines.size();i++) {
             line = lines.get(i);
             cols = line.split(delimiter);
@@ -97,7 +98,7 @@ public class NeighbourhoodArray<VM extends VisualisationManager> extends Overlay
             }
             overlays.get(i).setNeighboursDistances(dists);
         }
-        System.out.println("Distances to neigbours for " + overlays.size() + " points read");
+        Olivia.textOutputter.println("Distances to neigbours for " + overlays.size() + " points read");
     }
 
 

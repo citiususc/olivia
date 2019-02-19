@@ -1,5 +1,6 @@
 package Olivia.basic;
 
+import Olivia.core.Olivia;
 import Olivia.core.OverlayArray;
 import Olivia.extended.IntensityColourArray;
 import Olivia.core.render.colours.ColourArray;
@@ -8,11 +9,6 @@ import Olivia.core.render.OpenGLScreen;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.PointArray;
 import Olivia.core.gui.MainFrame;
-import Olivia.extended.PointStandard;
-import Olivia.extended.RandomColourArray;
-import Olivia.standard.StandardPointArray;
-import Olivia.standard.StandardVisualisationControlPane;
-import Olivia.standard.StandardVisualisationManager;
 import com.jogamp.opengl.GL;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,16 +28,16 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
     public BasicVisualisationManager(int id, MainFrame gui, boolean isStereo3D) {
         super(id, gui, isStereo3D);
         this.name = "Basic " + id;
-        System.out.println("Creating Render Screen for " + name);
+        Olivia.textOutputter.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
-        System.out.println("Creating Visualisation for " + name);
+        Olivia.textOutputter.println("Creating Visualisation for " + name);
         inputReader = new BasicInputReader();
         colours = new ArrayList<>();
         selectedColours = 0;
         pointCloud = new PointArray();
-        System.out.println("Creating Overlay Array for " + name);
+        Olivia.textOutputter.println("Creating Overlay Array for " + name);
         overlays = new OverlayArray<>(this);
-        System.out.println("Creating Control Pane for " + name);
+        Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new BasicVisualisationControlPane(this);   
     }
 
@@ -54,18 +50,18 @@ public class BasicVisualisationManager extends VisualisationManager<BasicVisuali
     public void setIntensityColouring() {
         selectedColours = 0;
         pointCloud.doRepack();
-        System.out.println("set to Intensity colouring");
+        Olivia.textOutputter.println("set to Intensity colouring");
     }
 
     public void setRandomColouring() {
         selectedColours = 1;
         pointCloud.doRepack();
-        System.out.println("set to random colouring");
+        Olivia.textOutputter.println("set to random colouring");
     }
 
     @Override
     public void readFromFiles(String filePath) throws FileNotFoundException, IOException {
-        System.out.println("Opening directory: " + filePath + " for" + name);
+        Olivia.textOutputter.println("Opening directory: " + filePath + " for" + name);
         inputReader.readFromFiles(filePath, this);
         colours.add(new IntensityColourArray(pointCloud));
     }

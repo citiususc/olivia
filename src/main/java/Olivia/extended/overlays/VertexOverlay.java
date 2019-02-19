@@ -5,7 +5,7 @@
  */
 package Olivia.extended.overlays;
 
-import Olivia.core.Overlay;
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
 import Olivia.core.data.Point3D_id;
@@ -14,14 +14,11 @@ import Olivia.core.gui.controls.overlays.VertexOptionsPanel;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
-import Olivia.core.render.RenderOptions;
 import com.jogamp.opengl.GL2;
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,14 +62,14 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
 
     @Override
     public synchronized void moveTo(Point3D point) {
-        //System.out.println("Moving " + name + " to " + point + " with center at " + bounds.getCentre());
+        //Olivia.textOutputter.println("Moving " + name + " to " + point + " with center at " + bounds.getCentre());
         vertices.moveTo(point);
         super.moveTo(point);
     }
     
     @Override
     public synchronized void displace(Point3D point) {
-        //System.out.println("Displacing " + name + " to " + point + " with center at " + bounds.getCentre());
+        //Olivia.textOutputter.println("Displacing " + name + " to " + point + " with center at " + bounds.getCentre());
         vertices.displace(point);
         super.displace(point); //To change body of generated methods, choose Tools | Templates.
     }
@@ -102,13 +99,13 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
             int i;
             List<String> lines = Files.readAllLines(path);
             String delimiter = "\t";
-            System.out.println("Read " + lines.size());
+            Olivia.textOutputter.println("Read " + lines.size());
             for(i=0;i<lines.size();i++){
                 parseLineAsVertex(lines.get(i), delimiter);
             }
             this.vertices.endedAddingOriginalPoints();
         }catch (IOException ex) {
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
         }
     }
     
@@ -123,7 +120,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
             double z = Double.parseDouble(cols[2]);
             point = new Point3D_id(x, y, z);
         }else{
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
             throw new IOException();
         }
         if(cols.length==6){
@@ -139,7 +136,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
     
     protected void parseLines(List<String> lines, String delimiter) throws IOException{
         if(lines.size()!=2){
-            System.out.println("The number of lines " + lines.size() + " does not match lines!");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match lines!");
             throw new IOException();
         }
         this.setRenderMode(GL_LINES);
@@ -150,7 +147,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
     
     protected void parseTriangle(List<String> lines, String delimiter) throws IOException{
         if(lines.size()!=3){
-            System.out.println("The number of lines " + lines.size() + " does not match a triangle!");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a triangle!");
             throw new IOException();
         }
         this.setRenderMode(GL_TRIANGLES);
@@ -161,7 +158,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
     
     protected void parseQuad(List<String> lines, String delimiter) throws IOException{
         if(lines.size()!=4){
-            System.out.println("The number of lines " + lines.size() + " does not match a quad!");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a quad!");
             throw new IOException();
         }
         this.setRenderMode(GL_QUADS);
@@ -172,7 +169,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
     
     protected void parsePolygon(List<String> lines, String delimiter) throws IOException{
         if(lines.size()<3){
-            System.out.println("The number of lines " + lines.size() + " are too few for a polygon!");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " are too few for a polygon!");
             throw new IOException();
         }
         this.setRenderMode(GL_POLYGON);
@@ -217,7 +214,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
             //drawCode(renderMode, rasterMode);
             drawVBO(renderMode, rasterMode);
         }else{
-            System.out.println("Trying to draw unsupported mode");
+            Olivia.textOutputter.println("Trying to draw unsupported mode");
         }
     }
 

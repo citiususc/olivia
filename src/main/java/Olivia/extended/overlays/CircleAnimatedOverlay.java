@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.AnimatedOverlay;
 import Olivia.core.VisualisationManager;
 import java.io.FileNotFoundException;
@@ -37,14 +38,14 @@ public class CircleAnimatedOverlay<VM extends VisualisationManager> extends Anim
             int i;
             List<String> lines = Files.readAllLines(path);
             String delimiter = "\t";
-            System.out.println("Read " + lines.size());
+            Olivia.textOutputter.println("Read " + lines.size());
             for(i=0;i<lines.size();i++){
                 CircleOverlay circle = new CircleOverlay(this.visualisationManager);
                 circle.parseLineAsCircle(lines.get(i), delimiter);
                 this.add(circle);
             }
         }catch (IOException ex) {
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
         }
     }
     

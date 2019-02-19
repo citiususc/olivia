@@ -27,7 +27,7 @@ public class NEWTScrollGestureHandler extends DoubleTapScrollGesture{
     @Override
     public boolean process(InputEvent ie) {
         if(super.process(ie)){
-            //System.out.println("Scrolled " + this.getScrollDistanceXY()[0] + " " + this.getScrollDistanceXY()[1]);
+            //Olivia.textOutputter.println("Scrolled " + this.getScrollDistanceXY()[0] + " " + this.getScrollDistanceXY()[1]);
             renderScreen.getCamera().addToTransX( - this.getScrollDistanceXY()[0] * speed);
             renderScreen.getCamera().addToTransY( this.getScrollDistanceXY()[1] * speed);
             return true;

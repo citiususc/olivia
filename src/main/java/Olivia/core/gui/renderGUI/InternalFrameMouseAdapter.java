@@ -74,7 +74,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             int loc_x,loc_y;
             loc_x = 0;
             loc_y = 0;
-            //System.out.println(ins);
+            //Olivia.textOutputter.println(ins);
             int width_add=0;
             int height_add=0;
             if(y>h-ins.bottom){
@@ -89,7 +89,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             }else if(x>w-ins.right){
                 width_add = w_add;//right
             }
-            //System.out.println(me.getPoint() + " w_add" + width_add + " h_add" + height_add);
+            //Olivia.textOutputter.println(me.getPoint() + " w_add" + width_add + " h_add" + height_add);
 
             if(SwingUtilities.isRightMouseButton(me)){
                 width_set = frame.getWidth()-width_add;
@@ -122,7 +122,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             int x = me.getPoint().x;
             int y = me.getPoint().y;
             Insets ins = frame.getInsets();
-            //System.out.println(ins);
+            //Olivia.textOutputter.println(ins);
             if(y>h-ins.bottom){
                 pressed_bottom = true; //bottom
                 resize_started=true;
@@ -132,7 +132,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             }else if(y<(ins.top+barSize)){
                 pressed_move = true; //top
                 move_started = true;
-                //System.out.println("moved");
+                //Olivia.textOutputter.println("moved");
             }         
             if(x<ins.left){
                 pressed_left = true; //left
@@ -144,7 +144,7 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             mouse_start_x=x;
             mouse_start_y=y;
         }
-        //System.out.println("Pressed in " +me.getPoint());
+        //Olivia.textOutputter.println("Pressed in " +me.getPoint());
         
     }
     
@@ -164,8 +164,8 @@ public class InternalFrameMouseAdapter extends MouseAdapter{
             int width_set=frame.getWidth();
             int height_set=frame.getHeight();
 
-            //System.out.println("Frame_location " +location);
-            //System.out.println("Released in " +me.getPoint());
+            //Olivia.textOutputter.println("Frame_location " +location);
+            //Olivia.textOutputter.println("Released in " +me.getPoint());
 
             if(pressed_bottom){
                 height_set = y;

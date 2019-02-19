@@ -1,5 +1,6 @@
 package Olivia.core.gui;
 
+import Olivia.core.Olivia;
 import Olivia.extended.overlays.VertexAnimatedOverlay;
 import Olivia.extended.overlays.VertexOverlay;
 import java.awt.event.ActionEvent;
@@ -425,7 +426,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getOlivia().addNewScanlinesVisualisation(file.getAbsolutePath());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "openBasic":
@@ -434,7 +435,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     //addNewBasicVisualisation(file.getAbsolutePath());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "openEmpty":
@@ -447,7 +448,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getOlivia().addNewStandardVisualisation(file.getAbsolutePath(),decimationFileCA.getDecimation());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 fileC.setAccessory(defaultFileCA);
                 break;
@@ -457,7 +458,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 //                    File file = fileC.getSelectedFile();
 //                    addNewStandardVisualisation(file);
 //                } else {
-//                    System.out.println("Open command cancelled by user.");
+//                    Olivia.textOutputter.println("Open command cancelled by user.");
 //                }
 //                break;
             case "openClassifier":
@@ -466,7 +467,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getOlivia().addNewClassifierVisualisation(file.getAbsolutePath());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "openSegmenter":
@@ -475,7 +476,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getOlivia().addNewSegmenterVisualisation(file.getAbsolutePath());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "openNeighbours":
@@ -484,7 +485,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = directoryFC.getSelectedFile();
                     //addNewNeighboursVisualisation(file.getAbsolutePath());
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "openCommand":
@@ -496,10 +497,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                         gui.getOlivia().getCommandParser().readFromFile(file.toPath());
                         SwingUtilities.invokeLater(gui.getOlivia().getCommandParser());
                     }catch (IOException ex) {
-                        gui.getOlivia().getOutputter().println("Exception:" + ex);
+                        Olivia.textOutputter.println("Exception:" + ex);
                     }
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
              case "loadNeighbours":
@@ -508,7 +509,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = directoryFC.getSelectedFile();
                     gui.getActiveVisualisation().loadNeighboursOverlay(file);
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "loadAreas":
@@ -518,7 +519,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = directoryFC.getSelectedFile();
                     gui.getActiveVisualisation().loadAreasOverlay(file);
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "loadLabeledCells":
@@ -527,7 +528,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getActiveVisualisation().loadLabelledCells(file);
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
                 
@@ -538,15 +539,15 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening point file: " + file.getParent() + "/" + file.getName());
+                    Olivia.textOutputter.println("Opening point file: " + file.getParent() + "/" + file.getName());
                     try {
                         vOverlay.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(vOverlay);
                     }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
+                        Olivia.textOutputter.println("Exception:" + ex);
                     }
                 } else {
-                    System.out.println("Load command cancelled by user.");
+                    Olivia.textOutputter.println("Load command cancelled by user.");
                 }
                 fileC.setAccessory(defaultFileCA);
                 break;
@@ -557,15 +558,15 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    System.out.println("Opening point file: " + file.getParent() + "/" + file.getName());
+                    Olivia.textOutputter.println("Opening point file: " + file.getParent() + "/" + file.getName());
                     try {
                         vAOverlay.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(vAOverlay);
                     }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
+                        Olivia.textOutputter.println("Exception:" + ex);
                     }
                 } else {
-                    System.out.println("Load command cancelled by user.");
+                    Olivia.textOutputter.println("Load command cancelled by user.");
                 }
                 fileC.setAccessory(defaultFileCA);
                 break;
@@ -574,18 +575,18 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    /*System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
+                    /*Olivia.textOutputter.println("Opening circles file: " + file.getParent() + "/" + file.getName());
                     try {
                         cOverlays.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(cOverlays);
                         cOverlays.setDrawModesToFalse();
                         cOverlays.setDrawAll(true);
                     }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
+                        Olivia.textOutputter.println("Exception:" + ex);
                     }*/
                     gui.getActiveVisualisation().loadCircles(file, ae.getActionCommand());
                 } else {
-                    System.out.println("Load command cancelled by user.");
+                    Olivia.textOutputter.println("Load command cancelled by user.");
                 }
                 break;
             case "drawAnimatedCircles":
@@ -593,16 +594,16 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 returnVal = fileC.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
-                    /*System.out.println("Opening circles file: " + file.getParent() + "/" + file.getName());
+                    /*Olivia.textOutputter.println("Opening circles file: " + file.getParent() + "/" + file.getName());
                     try {
                         caOverlays.readFromFile(file.toPath());
                         gui.getActiveVisualisation().addOverlay(caOverlays);
                     }catch (IOException ex) {
-                        System.out.println("Exception:" + ex);
+                        Olivia.textOutputter.println("Exception:" + ex);
                     }*/
                     gui.getActiveVisualisation().loadAnimatedCircles(file, ae.getActionCommand(),1l);
                 } else {
-                    System.out.println("Load command cancelled by user.");
+                    Olivia.textOutputter.println("Load command cancelled by user.");
                 }
                 break;
             case "drawDensities":
@@ -611,7 +612,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getActiveVisualisation().loadDensities(file);
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "drawNormals":
@@ -620,7 +621,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.getActiveVisualisation().loadNormals(file);
                 } else {
-                    System.out.println("Open command cancelled by user.");
+                    Olivia.textOutputter.println("Open command cancelled by user.");
                 }
                 break;
             case "clearAll":
@@ -632,7 +633,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.loadCamera(file);
                 } else {
-                    System.out.println("Load command cancelled by user.");
+                    Olivia.textOutputter.println("Load command cancelled by user.");
                 }
                 break;
             case "saveCamera":
@@ -641,7 +642,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                     File file = fileC.getSelectedFile();
                     gui.saveCamera(file);
                 } else {
-                    System.out.println("Save command cancelled by user.");
+                    Olivia.textOutputter.println("Save command cancelled by user.");
                 }
                 break;
             case "mirroring":

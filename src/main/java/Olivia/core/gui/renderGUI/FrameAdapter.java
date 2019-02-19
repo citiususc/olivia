@@ -5,6 +5,7 @@
  */
 package Olivia.core.gui.renderGUI;
 
+import Olivia.core.Olivia;
 import java.awt.event.WindowAdapter;
 import javax.swing.JFrame;
 
@@ -29,7 +30,7 @@ public class FrameAdapter extends WindowAdapter{
      */
     @Override
     public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-        System.out.println("Window closing");
+        Olivia.textOutputter.println("Window closing");
         renderPane.closeAllInternalFrames();
         df.removeFrame(detachedFrame);
         super.windowClosing(windowEvent);

@@ -5,17 +5,13 @@
  */
 package Olivia.extended.overlays;
 
-import Olivia.core.Overlay;
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
-import Olivia.core.data.Point3D_id;
 import Olivia.core.render.CircleOptions;
 import Olivia.core.render.OpenGLScreen;
-import Olivia.core.render.RenderOptions;
-import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
 import com.jogamp.opengl.GL2;
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -122,7 +118,7 @@ public class CircleOverlay<VM extends VisualisationManager> extends RenderableOv
             point = new Point3D(x, y, z);
             this.setBounds(point);
         }else{
-            System.out.println("Error Reading Circle");
+            Olivia.textOutputter.println("Error Reading Circle");
             throw new IOException();
         }
         if(cols.length>=8){
@@ -139,10 +135,10 @@ public class CircleOverlay<VM extends VisualisationManager> extends RenderableOv
             int i;
             List<String> lines = Files.readAllLines(path);
             String delimiter = "\t";
-            System.out.println("Read " + lines.size());
+            Olivia.textOutputter.println("Read " + lines.size());
             parseLineAsCircle(lines.get(0), delimiter);
         }catch (IOException ex) {
-            System.out.println("Error Reading Circle");
+            Olivia.textOutputter.println("Error Reading Circle");
         }
     }
     
@@ -169,7 +165,7 @@ public class CircleOverlay<VM extends VisualisationManager> extends RenderableOv
             //renderScreen.getGl2().glColor3f(colours.get(i).getR(), colours.get(i).getG(), colours.get(i).getB());
             renderScreen.getGl2().glVertex3d(Math.sin(iter + rot) * extRadius + x, Math.cos(iter + rot) * extRadius + y, z);
             iter = iter + step;
-            //System.out.println("ended at " + iter);
+            //Olivia.textOutputter.println("ended at " + iter);
         }
         renderScreen.getGl2().glEnd();
         
@@ -199,7 +195,7 @@ public class CircleOverlay<VM extends VisualisationManager> extends RenderableOv
                 renderScreen.getGl2().glVertex3d(Math.sin(iter + rot) * intRadius + x, Math.cos(iter + rot) * intRadius + y, z);
                 renderScreen.getGl2().glVertex3d(Math.sin(iter + rot) * extRadius + x, Math.cos(iter + rot) * extRadius + y, z);
                 iter = iter + step;
-            //System.out.println("ended at " + iter);
+            //Olivia.textOutputter.println("ended at " + iter);
         }
         renderScreen.getGl2().glEnd();
         

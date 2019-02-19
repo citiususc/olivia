@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.AnimatedOverlay;
 import Olivia.core.VisualisationManager;
 import Olivia.core.render.colours.PointColour;
@@ -75,7 +76,7 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
     protected void readTriangles(List<String> lines, String delimiter, int rasterMode) throws IOException{
         int i, numFrame=0;
         if(Math.floorMod(lines.size(),3)!=0){
-            System.out.println("The number of lines " + lines.size() + " does not match a division in triangles! doing nothing");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a division in triangles! doing nothing");
             return;
         }
         for(i=0;i<lines.size();i=i+3){
@@ -88,7 +89,7 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
     protected void readQuads(List<String> lines, String delimiter, int rasterMode) throws IOException{
         int i, numFrame=0;
         if(Math.floorMod(lines.size(),4)!=0){
-            System.out.println("The number of lines " + lines.size() + " does not match a division in quads! doing nothing");
+            Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a division in quads! doing nothing");
             return;
         }
         for(i=0;i<lines.size();i=i+4){
@@ -101,23 +102,23 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
     public void readFromFile(Path path, int renderMode, int rasterMode) throws FileNotFoundException,IOException{
         try{
             if(!VertexOverlay.SUPPORTED_PRIMITIVE_MODES.contains(renderMode)){
-                System.out.println("Trying to read unsupported mode!");
+                Olivia.textOutputter.println("Trying to read unsupported mode!");
                 return;
             }
             List<String> lines = Files.readAllLines(path);
             String delimiter = "\t";
-            System.out.println("Read " + lines.size());
+            Olivia.textOutputter.println("Read " + lines.size());
             
             if(renderMode == VertexOverlay.GL_TRIANGLES){
                 if(Math.floorMod(lines.size(),3)!=0){
-                    System.out.println("The number of lines " + lines.size() + " does not match a division in triangles! doing nothing");
+                    Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a division in triangles! doing nothing");
                     return;
                 }
                 readTriangles(lines,delimiter,rasterMode);
             }
             if(renderMode == VertexOverlay.GL_QUADS){
                 if(Math.floorMod(lines.size(),4)!=0){
-                    System.out.println("The number of lines " + lines.size() + " does not match a division in quads! doing nothing");
+                    Olivia.textOutputter.println("The number of lines " + lines.size() + " does not match a division in quads! doing nothing");
                     return;
                 }
                 readQuads(lines,delimiter,rasterMode);
@@ -127,7 +128,7 @@ public class VertexAnimatedOverlay<VM extends VisualisationManager> extends Anim
             }
             
         }catch (IOException ex) {
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
         }
     }
     

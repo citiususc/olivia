@@ -1,5 +1,6 @@
 package Olivia.core.data;
 
+import Olivia.core.Olivia;
 import Olivia.core.render.BoundingBoxO;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.OpenGLScreen;
@@ -127,7 +128,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
             this.vboNumVertices = vertices;
             vboBuffer_alreadySet = true;
         }else{
-            System.out.println("vboBuffer was already for " + this.vboBufferCapacity + " points, indices:" +this.vboIndices+ ", vertices: " + this.vboNumVertices +", will not be changed until destruction");
+            Olivia.textOutputter.println("vboBuffer was already for " + this.vboBufferCapacity + " points, indices:" +this.vboIndices+ ", vertices: " + this.vboNumVertices +", will not be changed until destruction");
         }
     }
     
@@ -174,7 +175,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     public void draw(OpenGLScreen screen, ColourArray colours, int pointSize, int renderMode, int rasterMode) {
         if (size() != colours.size()) {
-            System.out.println("Error: Points and colours do not match size");
+            Olivia.textOutputter.println("Error: Points and colours do not match size");
         } else {
             if (selected == null){
                 if (!vboBuffer_alreadySet){ //First time
@@ -374,7 +375,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
 
     /*
     public void centerPoints(double x, double y, double z) {        
-        System.out.println("Center at" + x + " " + y + " " + z);
+        Olivia.textOutputter.println("Center at" + x + " " + y + " " + z);
         for (P point : this) {
             point.setX((point.getX() - x));
             point.setY((point.getY() - y));
@@ -388,7 +389,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
 
     /*
     protected void undoCenterPoints(){
-        System.out.println("Undo Center " + centreCurrent);
+        Olivia.textOutputter.println("Undo Center " + centreCurrent);
         for (P point : this) {
             point.setX(point.getX() + centreCurrent.getX());
             point.setY(point.getY() + centreCurrent.getY());
@@ -403,7 +404,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     /*
     public void centerPointsAt(Point3D point) {
-        System.out.println("Centerint at " + point.getX() + " " + point.getY() + " " + point.getZ());
+        Olivia.textOutputter.println("Centerint at " + point.getX() + " " + point.getY() + " " + point.getZ());
         for (P mpoint : this) {
             mpoint.setX((mpoint.getX() - point.getX()));
             mpoint.setY((mpoint.getY() - point.getY()));
@@ -434,9 +435,9 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
     /*
     public void centerPointsAtCoordOrigin() {
         if(stillOriginal){
-            System.out.println("CAUTION: Centering points to their centre of mass before all points have been added?");
+            Olivia.textOutputter.println("CAUTION: Centering points to their centre of mass before all points have been added?");
         }else{
-            System.out.println("Centering points to their centre of mass");
+            Olivia.textOutputter.println("Centering points to their centre of mass");
         }
         for (P point : this) {
             point.setX((point.getX() - centreOriginal.getX()));
@@ -454,9 +455,9 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     @Override protected void finalize() throws Throwable {
         if(vboBuffer_alreadySet){
-            System.out.println("Caution! destroying a point array without cleaning its VBO buffer!");
+            Olivia.textOutputter.println("Caution! destroying a point array without cleaning its VBO buffer!");
         }
-        System.out.println("Caution! destroying a point array ");
+        Olivia.textOutputter.println("Caution! destroying a point array ");
         super.finalize();
     }
 
@@ -475,7 +476,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     @Override
     public synchronized void moveTo(Point3D point) {
-        //System.out.println("Moving to " + point);
+        //Olivia.textOutputter.println("Moving to " + point);
         for (P my_point : this) {
             my_point.setX(my_point.getX() - bounds.getCentre().getX() + point.getX());
             my_point.setY(my_point.getY() - bounds.getCentre().getY() + point.getY());
@@ -491,7 +492,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     @Override
     public synchronized void displace(Point3D point) {
-        //System.out.println("Displacing with " + point);
+        //Olivia.textOutputter.println("Displacing with " + point);
         for (P my_point : this) {
             my_point.setX(my_point.getX() - point.getX());
             my_point.setY(my_point.getY() - point.getY());

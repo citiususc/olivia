@@ -47,7 +47,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 }else if (cols.length==4){
                     olivia.addNewStandardVisualisation(cols[1], cols[2], Integer.parseInt(cols[3]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -57,7 +57,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 }else if(cols.length==3){
                     olivia.addNewSegmenterVisualisation(cols[1], cols[2]);
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -67,7 +67,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 }else if(cols.length==3){
                     olivia.addNewClassifierVisualisation(cols[1], cols[2]);
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -77,7 +77,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 }else if(cols.length==3){
                     olivia.addNewScanlinesVisualisation(cols[1], cols[2]);
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -85,7 +85,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadNeighboursOverlay(new File(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -95,7 +95,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 } if(cols.length==4){
                     olivia.getGUI().getActiveVisualisation().loadAreasOverlay(new File(cols[1]),cols[2],new PointColour(RenderOptions.getColor(cols[3])));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -103,7 +103,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadLabelledCells(new File(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -111,7 +111,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadDensities(new File(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -119,7 +119,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>1){
                     olivia.getGUI().getActiveVisualisation().loadNormals(new File(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -127,7 +127,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>5){
                     olivia.getGUI().getActiveVisualisation().loadVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -135,7 +135,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>6){
                     olivia.getGUI().getActiveVisualisation().loadAnimatedVertex(new File(cols[1]), cols[2], RenderOptions.getMode(cols[3]), RenderOptions.getMode(cols[4]), new PointColour(RenderOptions.getColor(cols[5])), Long.parseLong(cols[6]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -143,7 +143,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>2){
                     olivia.getGUI().getActiveVisualisation().loadCircles(new File(cols[1]), cols[2]);
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -151,7 +151,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>2){
                     olivia.getGUI().getActiveVisualisation().loadAnimatedCircles(new File(cols[1]), cols[2], Long.parseLong(cols[3]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -159,7 +159,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length>6){
                     olivia.getGUI().getActiveVisualisation().transformLastOverlay(Float.parseFloat(cols[1]), Float.parseFloat(cols[2]), Float.parseFloat(cols[3]), Float.parseFloat(cols[4]), Float.parseFloat(cols[5]), Float.parseFloat(cols[6]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -187,7 +187,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().setPointSize(Integer.parseInt(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -195,7 +195,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().setLineWidth(Integer.parseInt(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
@@ -203,14 +203,14 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
                 if(cols.length==2){
                     olivia.getGUI().getActiveVisualisation().getRenderScreen().getCamera().setIntraOcularDistance(Double.parseDouble(cols[1]));
                 }else{
-                    //olivia.getOutputter().println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
+                    //Olivia.textOutputter.println(cols[0] + " command is incorrect, arguments do not match", Color.red);    
                     publish(new Message(cols[0] + " command is incorrect, arguments do not match", Color.red));
                 }
                 break;
             case "#" :
                 break;
             default :
-                //olivia.getOutputter().println("Command: Unrecognised command " + line, Color.red);
+                //Olivia.textOutputter.println("Command: Unrecognised command " + line, Color.red);
                 publish(new Message("Command: Unrecognised command " + line, Color.red));
                 break;
         }
@@ -218,25 +218,25 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
     }
     
     public void readFromFile(Path path) throws FileNotFoundException, IOException {
-        olivia.getOutputter().println("Command: Reading commands from " + path,Color.YELLOW);
+        Olivia.textOutputter.println("Command: Reading commands from " + path,Color.YELLOW);
         //List<String> lines = Files.readAllLines(path);
-        //olivia.getOutputter().println("Command: read " + lines.size());
+        //Olivia.textOutputter.println("Command: read " + lines.size());
         commands = Files.readAllLines(path);
-        olivia.getOutputter().println("Command: read " + commands.size() + "commands",Color.green);
+        Olivia.textOutputter.println("Command: read " + commands.size() + "commands",Color.green);
         /*for(String line:lines){
                 runCommand(line);
         }*/
-        //olivia.getOutputter().println("Command: Command list ended");
+        //Olivia.textOutputter.println("Command: Command list ended");
     }
 
     @Override
     protected Integer doInBackground() throws Exception {
         for(String line:commands){
-            //olivia.getOutputter().println("Command: " + line,Color.YELLOW); //because addText is supposedly thread safe, if in doubt use publish and process
+            //Olivia.textOutputter.println("Command: " + line,Color.YELLOW); //because addText is supposedly thread safe, if in doubt use publish and process
             publish(new Message("Command: " + line,Color.YELLOW));
             runCommand(line);
         }
-        //olivia.getOutputter().println("Command: Command list ended",Color.green);
+        //Olivia.textOutputter.println("Command: Command list ended",Color.green);
         publish(new Message("Command: Command list ended",Color.green));
         return 1;
     }
@@ -245,7 +245,7 @@ public class CommandParser_backup extends SwingWorker<Integer, Message>{
     protected void process(List<Message> chunks) {
         //test++;
         for (Message mes : chunks) {
-            olivia.getOutputter().println(mes.getText(),mes.getColor());
+            Olivia.textOutputter.println(mes.getText(),mes.getColor());
         }
     }
     

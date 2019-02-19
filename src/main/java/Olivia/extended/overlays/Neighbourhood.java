@@ -1,5 +1,6 @@
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.Overlay;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D;
@@ -9,7 +10,6 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.gl2.GLUT;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.JToggleButton;
 
 /**
  * This class stores the neighbours data and handles the drawing
@@ -46,7 +46,7 @@ public class Neighbourhood<VM extends VisualisationManager> extends Overlay<VM>{
 
     public void setNeighboursDistances(ArrayList<Double> distances) {
         if (this.neighbour_ids.size() != distances.size()) {
-            System.out.println("Warning: neighbours and distances do not match size: " + this.neighbour_ids + " vs. " + distances.size());
+            Olivia.textOutputter.println("Warning: neighbours and distances do not match size: " + this.neighbour_ids + " vs. " + distances.size());
         }
         this.distances = distances;
     }
@@ -111,7 +111,7 @@ public class Neighbourhood<VM extends VisualisationManager> extends Overlay<VM>{
 
     @Override
     public void drawShape(OpenGLScreen renderScreen) {
-        //System.out.println("Drawing with " + this.neighbour_ids.size() + "neig and " + this.distances.size() + " distances");
+        //Olivia.textOutputter.println("Drawing with " + this.neighbour_ids.size() + "neig and " + this.distances.size() + " distances");
         drawNeighbours();
     }
 

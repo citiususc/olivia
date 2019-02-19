@@ -28,7 +28,7 @@ public class NEWTZoomGestureHandler extends PinchToZoomGesture{
     @Override
     public boolean process(InputEvent ie) {
         if(super.process(ie)){
-            //System.out.println("Zoom done: " + this.getZoom());
+            //Olivia.textOutputter.println("Zoom done: " + this.getZoom());
             float step = 800f;
             //float my_zoom = previous_zoom - this.getZoom();
             //previous_zoom = this.getZoom();

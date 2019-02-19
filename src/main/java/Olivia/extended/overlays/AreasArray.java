@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.Overlay;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
@@ -58,7 +59,7 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
         name = path.subpath(path.getNameCount()-1, path.getNameCount()).toString();
         Stream<Path> files = Files.list(path);
         files.forEach(this);
-        System.out.println("Read " + areasRead + " areas");
+        Olivia.textOutputter.println("Read " + areasRead + " areas");
     }
     
     public void readArea(Path path) throws FileNotFoundException, IOException {
@@ -79,7 +80,7 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
         cols = line.split(delimiter);
         //label.setCentre(new Point3D(Double.parseDouble(cols[0]),Double.parseDouble(cols[1]),Double.parseDouble(cols[2])));
         label.moveTo(new Point3D(Double.parseDouble(cols[0]),Double.parseDouble(cols[1]),Double.parseDouble(cols[2])));
-        //System.out.println("on creation" + label.getBounds().getCentre());
+        //Olivia.textOutputter.println("on creation" + label.getBounds().getCentre());
         label.setRasterPos(0.0f, 0.0f,0.0f);
         label.setColour(colour);
         label.setFont(font);
@@ -96,7 +97,7 @@ public class AreasArray<VM extends VisualisationManager> extends OverlayArray<Ov
         try{
             readArea(t);
         }catch(Exception e){
-            System.out.println("Area could not be read " + e);
+            Olivia.textOutputter.println("Area could not be read " + e);
         }
     }
     

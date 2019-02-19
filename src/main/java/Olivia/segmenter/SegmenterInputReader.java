@@ -1,5 +1,6 @@
 package Olivia.segmenter;
 
+import Olivia.core.Olivia;
 import Olivia.core.InputReader;
 import Olivia.core.data.PointArray;
 import Olivia.extended.PointI;
@@ -59,9 +60,9 @@ public class SegmenterInputReader extends InputReader<SegmenterVisualisationMana
         SegmenterGroup last = (SegmenterGroup) groups.get(groups.size() - 1);
         numUnsegmented = last.getPoints().size();
         numSegmented = numPointsRead - numUnsegmented;
-        System.out.println("Read " + numPointsRead + " points");
-        System.out.println("Read " + numUnsegmented + " unsegmented");
-        System.out.println("Read " + groups.size() + " groups");
+        Olivia.textOutputter.println("Read " + numPointsRead + " points");
+        Olivia.textOutputter.println("Read " + numUnsegmented + " unsegmented");
+        Olivia.textOutputter.println("Read " + groups.size() + " groups");
         visualisationM.setPointCloud(points);
         visualisationM.setGroups(groups);
         visualisationM.setGroupIds(groupIds);

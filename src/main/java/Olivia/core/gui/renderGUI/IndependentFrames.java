@@ -78,7 +78,7 @@ public class IndependentFrames implements RenderGUI{
         frames.get(frames.size()-1).addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println(visualisationM.getId() + " closing");
+                Olivia.textOutputter.println(visualisationM.getId() + " closing");
                 gui.getOlivia().removeVisualisation(visualisationM);
                 gui.updateAll();
             }

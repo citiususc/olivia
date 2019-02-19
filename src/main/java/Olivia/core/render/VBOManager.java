@@ -1,5 +1,6 @@
 package Olivia.core.render;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.ColourArray;
@@ -61,10 +62,10 @@ public class VBOManager {
      */
     private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray colors, boolean[] show) {
         if (points.size() != colors.size()) {
-            System.out.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
+            Olivia.textOutputter.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
         if (points.size() != show.length) {
-            System.out.println("Caution: Points and show flags do not match size: " + points.size() + " vs. " + show.length + ", VBO buffer at " + points.getVboBufferCapacity() );
+            Olivia.textOutputter.println("Caution: Points and show flags do not match size: " + points.size() + " vs. " + show.length + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
         for (int i = 0; i < points.getVboBufferCapacity(); i++) {
             if (show[i]) {
@@ -86,7 +87,7 @@ public class VBOManager {
      */
     private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray colors) {
         if (points.size() != colors.size()) {
-            System.out.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
+            Olivia.textOutputter.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
         for (int i = 0; i < points.getVboBufferCapacity(); i++) {
                 buffer.put((float) ((Point3D_id) points.get(i)).getX());
@@ -106,7 +107,7 @@ public class VBOManager {
      */
     private static void loadBuffer(PointArray points, FloatBuffer buffer, boolean[] show) {
         if (points.size() != show.length) {
-            System.out.println("Caution: Points and show flags do not match size: " + points.size() + " vs. " + show.length + ", VBO buffer at " + points.getVboBufferCapacity() );
+            Olivia.textOutputter.println("Caution: Points and show flags do not match size: " + points.size() + " vs. " + show.length + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
         for (int i = 0; i < points.getVboBufferCapacity(); i++) {
             if (show[i]) {
@@ -145,23 +146,23 @@ public class VBOManager {
      */
     public static void build(OpenGLScreen screen, PointArray points, ColourArray colors, boolean[] show) {
         if (!points.isVboAlreadySet()) {
-            System.out.println("Building VBO for first time");
+            Olivia.textOutputter.println("Building VBO for first time");
             long size = 0;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
-            System.out.println("GPU mem: " + size / 1e6 + "MB");
+            Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
             points.setVboBuffer(points.size(),indices,vertices);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, colors, show);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done VBO: name=" + indices[0] + ", size=" + size );
+            Olivia.textOutputter.println("Done VBO: name=" + indices[0] + ", size=" + size );
         }else{
-            System.out.println("Trying to rebuild VBO buffer, use repack instead");
+            Olivia.textOutputter.println("Trying to rebuild VBO buffer, use repack instead");
         }
     }
     
@@ -173,24 +174,24 @@ public class VBOManager {
      */
     public static void build(OpenGLScreen screen, PointArray points, ColourArray colors) {
         if (!points.isVboAlreadySet()) {
-            System.out.println("Building VBO for first time");
+            Olivia.textOutputter.println("Building VBO for first time");
             long size;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
-            System.out.println("GPU mem: " + size / 1e6 + "MB");
+            Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
             points.setVboBuffer(points.size(),indices,vertices);
-            System.out.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
+            Olivia.textOutputter.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, colors);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done VBO: name=" + indices[0] + ", size=" + size );
+            Olivia.textOutputter.println("Done VBO: name=" + indices[0] + ", size=" + size );
         }else{
-            System.out.println("Trying to rebuild VBO buffer, use repack instead");
+            Olivia.textOutputter.println("Trying to rebuild VBO buffer, use repack instead");
         }
     }
     
@@ -202,23 +203,23 @@ public class VBOManager {
      */
     public static void build(OpenGLScreen screen, PointArray points, boolean[] show) {
         if (!points.isVboAlreadySet()) {
-            System.out.println("Building VBO for first time");
+            Olivia.textOutputter.println("Building VBO for first time");
             long size = 0;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
-            System.out.println("GPU mem: " + size / 1e6 + "MB");
+            Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
             points.setVboBuffer(points.size(),indices,vertices);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, show);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done VBO: name=" + indices[0] + ", size=" + size );
+            Olivia.textOutputter.println("Done VBO: name=" + indices[0] + ", size=" + size );
         }else{
-            System.out.println("Trying to rebuild VBO buffer, use repack instead");
+            Olivia.textOutputter.println("Trying to rebuild VBO buffer, use repack instead");
         }
     }
     
@@ -229,24 +230,24 @@ public class VBOManager {
      */
     public static void build(OpenGLScreen screen, PointArray points) {
         if (!points.isVboAlreadySet()) {
-            System.out.println("Building VBO for first time");
+            Olivia.textOutputter.println("Building VBO for first time");
             long size;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
-            System.out.println("GPU mem: " + size / 1e6 + "MB");
+            Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
             points.setVboBuffer(points.size(),indices,vertices);
-            System.out.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
+            Olivia.textOutputter.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done VBO: name=" + indices[0] + ", size=" + size );
+            Olivia.textOutputter.println("Done VBO: name=" + indices[0] + ", size=" + size );
         }else{
-            System.out.println("Trying to rebuild VBO buffer, use repack instead");
+            Olivia.textOutputter.println("Trying to rebuild VBO buffer, use repack instead");
         }
     }
  
@@ -259,15 +260,15 @@ public class VBOManager {
      */
     public static void repack(OpenGLScreen screen, PointArray points, ColourArray colors, boolean[] show) {
         if (points.isVboAlreadySet()) {
-            System.out.println("Repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Repacking VBO: name=" + points.getVboIndices()[0]);
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, points.getVboIndices()[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, colors, show);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
         }else{
-            System.out.println("Trying to repack non existing VBO buffer, use build instead");
+            Olivia.textOutputter.println("Trying to repack non existing VBO buffer, use build instead");
         }
     }
     
@@ -279,15 +280,15 @@ public class VBOManager {
      * */
     public static void repack(OpenGLScreen screen, PointArray points, ColourArray colors) {
         if (points.isVboAlreadySet()) {
-            System.out.println("Repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Repacking VBO: name=" + points.getVboIndices()[0]);
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, points.getVboIndices()[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, colors);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
         }else{
-            System.out.println("Trying to repack non existing VBO buffer, use build instead");
+            Olivia.textOutputter.println("Trying to repack non existing VBO buffer, use build instead");
         }
     }
     
@@ -299,15 +300,15 @@ public class VBOManager {
      */
     public static void repack(OpenGLScreen screen, PointArray points, boolean[] show) {
         if (points.isVboAlreadySet()) {
-            System.out.println("Repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Repacking VBO: name=" + points.getVboIndices()[0]);
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, points.getVboIndices()[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, show);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
         }else{
-            System.out.println("Trying to repack non existing VBO buffer, use build instead");
+            Olivia.textOutputter.println("Trying to repack non existing VBO buffer, use build instead");
         }
     }
     
@@ -318,15 +319,15 @@ public class VBOManager {
     */
     public static void repack(OpenGLScreen screen, PointArray points) {
         if (points.isVboAlreadySet()) {
-            System.out.println("Repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Repacking VBO: name=" + points.getVboIndices()[0]);
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, points.getVboIndices()[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer);
             screen.getGl2().glUnmapBuffer(GL2.GL_ARRAY_BUFFER);
-            System.out.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Done repacking VBO: name=" + points.getVboIndices()[0]);
         }else{
-            System.out.println("Trying to repack non existing VBO buffer, use build instead");
+            Olivia.textOutputter.println("Trying to repack non existing VBO buffer, use build instead");
         }
     }
     
@@ -337,15 +338,15 @@ public class VBOManager {
      */
     public static void free(OpenGLScreen screen, PointArray points) {
         if (points.isVboAlreadySet()) {
-            System.out.println("Freeing VBO: name=" + points.getVboIndices()[0]);
+            Olivia.textOutputter.println("Freeing VBO: name=" + points.getVboIndices()[0]);
             if(!screen.animatorIsAnimating()){
                 screen.getGl2().glDeleteBuffers(1, points.getVboIndices(), 0);
-                System.out.println("Freed VBO: name=" + points.getVboIndices()[0]);
+                Olivia.textOutputter.println("Freed VBO: name=" + points.getVboIndices()[0]);
             }else{
-                System.out.println("Screen is animating! should not free VBO: name=" + points.getVboIndices()[0]);
+                Olivia.textOutputter.println("Screen is animating! should not free VBO: name=" + points.getVboIndices()[0]);
             }
         }else{
-            System.out.println("Trying to free non existing VBO buffer, ?");
+            Olivia.textOutputter.println("Trying to free non existing VBO buffer, ?");
         }
     }
 }

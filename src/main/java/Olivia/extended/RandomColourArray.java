@@ -1,5 +1,6 @@
 package Olivia.extended;
 
+import Olivia.core.Olivia;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.PointColour;
@@ -25,6 +26,6 @@ public class RandomColourArray extends ColourArray {
             float b = rand.nextFloat();
             this.add(new PointColour(r, g, b));
         }
-        System.out.println("Random colours loaded");
+        Olivia.textOutputter.println("Random colours loaded");
     }
 }

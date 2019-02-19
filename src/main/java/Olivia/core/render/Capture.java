@@ -1,5 +1,6 @@
 package Olivia.core.render;
 
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2GL3;
@@ -13,8 +14,6 @@ import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.bytedeco.javacpp.BytePointer;
 import static org.bytedeco.javacpp.opencv_core.CV_8UC4;
@@ -22,13 +21,6 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Size;
 import static org.bytedeco.javacpp.opencv_videoio.CV_FOURCC;
 import org.bytedeco.javacpp.opencv_videoio.VideoWriter;
-import org.bytedeco.javacv.FFmpegFrameFilter;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.FFmpegFrameRecorder;
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.FrameFilter;
-import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameRecorder;
 
 /**
  * This class handles screen capture, both image and video
@@ -125,7 +117,7 @@ public class Capture {
             String path = "Screenshot " + dateFormat.format(date) + ".png";
             File file = new File(path);
             ImageIO.write(img, "png", file);
-            System.out.println(path + " saved");
+            Olivia.textOutputter.println(path + " saved");
             captureImage = false;
         }
         catch (IOException ex) {
@@ -139,8 +131,8 @@ public class Capture {
         updateResolution();
         Size size = new Size(width, height);
         videoWriters[side].open("video180_" + side + ".avi", fourcc, visualisationManager.isStereo3D() ? FPS / 2 : FPS, size, isColor);
-        System.out.println("Video opened: " + videoWriters[side].isOpened());
-        System.out.println("Use 'ffmpeg -i video180.avi -vf \"transpose=0,transpose=2\" -q 0 video.avi' to flip the video 180º\nUse 'ffmpeg -i video_0.avi -vf \"movie=video_1.avi [in1]; [in]pad=iw*2:ih:iw:0[in0]; [in0][in1] overlay=0:0 [out]\" sidebyside.avi' to mix two videos to 3d side by side\n");
+        Olivia.textOutputter.println("Video opened: " + videoWriters[side].isOpened());
+        Olivia.textOutputter.println("Use 'ffmpeg -i video180.avi -vf \"transpose=0,transpose=2\" -q 0 video.avi' to flip the video 180º\nUse 'ffmpeg -i video_0.avi -vf \"movie=video_1.avi [in1]; [in]pad=iw*2:ih:iw:0[in0]; [in0][in1] overlay=0:0 [out]\" sidebyside.avi' to mix two videos to 3d side by side\n");
         pixelBuffs[side] = ByteBuffer.allocate(CHANNELS * width * height);
         pixelMats[side] = new Mat(height, width, CV_8UC4);
     }

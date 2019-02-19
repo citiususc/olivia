@@ -130,7 +130,7 @@ public class TransformationsOptionsPanel extends JPanel implements ChangeListene
             renderable.getTransformations().setTransX(transXModel.getNumber().floatValue());
             renderable.getTransformations().setTransY(transYModel.getNumber().floatValue());
             renderable.getTransformations().setTransZ(transZModel.getNumber().floatValue());
-            //System.out.println("doing transformations:" + renderable.getBounds().getCentre() + "  " + renderable.getTransformations().getCentre());
+            //Olivia.textOutputter.println("doing transformations:" + renderable.getBounds().getCentre() + "  " + renderable.getTransformations().getCentre());
         }
     }
     

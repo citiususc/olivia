@@ -207,7 +207,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
         if(i<overlays.size()){
             return overlays.get(i);
         }
-        //System.out.println("Overlays returning null!!");
+        //Olivia.textOutputter.println("Overlays returning null!!");
         return null;     
     }
     
@@ -230,12 +230,12 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
         if (point == null) {
             return false;
         }
-        //System.out.println("checking for point " + point.getX() + " " + point.getY() + " " +point.getZ());
+        //Olivia.textOutputter.println("checking for point " + point.getX() + " " + point.getY() + " " +point.getZ());
         int i = 0;
         for (O overlay : overlays) {
             if (point.areCloseBy(overlay.getSelectingPoint())) {
                 current = i;
-                System.out.println("Overlay at " + point + " set as current in " + this.name);
+                Olivia.textOutputter.println("Overlay at " + point + " set as current in " + this.name);
                 return true;
             }
             i++;
@@ -338,7 +338,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
             }
             visualisationManager.getGUI().updateControlPanes();
         }else{
-            System.out.println("Index out of bounds/No current overlay");
+            Olivia.textOutputter.println("Index out of bounds/No current overlay");
         }       
     }
     
@@ -350,7 +350,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
     public void remove(O overlay){
         int index = overlays.indexOf(overlays);
         if(index==-1){
-            System.out.println("Overlay not found");
+            Olivia.textOutputter.println("Overlay not found");
         }
         remove(index);       
     }
@@ -375,7 +375,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
             visualisationManager.getGUI().updateControlPanes();
             return ret;
         }else{
-            System.out.println("Index out of bounds/No current overlay");
+            Olivia.textOutputter.println("Index out of bounds/No current overlay");
             return false;
         }
     }
@@ -455,7 +455,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
          if(i<selected.size()){
             return selected.get(i);
         }else{
-            System.out.println("Index out of bounds/No current overlay");
+            Olivia.textOutputter.println("Index out of bounds/No current overlay");
             return false;
         }
     }
@@ -545,7 +545,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
         if(overlays.size()>1){
             current = current + 1;
             current = Math.floorMod(current, overlays.size());
-            //System.out.println("Current overlay" + current);
+            //Olivia.textOutputter.println("Current overlay" + current);
         }
     }
     
@@ -556,7 +556,7 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
         if(overlays.size()>1){
             current = current - 1;
             current = Math.floorMod(current, overlays.size());
-            //System.out.println("Current overlay" + current);
+            //Olivia.textOutputter.println("Current overlay" + current);
         }
     }
     
@@ -650,9 +650,9 @@ public class OverlayArray<O extends Overlay<VM>,VM extends VisualisationManager>
             case "pointSelected":
                 if(selectingCurrentByMouse){
                     if (this.setOverlayAtPointAsCurrent(visualisationManager.getRenderScreen().getSelectedPoint())) {
-                        System.out.println("Current overlay selected by mouse");
+                        Olivia.textOutputter.println("Current overlay selected by mouse");
                     } else {
-                        System.out.println("No current overlay in mouse position");
+                        Olivia.textOutputter.println("No current overlay in mouse position");
                     }
                 }
                 break;

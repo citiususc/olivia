@@ -1,7 +1,7 @@
 package Olivia.classifier;
 
 import static Olivia.classifier.ClassifierLabels.*;
-import Olivia.core.Overlay;
+import Olivia.core.Olivia;
 import Olivia.core.OverlayArray;
 import Olivia.segmenter.SegmenterColourArray;
 import Olivia.core.VisualisationManager;
@@ -10,7 +10,6 @@ import Olivia.core.data.PointArray;
 import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.ColourArray;
-import Olivia.core.render.colours.PointColour;
 import Olivia.extended.PointI;
 import Olivia.extended.IntensityColourArray;
 import com.jogamp.opengl.GL2;
@@ -52,10 +51,10 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
     public ClassifierVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String filePath, String name) {
         super(id, gui, isStereo3D);
         this.name = name;
-        System.out.println("Creating Render Screen for " + name);
+        Olivia.textOutputter.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         renderScreen.addActionListener(this);
-        System.out.println("Creating Visualisation for " + name);
+        Olivia.textOutputter.println("Creating Visualisation for " + name);
         colours = new ArrayList<>();
         inputReader = new ClassifierInputReader();
         groups = new ClassifierGroupArray<>();
@@ -72,9 +71,9 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         activeClasses.add(ELECTRIC_TOWER);
         selectedGroup = null;
         selectedGroupPoints = new PointArray();
-        System.out.println("Creating Overlay Array for " + name);
+        Olivia.textOutputter.println("Creating Overlay Array for " + name);
         overlays = new OverlayArray<>(this);
-        System.out.println("Creating Control Pane for " + name);
+        Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new ClassifierControlPane(this);
     }
 
@@ -163,8 +162,8 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
         colours.add(new IntensityColourArray(pointCloud));
         colours.add(new SegmenterColourArray(pointCloud, groups));
         colours.add(new ClassifierColourArray(pointCloud, groups));
-        System.out.println("Read " + pointCloud.size() + " points");
-        System.out.println("Read " + groups.size() + " groups");
+        Olivia.textOutputter.println("Read " + pointCloud.size() + " points");
+        Olivia.textOutputter.println("Read " + groups.size() + " groups");
     }
 
     public ClassifierGroup getSelectedGroup() {
@@ -175,19 +174,19 @@ public class ClassifierVisualisationManager extends VisualisationManager<Classif
     public void setIntensityColouring() {
         selectedColour = 0;
         pointCloud.doRepack();
-        System.out.println("set to Intensity colouring");
+        Olivia.textOutputter.println("set to Intensity colouring");
     }
 
     public void setSegmenterColouring() {
         selectedColour = 1;
         pointCloud.doRepack();
-        System.out.println("set to segmentation colouring");
+        Olivia.textOutputter.println("set to segmentation colouring");
     }
 
     public void setClassificationColouring() {
         selectedColour = 2;
         pointCloud.doRepack();
-        System.out.println("set to classification colouring");
+        Olivia.textOutputter.println("set to classification colouring");
     }
     
     @Override

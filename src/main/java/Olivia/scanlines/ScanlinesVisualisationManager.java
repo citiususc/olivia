@@ -1,5 +1,6 @@
 package Olivia.scanlines;
 
+import Olivia.core.Olivia;
 import Olivia.core.OverlayArray;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Group;
@@ -43,7 +44,7 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
     public ScanlinesVisualisationManager(int id, MainFrame gui, boolean isStereo3D, String name) {
         super(id, gui, isStereo3D);
         this.name = name;
-        System.out.println("Creating Render Screen for " + name);
+        Olivia.textOutputter.println("Creating Render Screen for " + name);
         renderScreen = new OpenGLScreen(this);
         renderScreen.addActionListener(this);
         groups = new GroupArray<>();
@@ -52,9 +53,9 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
         selectedColour = 2;
         selectedScan = null;
         selectedScanPoints = new PointArray();
-        System.out.println("Creating Overlay Array for " + name);
+        Olivia.textOutputter.println("Creating Overlay Array for " + name);
         overlays = new OverlayArray<>(this);
-        System.out.println("Creating Control Pane for " + name);
+        Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new ScanlinesVisualisationControlPane(this);
     }
 
@@ -121,19 +122,19 @@ public class ScanlinesVisualisationManager extends VisualisationManager<Scanline
     public void setIntensityColouring() {
         selectedColour = 0;
         pointCloud.doRepack();
-        System.out.println("set to Intensity colouring");
+        Olivia.textOutputter.println("set to Intensity colouring");
     }
 
     public void setEdgesColouring() {
         selectedColour = 1;
         pointCloud.doRepack();
-        System.out.println("set to edge colouring");
+        Olivia.textOutputter.println("set to edge colouring");
     }
 
     public void setRandomColouring() {
         selectedColour = 2;
         pointCloud.doRepack();
-        System.out.println("set to random colouring");
+        Olivia.textOutputter.println("set to random colouring");
     }
     
 

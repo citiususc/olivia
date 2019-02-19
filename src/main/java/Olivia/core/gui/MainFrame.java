@@ -205,7 +205,7 @@ public class MainFrame extends JFrame{
         controlPanel.initialize();
         //buildRenderPane();
         consoleFrame = new ConsoleFrame(this);
-        olivia.getOutputter().addConsoleTextOutputter(consoleFrame);
+        Olivia.textOutputter.addConsoleTextOutputter(consoleFrame);
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
 
@@ -274,7 +274,7 @@ public class MainFrame extends JFrame{
      * @param visuManager The visualisation to visualise
      */
     public void initVisualisation(VisualisationManager visuManager) {
-        System.out.println("Main Frame inits " + visuManager.getName());
+        Olivia.textOutputter.println("Main Frame inits " + visuManager.getName());
         visuManager.getControlPane().setPreferredSize(new Dimension(visuManager.getControlPane().getWidth(), 150));
         TitledBorder border = new TitledBorder(visuManager.getName());
         border.setTitleJustification(TitledBorder.CENTER);
@@ -456,7 +456,7 @@ public class MainFrame extends JFrame{
      * @return true if visualisationManager is the active visualisation
      */
     public boolean isActiveVisualisationManager(VisualisationManager visualisationManager) {
-        //System.out.println("Main Frame setting " + visualisationManager.getName() + " as active");
+        //Olivia.textOutputter.println("Main Frame setting " + visualisationManager.getName() + " as active");
         return visualisationManager == activeVisualisationManager;
     }
     
@@ -537,12 +537,12 @@ public class MainFrame extends JFrame{
     }
     
     public void loadCamera(File file){
-        olivia.getOutputter().println("Opening camera file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening camera file: " + file.getParent() + "/" + file.getName());
         getActiveVisualisation().getRenderScreen().getCamera().readFromFile(file.getParent(), file.getName());
     }
     
     public void saveCamera(File file){
-        olivia.getOutputter().println("Saving camera file to: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Saving camera file to: " + file.getParent() + "/" + file.getName());
         getActiveVisualisation().getRenderScreen().getCamera().writeToFile(file.getParent(), file.getName());
     }
     

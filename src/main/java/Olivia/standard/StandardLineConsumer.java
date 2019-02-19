@@ -5,12 +5,11 @@
  */
 package Olivia.standard;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.PointArray;
 import Olivia.extended.PointStandard;
 import java.io.IOException;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -103,7 +102,7 @@ public class StandardLineConsumer implements Consumer<String>{
                             ));
                             numPointsRead++;
                      break;
-            default : System.out.println("Line not recognised");
+            default : Olivia.textOutputter.println("Line not recognised");
                      break;
         }
     }

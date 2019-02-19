@@ -1,5 +1,6 @@
 package Olivia.core.render;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.Point3D;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 /**
- * Used to save the OpenGL trasnfomation of rotation and translation. Does not
+ * Used to save the OpenGL transformation of rotation and translation. Does not
  * execute any openGL operations until they are called
  *
  * @author oscar.garcia
@@ -318,7 +319,7 @@ public class Transformations {
                     + transX + "\t" + transY + "\t" + transZ + "\t" + rotX + "\t" + rotY + "\t" + rotZ + "\t0.0" ;
             writer.write(data, 0, data.length());
             writer.close();
-            System.out.println("Camera data written to file " + file);
+            Olivia.textOutputter.println("Camera data written to file " + file);
         }
         catch (IOException x) {
             System.err.format("IOException: %s%n", x);
@@ -337,31 +338,31 @@ public class Transformations {
         try (BufferedReader reader = Files.newBufferedReader(file.toPath(), charset)) {
             String line = reader.readLine();
             if (line == null) {
-                System.out.println(file + " is empty");
+                Olivia.textOutputter.println(file + " is empty");
                 return -1;
             }
             if (!line.equals(FILE_HEADER)) {
-                System.out.println(file + " is not a correct camera file");
+                Olivia.textOutputter.println(file + " is not a correct camera file");
                 return -1;
             }
             line = reader.readLine();
             if (line == null) {
-                System.out.println(file + " has no data");
+                Olivia.textOutputter.println(file + " has no data");
                 return -1;
             }
             if (!line.equals(FILE_VERSION)) {
-                System.out.println(file + " is version " + line + " and the current camera file version is " + FILE_VERSION);
+                Olivia.textOutputter.println(file + " is version " + line + " and the current camera file version is " + FILE_VERSION);
                 return -1;
             }
             line = reader.readLine();
             if (line == null) {
-                System.out.println(file + " has no data");
+                Olivia.textOutputter.println(file + " has no data");
                 return -1;
             }
 
             String[] data = line.split("\t");
             if (data.length != 10) {
-                System.out.println(file + " data does not coincide with version");
+                Olivia.textOutputter.println(file + " data does not coincide with version");
                 return -1;
             }
 
@@ -373,7 +374,7 @@ public class Transformations {
             this.rotZ = Float.parseFloat(data[8]);
             //this.speed = Float.parseFloat(data[9]);
 
-            System.out.println("Camera data read from file " + file);
+            Olivia.textOutputter.println("Camera data read from file " + file);
             return 0;
         }
         catch (IOException x) {

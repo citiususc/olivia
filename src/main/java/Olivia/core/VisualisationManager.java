@@ -472,28 +472,28 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     
     public void loadNeighboursOverlay(File file){
         NeighbourhoodArray neighs = new  NeighbourhoodArray(gui.getActiveVisualisation());
-        gui.getOlivia().getOutputter().println("Opening neighbours file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening neighbours file: " + file.getParent() + "/" + file.getName());
         try {
             neighs.readFromFiles(file.toPath());
             addOverlay(neighs);
             neighs.listenToActionsOnScreen();
             neighs.setSelectingCurrentByMouse(true);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
 
     public void loadAreasOverlay(File file, String name, PointColour defaultColour){
         AreasArray areas = new  AreasArray(gui.getActiveVisualisation());
-        gui.getOlivia().getOutputter().println("Opening areas file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening areas file: " + file.getParent() + "/" + file.getName());
         try {
             areas.readFromFiles(file.toPath());
             areas.setName(name);
             areas.changeColour(defaultColour);
             addOverlay(areas);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
@@ -503,23 +503,23 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     
     public void loadLabelledCells(File file){
         LabeledCellArray cells = new LabeledCellArray(gui.getActiveVisualisation());
-        gui.getOlivia().getOutputter().println("Opening cell path file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening cell path file: " + file.getParent() + "/" + file.getName());
         try {
             cells.readFromFile(file.toPath());
             addOverlay(cells);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
     public void loadVertex(File file, String name, int renderMode, int rasterMode, PointColour defaultColour){
         VertexOverlay vOverlay = new VertexOverlay(this,name,renderMode,rasterMode,defaultColour);
-        gui.getOlivia().getOutputter().println("Opening point file for a vertex overlay: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening point file for a vertex overlay: " + file.getParent() + "/" + file.getName());
         try {
             vOverlay.readFromFile(file.toPath());
             addOverlay(vOverlay);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
@@ -534,60 +534,60 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
     
     public void loadAnimatedVertex(File file, String name, int renderMode, int rasterMode, PointColour defaultColour, Long speed){
         VertexAnimatedOverlay vAOverlay = new VertexAnimatedOverlay(this,name,renderMode,rasterMode,defaultColour, speed);
-        gui.getOlivia().getOutputter().println("Opening point file for an animated vertex overlay " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening point file for an animated vertex overlay " + file.getParent() + "/" + file.getName());
         try {
             vAOverlay.readFromFile(file.toPath());
             addOverlay(vAOverlay);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
     public void loadCircles(File file, String name){
         CircleOverlayArray cOverlays = new CircleOverlayArray(this,name);
-        gui.getOlivia().getOutputter().println("Opening circles file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening circles file: " + file.getParent() + "/" + file.getName());
         try {
             cOverlays.readFromFile(file.toPath());
             this.addOverlay(cOverlays);
             cOverlays.setDrawModesToFalse();
             cOverlays.setDrawAll(true);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
     public void loadAnimatedCircles(File file, String name, Long speed){
         CircleAnimatedOverlay caOverlays = new CircleAnimatedOverlay(this,name,speed);
-        gui.getOlivia().getOutputter().println("Opening animated circles file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening animated circles file: " + file.getParent() + "/" + file.getName());
         try {
             caOverlays.readFromFile(file.toPath());
             this.addOverlay(caOverlays);
             caOverlays.setDrawModesToFalse();
             caOverlays.setDrawAll(true);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
     public void loadDensities(File file){
         DensitiesOverlay overlay = new DensitiesOverlay(gui.getActiveVisualisation(),"Densities");
-        gui.getOlivia().getOutputter().println("Opening densities file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening densities file: " + file.getParent() + "/" + file.getName());
         try {
             overlay.readFromFile(file.toPath());
             addOverlay(overlay);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     
     public void loadNormals(File file){
         NormalsOverlay overlay = new NormalsOverlay(gui.getActiveVisualisation(),"Normals");
-        gui.getOlivia().getOutputter().println("Opening normals file: " + file.getParent() + "/" + file.getName());
+        Olivia.textOutputter.println("Opening normals file: " + file.getParent() + "/" + file.getName());
         try {
             overlay.readFromFile(file.toPath());
             addOverlay(overlay);
         }catch (IOException ex) {
-            gui.getOlivia().getOutputter().println("Exception:" + ex);
+            Olivia.textOutputter.println("Exception:" + ex);
         }
     }
     

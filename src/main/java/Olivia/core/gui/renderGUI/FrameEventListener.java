@@ -36,7 +36,7 @@ public class FrameEventListener implements InternalFrameListener {
      */
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
-        System.out.println(visualisationManager.getId() + " activated");
+        Olivia.textOutputter.println(visualisationManager.getId() + " activated");
         if (gui.getOlivia().getLoadedVisualisations().contains(visualisationManager) && visualisationManager != gui.getActiveVisualisation()) {
             gui.setActiveVisualisationManager(visualisationManager);
             gui.updateAll();
@@ -49,7 +49,7 @@ public class FrameEventListener implements InternalFrameListener {
      */
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-        System.out.println(visualisationManager.getId() + " closed");
+        Olivia.textOutputter.println(visualisationManager.getId() + " closed");
         gui.updateAll();
     }
 
@@ -59,7 +59,7 @@ public class FrameEventListener implements InternalFrameListener {
      */
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
-        System.out.println(visualisationManager.getId() + " closing");
+        Olivia.textOutputter.println(visualisationManager.getId() + " closing");
         gui.getOlivia().removeVisualisation(visualisationManager);
         gui.updateAll();
         //animator.stop();
@@ -73,7 +73,7 @@ public class FrameEventListener implements InternalFrameListener {
      */
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-        System.out.println(visualisationManager.getId() + " deactivated");
+        Olivia.textOutputter.println(visualisationManager.getId() + " deactivated");
         gui.updateAll();
     }
 
@@ -88,7 +88,7 @@ public class FrameEventListener implements InternalFrameListener {
             visualisationManager.repack();
         }
         gui.updateAll();
-        System.out.println(visualisationManager.getId() + " deiconified");
+        Olivia.textOutputter.println(visualisationManager.getId() + " deiconified");
         visualisationManager.getRenderScreen().animatorResume();
     }
 
@@ -99,7 +99,7 @@ public class FrameEventListener implements InternalFrameListener {
     @Override
     public void internalFrameIconified(InternalFrameEvent e) {
         visualisationManager.getRenderScreen().animatorPause();
-        System.out.println(visualisationManager.getId() + " iconified");
+        Olivia.textOutputter.println(visualisationManager.getId() + " iconified");
         gui.updateAll();
     }
 
@@ -109,7 +109,7 @@ public class FrameEventListener implements InternalFrameListener {
      */
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        System.out.println(visualisationManager.getId() + " opened");
+        Olivia.textOutputter.println(visualisationManager.getId() + " opened");
         gui.updateAll();
     }
 }

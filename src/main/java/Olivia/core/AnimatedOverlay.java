@@ -267,11 +267,11 @@ public class AnimatedOverlay<O extends Overlay<VM>, VM extends VisualisationMana
      */
     public void gotoTime(long timestamp) {
         if(timestamps.size()!=overlays.size()){
-            System.out.println("Error in animated overlay, timestamps and overlays do not match");
+            Olivia.textOutputter.println("Error in animated overlay, timestamps and overlays do not match");
             return;
         }
         if((timestamp>duration)||(timestamp<0)){
-            System.out.println("Animation is not that long");
+            Olivia.textOutputter.println("Animation is not that long");
         }else{
             int i;
             for(i=0;i<timestamps.size()-1;i++){

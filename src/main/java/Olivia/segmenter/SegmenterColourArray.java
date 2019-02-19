@@ -1,16 +1,14 @@
 package Olivia.segmenter;
 
+import Olivia.core.Olivia;
 import Olivia.classifier.ClassifierGroup;
 import Olivia.classifier.ClassifierGroupArray;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
 import Olivia.extended.PointI;
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * This class defines the colour of each segmentation group (random colours)
@@ -31,12 +29,12 @@ public class SegmenterColourArray extends ColourArray {
         ensureCapacity(points.size());
         colours = new ArrayList<>();
         Random rand = new Random();
-        System.out.println("Loading segmentation colours");
+        Olivia.textOutputter.println("Loading segmentation colours");
         for (int i = 0; i < points.size(); i++) {
             rand.setSeed(groupIds.get(i) * COLOUR_OFFSET);
             add(new PointColour(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
         }
-        System.out.println("Loaded segmentation colours");
+        Olivia.textOutputter.println("Loaded segmentation colours");
     }
     */
 
@@ -61,12 +59,12 @@ public class SegmenterColourArray extends ColourArray {
         ensureCapacity(points.size());
         colours = fillColours(0.1f);
         int index=0;
-        System.out.println("Loading segmentation colours");
+        Olivia.textOutputter.println("Loading segmentation colours");
         for (int i = 0; i < points.size(); i++) {
             index = Math.floorMod(groupIds.get(i), colours.size());
             add(colours.get(index));
         }
-        System.out.println("Loaded segmentation colours");
+        Olivia.textOutputter.println("Loaded segmentation colours");
     }
     
     public SegmenterColourArray(PointArray<PointI> points, ClassifierGroupArray<ClassifierGroup> groups) {

@@ -66,7 +66,7 @@ public abstract class InputReader<VM extends VisualisationManager> {
         }
         this.reader = new FileReader(file);
         this.buffer = new BufferedReader(reader);
-        System.out.println("Reading " + fileName + "...");
+        Olivia.textOutputter.println("Reading " + fileName + "...");
     }
     
     /**
@@ -78,7 +78,7 @@ public abstract class InputReader<VM extends VisualisationManager> {
         file = new File(filePath);
         reader = new FileReader(file);
         buffer = new BufferedReader(reader);
-        System.out.println("Reading " + file.getName() + "...");
+        Olivia.textOutputter.println("Reading " + file.getName() + "...");
     }
     
     /**
@@ -105,7 +105,7 @@ public abstract class InputReader<VM extends VisualisationManager> {
             buffer.reset();
             return ",";
         } else {
-            System.out.println("Error: Unknown delimiter");
+            Olivia.textOutputter.println("Error: Unknown delimiter");
         }
         return "";
     }
@@ -128,7 +128,7 @@ public abstract class InputReader<VM extends VisualisationManager> {
         if (cols.length != 1) {
             return ",";
         }
-        System.out.println("Error: Unknown delimiter");
+        Olivia.textOutputter.println("Error: Unknown delimiter");
         return "";
     }
 

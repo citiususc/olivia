@@ -5,6 +5,7 @@
  */
 package Olivia.extended.overlays;
 
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.render.OpenGLScreen;
@@ -64,7 +65,7 @@ public class NormalsOverlay <VM extends VisualisationManager> extends VertexOver
             String delimiter = "\t";
             String[] cols;
             //double center[] = visualisationManager.getPoints().getCenterOfMassOriginal();
-            System.out.println("Read " + lines.size());
+            Olivia.textOutputter.println("Read " + lines.size());
             if(Math.floorMod(lines.size(), 2)!=0) throw new IOException("Error Reading Overlay, not an even number of lines"); 
             for(i=0;i<lines.size()-1;i=i+2){
                 //point
@@ -75,7 +76,7 @@ public class NormalsOverlay <VM extends VisualisationManager> extends VertexOver
                     pz = Double.parseDouble(cols[2]);
                     point = new Point3D_id(px, py, pz);
                 }else{
-                    System.out.println("Error Reading Overlay");
+                    Olivia.textOutputter.println("Error Reading Overlay");
                     throw new IOException("Error Reading Overlay");
                 }
                 if(cols.length==6){
@@ -94,7 +95,7 @@ public class NormalsOverlay <VM extends VisualisationManager> extends VertexOver
                     vy = Double.parseDouble(cols[1]);
                     vz = Double.parseDouble(cols[2]);
                 }else{
-                    System.out.println("Error Reading Overlay");
+                    Olivia.textOutputter.println("Error Reading Overlay");
                     throw new IOException("Error Reading Overlay");
                 }
                 if(cols.length==6){
@@ -109,7 +110,7 @@ public class NormalsOverlay <VM extends VisualisationManager> extends VertexOver
                 this.add(point, colour);
             }
         }catch (IOException ex) {
-            System.out.println("Error Reading Overlay");
+            Olivia.textOutputter.println("Error Reading Overlay");
         }
     }
     

@@ -214,7 +214,7 @@ public class ExecutionOutputScreen extends JFrame implements PropertyChangeListe
         switch (evt.getPropertyName()) {
             case "progress" : 
                 //addText(((Integer)evt.getNewValue()).toString() + ": ");
-                 //System.out.println((Integer)evt.getNewValue());
+                 //Olivia.textOutputter.println((Integer)evt.getNewValue());
                 break;
             case "state":
                 SwingWorker worker = (SwingWorker) evt.getSource();

@@ -1,12 +1,10 @@
 package Olivia.core.render.hi;
 
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
-import java.awt.Cursor;
-
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseEvent.PointerClass;
 import com.jogamp.newt.event.MouseListener;
-import java.awt.Component;
 
 
 /**
@@ -213,12 +211,12 @@ public class NEWTMouseListener implements MouseListener{
     }
     
     protected void debug(MouseEvent me, String text){
-        System.out.print( text + " ");
+        Olivia.textOutputter.print( text + " ");
         if(me.getPointerType(0).getPointerClass() == PointerClass.Offscreen){
-            System.out.print( "offscreen " + me.getButton());
+            Olivia.textOutputter.print( "offscreen " + me.getButton());
         }else if(me.getPointerType(0).getPointerClass() == PointerClass.Onscreen){
-            System.out.print( "onscreen b:" + me.getButton() + " nb:" + me.getButtonDownCount());
+            Olivia.textOutputter.print( "onscreen b:" + me.getButton() + " nb:" + me.getButtonDownCount());
         }
-        System.out.println("");
+        Olivia.textOutputter.println("");
     }
 }

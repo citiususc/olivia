@@ -1,6 +1,6 @@
 package Olivia.scanlines;
 
-
+import Olivia.core.Olivia;
 import Olivia.core.InputReader;
 import Olivia.core.data.Group;
 import Olivia.core.data.GroupArray;
@@ -61,13 +61,13 @@ public class ScanlinesInputReader extends InputReader<ScanlinesVisualisationMana
             }
             if (i > 1000000) {
                 m++;
-                System.out.println("Read " + m + "M points...");
+                Olivia.textOutputter.println("Read " + m + "M points...");
                 i = 0;
             }
         }
 
-        System.out.println("Read " + numPointsRead + " points");
-        System.out.println("Read " + numGroupsRead + " groups");
+        Olivia.textOutputter.println("Read " + numPointsRead + " points");
+        Olivia.textOutputter.println("Read " + numGroupsRead + " groups");
         visu.setPointCloud(points);
         visu.setGroups(groups);
     }

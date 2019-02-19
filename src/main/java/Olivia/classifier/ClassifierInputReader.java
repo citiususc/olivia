@@ -1,5 +1,6 @@
 package Olivia.classifier;
 
+import Olivia.core.Olivia;
 import Olivia.core.InputReader;
 import Olivia.core.data.PointArray;
 import Olivia.extended.PointI;
@@ -44,8 +45,8 @@ public class ClassifierInputReader extends InputReader<ClassifierVisualisationMa
             }
             linea = buffer.readLine();
         }
-        System.out.println("Read " + numPointsRead + " points");
-        System.out.println("Read " + numGroupsRead + " groups");
+        Olivia.textOutputter.println("Read " + numPointsRead + " points");
+        Olivia.textOutputter.println("Read " + numGroupsRead + " groups");
         visualisation.setPointCloud(points);
         visualisation.setGroups(groups);
     }

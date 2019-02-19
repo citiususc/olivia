@@ -1,9 +1,9 @@
 package Olivia.extended;
 
+import Olivia.core.Olivia;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.PointColour;
-import javax.swing.SwingWorker;
 
 /**
  * This creates colours for all points in an array depending of their intensity,
@@ -34,7 +34,7 @@ public class IntensityColourArray<P extends PointI> extends ColourArray {
             }
         }
 
-        System.out.println("Intensity between: " + min_i + " and " + max_i);
+        Olivia.textOutputter.println("Intensity between: " + min_i + " and " + max_i);
         float grad = max_i - min_i;
 
         for (PointI point : points) {
@@ -43,7 +43,7 @@ public class IntensityColourArray<P extends PointI> extends ColourArray {
             float b = 0.05f + point.getIntensity() / grad;
             IntensityColourArray.this.add(new PointColour(r, g, b));
         }
-        //System.out.println("Loaded intensity colours");
+        //Olivia.textOutputter.println("Loaded intensity colours");
         //return null;
         //}
         //};

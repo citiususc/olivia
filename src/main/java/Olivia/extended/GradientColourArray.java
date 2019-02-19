@@ -1,5 +1,6 @@
 package Olivia.extended;
 
+import Olivia.core.Olivia;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
@@ -25,7 +26,7 @@ public class GradientColourArray<P extends PointI> extends ColourArray {
             }
         }
 
-        System.out.println("Intensity between: " + min_i + " and " + max_i);
+        Olivia.textOutputter.println("Intensity between: " + min_i + " and " + max_i);
         for (PointI point : points) {
             GradientColourArray.this.add(GetGradientColour(point.I, min_i, max_i));     
         }

@@ -5,6 +5,7 @@
  */
 package Olivia.exec;
 
+import Olivia.core.Olivia;
 import Olivia.core.VisualisationManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,7 +74,7 @@ public class ExecutionMenu extends JMenu implements ActionListener {
                     outputScreen.getOliviaProcesses().setExecutablesFolder(file.getAbsolutePath());
                     JOptionPane.showMessageDialog(null, "FOUND: " + outputScreen.getOliviaProcesses().getAvailableCommands().toString());
                 } else {
-                    System.out.println("Cannot select directory.");
+                    Olivia.textOutputter.println("Cannot select directory.");
                 }
                 execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment"));
                 break;
