@@ -29,7 +29,7 @@ public class Olivia {
     protected boolean isUndecorated;
     //private static boolean isMirroring;
     protected int idCount;
-    protected TextOutputter textOutputter;
+    protected ConsoleTextOutputter textOutputter;
     protected CommandParser commandParser;
     
     /**
@@ -112,7 +112,7 @@ public class Olivia {
     }
     
     
-    public TextOutputter getOutputter(){
+    public ConsoleTextOutputter getOutputter(){
         return textOutputter;
     }
     

@@ -7,9 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -141,6 +138,10 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The menu for the general options
      */
     protected JMenu optionsMenu;
+    /**
+     * The item to toggle whether to show an independent frame for the console
+     */
+    protected JCheckBoxMenuItem showConsoleFrame;
     /**
      * The item to toggle show selected point
      */
@@ -336,6 +337,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         captureMenu.add(recordVideo);
 
         optionsMenu = addMenu("Options", "Options Menu", false);
+        showConsoleFrame = addCheckBoxMenuItem("Show Console Window", "Shows a window with the console messages", "showConsoleFrame", true, true);
         showSelectedPoint = addCheckBoxMenuItem("Show Selected Point", "Show a highlight over the selected point", "showSelectedPoint", true, true);
         showSelectedPoint.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_P, ActionEvent.ALT_MASK)
@@ -366,6 +368,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             showStats = addCheckBoxMenuItem("Show Stats", "Indicates wheter to show the stats of the render", "stats",false, true);
         }
         
+        optionsMenu.add(showConsoleFrame);
         optionsMenu.add(showSelectedPoint);
         optionsMenu.add(showOverlayOptions);
         optionsMenu.add(fullscreen);
@@ -489,6 +492,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
                     try {
+                        gui.setConsoleFrameVisible(true);
                         gui.getOlivia().getCommandParser().readFromFile(file.toPath());
                         SwingUtilities.invokeLater(gui.getOlivia().getCommandParser());
                     }catch (IOException ex) {
@@ -649,6 +653,9 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "recordVideo":
                 gui.getActiveVisualisation().recordVideo();
                 break;
+            case "showConsoleFrame":
+                gui.setConsoleFrameVisible(showConsoleFrame.isSelected());
+                break;
             case "showSelectedPoint":
                 gui.showSelectedPoint(showSelectedPoint.isSelected());
                 break;
@@ -733,6 +740,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             setEnabledVisualisationMenus(false);
             changeVisualisationMenu();
         }
+        showConsoleFrame.setSelected(gui.isConsoleFrameVisible());
         showOverlayOptions.setSelected(gui.isOverlayOptionsVisible());
     }
     

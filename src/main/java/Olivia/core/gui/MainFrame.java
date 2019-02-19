@@ -70,6 +70,10 @@ public class MainFrame extends JFrame{
      */
     protected JSplitPane splitPane2;
     /**
+     * A window to show console output
+     */
+    protected ConsoleFrame consoleFrame;
+    /**
      * To indicate whether it is mirroring the cameras of all the visualisations
      */
     protected boolean isMirroring;
@@ -153,6 +157,7 @@ public class MainFrame extends JFrame{
             setSize(screenSize.width, screenSize.height / 3);
             setTitle(TITLE + " control");
         }
+        consoleFrame.setVisible(false);
         setVisible(true);
         setLocationRelativeTo(null);
         renderGUI.init();
@@ -199,6 +204,8 @@ public class MainFrame extends JFrame{
         controlPanel = new MainControl(this);
         controlPanel.initialize();
         //buildRenderPane();
+        consoleFrame = new ConsoleFrame(this);
+        olivia.getOutputter().addConsoleTextOutputter(consoleFrame);
         
         overlayOptionsFrame = new OverlaysOptionsFrame(this);
 
@@ -543,5 +550,11 @@ public class MainFrame extends JFrame{
         getActiveVisualisation().setDrawMouseSelection(showSelectedPoint);
     }
     
+    public void setConsoleFrameVisible(boolean isVisible){
+        this.consoleFrame.setVisible(isVisible);
+    }
     
+    public boolean isConsoleFrameVisible(){
+        return this.consoleFrame.isVisible();
+    }
 }

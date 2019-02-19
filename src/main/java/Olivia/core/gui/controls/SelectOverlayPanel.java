@@ -48,13 +48,13 @@ public class SelectOverlayPanel extends BasicArrowPanel implements ActionListene
     
     public void update(){
         if(gui.getActiveVisualisation() != null){
-                buttonUp.setEnabled(!gui.getActiveVisualisation().getOvelays().isEmpty());
-                buttonDown.setEnabled(!gui.getActiveVisualisation().getOvelays().isEmpty());
-                checkBox.setEnabled(!gui.getActiveVisualisation().getOvelays().isEmpty());
-                nameLabel.setEnabled(!gui.getActiveVisualisation().getOvelays().isEmpty());
-            if(gui.getActiveVisualisation().getOvelays().getCurrentOverlay()!=null){
-                this.nameLabel.setText(gui.getActiveVisualisation().getOvelays().getCurrentOverlay().getName());
-                this.checkBox.setSelected(gui.getActiveVisualisation().getOvelays().isSelected());
+                buttonUp.setEnabled(!gui.getActiveVisualisation().getOverlays().isEmpty());
+                buttonDown.setEnabled(!gui.getActiveVisualisation().getOverlays().isEmpty());
+                checkBox.setEnabled(!gui.getActiveVisualisation().getOverlays().isEmpty());
+                nameLabel.setEnabled(!gui.getActiveVisualisation().getOverlays().isEmpty());
+            if(gui.getActiveVisualisation().getOverlays().getCurrentOverlay()!=null){
+                this.nameLabel.setText(gui.getActiveVisualisation().getOverlays().getCurrentOverlay().getName());
+                this.checkBox.setSelected(gui.getActiveVisualisation().getOverlays().isSelected());
             }
         }
     }
@@ -66,17 +66,17 @@ public class SelectOverlayPanel extends BasicArrowPanel implements ActionListene
         }
         switch (e.getActionCommand()) {
             case "up":
-                gui.getActiveVisualisation().getOvelays().getNextOverlay();
+                gui.getActiveVisualisation().getOverlays().getNextOverlay();
                 update();
                 gui.updateControlPanes();
                 break;
             case "down":
-                gui.getActiveVisualisation().getOvelays().getPreviousOverlay();
+                gui.getActiveVisualisation().getOverlays().getPreviousOverlay();
                 update();
                 gui.updateControlPanes();
                 break;
             case "ticked":
-                gui.getActiveVisualisation().getOvelays().select(checkBox.isSelected());
+                gui.getActiveVisualisation().getOverlays().select(checkBox.isSelected());
                 update();
                 gui.updateControlPanes();
                 break;

@@ -5,6 +5,7 @@
  */
 package Olivia.core.gui.controls.overlays;
 
+import Olivia.core.gui.ExtraFrame;
 import Olivia.core.gui.MainFrame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,29 +16,17 @@ import javax.swing.JFrame;
  *
  * @author oscar.garcia
  */
-public class OverlaysOptionsFrame extends JFrame{
-    protected MainFrame gui;
+public class OverlaysOptionsFrame extends ExtraFrame{
     protected OverlaysOptionsPanel optionsPanel;
     
     public OverlaysOptionsFrame(MainFrame gui){
-        this.gui = gui;
+        super(gui);
         
         optionsPanel = new OverlaysOptionsPanel();
         
         this.setContentPane(optionsPanel);
         this.setVisible(false);
         this.setSize(600, 200);
-        
-        WindowListener exitListener = new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        super.windowClosing(e);
-                        e.getWindow().setVisible(false);
-                        gui.updateAll();
-                    }
-        };
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(exitListener);
         
         this.setTitle("Overlay Options");
         
@@ -46,9 +35,9 @@ public class OverlaysOptionsFrame extends JFrame{
     
     public void update(){
         if(gui.getActiveVisualisation()!=null){
-            if(gui.getActiveVisualisation().getOvelays().getCurrentOverlay()!=null){
-                this.setTitle("Options for " + gui.getActiveVisualisation().getOvelays().getCurrentOverlay().getName());
-                optionsPanel.setOverlay(gui.getActiveVisualisation().getOvelays().getCurrentOverlay());
+            if(gui.getActiveVisualisation().getOverlays().getCurrentOverlay()!=null){
+                this.setTitle("Options for " + gui.getActiveVisualisation().getOverlays().getCurrentOverlay().getName());
+                optionsPanel.setOverlay(gui.getActiveVisualisation().getOverlays().getCurrentOverlay());
             }
         }
     }

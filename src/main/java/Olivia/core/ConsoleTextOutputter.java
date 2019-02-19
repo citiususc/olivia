@@ -5,9 +5,9 @@
  */
 package Olivia.core;
 
-import Olivia.core.gui.controls.ConsoleTextPane;
+import Olivia.core.gui.ConsoleFrame;
 import java.awt.Color;
-import javax.swing.JFrame;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,20 +15,42 @@ import javax.swing.JFrame;
  */
 public class ConsoleTextOutputter implements TextOutputter{
     
-    protected JFrame outputFrame;
-    protected ConsoleTextPane consolePane;
+    protected ArrayList<TextOutputter> textOuts;
+    protected ArrayList<Boolean> selected;
+    
+    //protected ConsoleFrame outputFrame;
     protected boolean terminalOutput;
-    protected boolean guiOutput;
+    //protected boolean guiOutput;
     
     public ConsoleTextOutputter(){
-        outputFrame = new JFrame("Console output");
-        outputFrame.setVisible(false);
-        outputFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        outputFrame.setSize(500, 600);
-        consolePane = new ConsoleTextPane();
-        outputFrame.setContentPane(consolePane);
-        this.guiOutput = true;
         this.terminalOutput = true;
+        textOuts = new ArrayList<>();
+        selected = new ArrayList<>();
+    }
+    
+    public boolean addConsoleTextOutputter(TextOutputter textOut){
+        boolean ret;
+        ret = textOuts.add(textOut);
+        if(ret) ret = selected.add(true);
+        return ret;
+    }
+    
+    public boolean removeConsoleTextOutputter(TextOutputter textOut){
+        int ret;
+        ret = textOuts.indexOf(textOut);
+        if(ret !=-1){
+            textOuts.remove(ret);
+            selected.remove(ret);
+            return true;
+        }
+        return false;
+    }
+    
+    public int selectConsoleTextOutputter(TextOutputter textOut, boolean isSelected){
+        int ret;
+        ret = textOuts.indexOf(textOut);
+        if(ret !=-1) selected.set(ret, isSelected);
+        return ret;
     }
 
     @Override
@@ -44,21 +66,19 @@ public class ConsoleTextOutputter implements TextOutputter{
     @Override
     public void println(String text, Color color) {
         if(terminalOutput) System.out.println(text);
-        if(guiOutput){
-            outputFrame.setVisible(true);
-            consolePane.addText(text + "\n", color);
+        for(int i = 0; i<textOuts.size(); i++){
+            if(selected.get(i)==true) textOuts.get(i).println(text, color);
         }
     }
 
     @Override
     public void print(String text, Color color) {
         if(terminalOutput) System.out.print(text);
-        if(guiOutput){
-            outputFrame.setVisible(true);
-            consolePane.addText(text,color);
+        for(int i = 0; i<textOuts.size(); i++){
+            if(selected.get(i)==true) textOuts.get(i).print(text, color);
         }
     }
-
+    
     public boolean isTerminalOutput() {
         return terminalOutput;
     }
@@ -66,15 +86,5 @@ public class ConsoleTextOutputter implements TextOutputter{
     public void setTerminalOutput(boolean terminalOutput) {
         this.terminalOutput = terminalOutput;
     }
-
-    public boolean isGuiOutput() {
-        return guiOutput;
-    }
-
-    public void setGuiOutput(boolean guiOutput) {
-        this.guiOutput = guiOutput;
-    }
-    
-    
 
 }

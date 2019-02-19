@@ -30,6 +30,10 @@ public class OliviaProcesses {
         this.outputFolder = DEAFAULT_OUTPUT_FOLDER;
         //outputScreen.setVisible(false);
         //isLinux
+        checkAvailableExecutables();
+    }
+    
+    protected void checkAvailableExecutables(){
         availableCommands = new ArrayList<>();
         File folder = new File(executablesFolder);
         for (final File fileEntry : folder.listFiles()) {
@@ -43,6 +47,17 @@ public class OliviaProcesses {
             }
         }
     }
+
+    public String getExecutablesFolder() {
+        return executablesFolder;
+    }
+
+    public void setExecutablesFolder(String executablesFolder) {
+        this.executablesFolder = executablesFolder;
+        checkAvailableExecutables();
+    }
+    
+    
     
     public ArrayList<String> getAvailableCommands(){
         return availableCommands;

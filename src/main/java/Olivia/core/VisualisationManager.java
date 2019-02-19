@@ -297,7 +297,7 @@ public abstract class VisualisationManager<VM extends VisualisationManager, P ex
      * Gets the overlays of the visualisation, same as with getPointCloud() should we repeat Overlays methods to encapsulate access??
      * @return this visualisation overlays
      */
-    public OverlayArray getOvelays() {
+    public OverlayArray getOverlays() {
         return overlays;
     }
     
