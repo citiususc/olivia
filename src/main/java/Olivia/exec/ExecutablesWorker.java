@@ -5,18 +5,14 @@
  */
 package Olivia.exec;
 
-import Olivia.core.gui.controls.ConsoleTextPane;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SwingWorker;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
 
 /**
  *

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Olivia.core.gui.controls;
+package Olivia.core.gui;
 
+import Olivia.core.gui.ConsoleTextPane;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.JEditorPane;

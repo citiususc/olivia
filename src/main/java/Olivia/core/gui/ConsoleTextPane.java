@@ -1,5 +1,6 @@
-package Olivia.core.gui.controls;
+package Olivia.core.gui;
 
+import Olivia.core.TextOutputter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.PrintStream;
@@ -17,7 +18,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author jorge.martinez.sanchez
  */
-public class ConsoleTextPane extends JScrollPane {
+public class ConsoleTextPane extends JScrollPane implements TextOutputter{
 
     protected final int MINIMUM_WIDTH = 300;
     protected final int MINIMUM_HEIGHT = 300;
@@ -69,6 +70,7 @@ public class ConsoleTextPane extends JScrollPane {
         StyleConstants.setForeground(style, color);
         try {
             doc.insertString(doc.getLength(), line, style);
+            this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
         }
         catch (BadLocationException e) {
         }
@@ -77,5 +79,25 @@ public class ConsoleTextPane extends JScrollPane {
     public void redirectOut(){
         PrintStream printStream = new PrintStream(new TextPaneOutputStream(this));
         System.setOut(printStream);
+    }
+
+    @Override
+    public void println(String text) {
+        addText(text + "\n");
+    }
+
+    @Override
+    public void print(String text) {
+        addText(text);
+    }
+
+    @Override
+    public void println(String text, Color color) {
+        addText(text + "\n", color);
+    }
+
+    @Override
+    public void print(String text, Color color) {
+        addText(text, color);
     }
 }

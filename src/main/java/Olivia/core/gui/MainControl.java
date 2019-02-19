@@ -1,13 +1,11 @@
 package Olivia.core.gui;
 
-import Olivia.core.gui.controls.ActiveGeometryPanel;
-import Olivia.core.gui.controls.ConsoleTextPane;
+import Olivia.core.Olivia;
 import Olivia.core.gui.controls.SpeedArrowPanel;
 import Olivia.core.gui.controls.PointSizePanel;
 import Olivia.core.gui.controls.LineWidthPanel;
 import Olivia.core.gui.controls.EyeDistPanel;
 import Olivia.core.gui.controls.SelectOverlayPanel;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
@@ -94,6 +92,8 @@ public class MainControl extends JPanel implements ActionListener {
         //activeGeoPanel = new ActiveGeometryPanel(gui);
         selectOverlayPanel = new SelectOverlayPanel(gui);
         consoleTextPane = new ConsoleTextPane();
+        
+        Olivia.textOutputter.addConsoleTextOutputter(consoleTextPane);
 
         centerAtPointB = new JButton("Center at Point");
         centerAtPointB.setToolTipText("Centers at the selected point");

@@ -6,7 +6,7 @@
 package Olivia.exec;
 
 import Olivia.core.Olivia;
-import Olivia.core.gui.controls.ConsoleTextPane;
+import Olivia.core.gui.ConsoleTextPane;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;

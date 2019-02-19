@@ -6,7 +6,6 @@
 package Olivia.core.gui;
 
 import Olivia.core.TextOutputter;
-import Olivia.core.gui.controls.ConsoleTextPane;
 import java.awt.Color;
 import javax.swing.JFrame;
 
