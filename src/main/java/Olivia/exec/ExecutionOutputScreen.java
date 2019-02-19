@@ -251,6 +251,13 @@ public class ExecutionOutputScreen extends JFrame implements PropertyChangeListe
                             olivia.addNewSegmenterVisualisation(outputField.getText() + "/results.xyz", "Segment Results");
                         }
                         break;
+                    case "detect":
+                        if(System.getProperty("os.name").toLowerCase().startsWith("windows")){
+                            olivia.addNewClassifierVisualisation(outputField.getText() + "\results2.xyz", "Detect Results");
+                        }else{
+                            olivia.addNewClassifierVisualisation(outputField.getText() + "/results2.xyz", "Detect Results");
+                        }
+                        break;
                 }
                 break;
             case "exit":

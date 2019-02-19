@@ -21,19 +21,23 @@ import javax.swing.JOptionPane;
  */
 public class ExecutionMenu extends JMenu implements ActionListener {
     protected VisualisationManager vM;
-    //protected OliviaProcessBuilder pB;
-    //protected OliviaProcesses pB;
     protected ExecutionOutputScreen outputScreen;
     
     protected JMenuItem setFolder;
     protected JMenu execute;
     protected JMenuItem execSegment;
+    protected JMenuItem execDetect;
+    
+    protected boolean segmentAllowed;
+    protected boolean detectAllowed;
     
     protected JFileChooser directoryFC;
     
     public ExecutionMenu(VisualisationManager vM){
         super("Execute");
         this.vM = vM;
+        segmentAllowed = true;
+        detectAllowed = true;
         //pB = new OliviaProcessBuilder("/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
         //pB = new OliviaProcesses("/home/oscar.garcia/Nextcloud/LiDAR/rule-based-classifier-master/bin/");
         
@@ -55,8 +59,16 @@ public class ExecutionMenu extends JMenu implements ActionListener {
         
         execute.add(execSegment);
         
+        execDetect = new JMenuItem("detect");
+        execDetect.getAccessibleContext().setAccessibleDescription("Executes the detection on this file");
+        execDetect.setActionCommand("detect");
+        execDetect.addActionListener(this);
+        
+        execute.add(execDetect);
+        
         outputScreen = new ExecutionOutputScreen(vM.getGUI().getOlivia());
-        execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment"));
+        execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment")&&segmentAllowed);
+        execDetect.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("detect")&&detectAllowed);
         outputScreen.setVisible(false);
         
         directoryFC = new JFileChooser();
@@ -76,7 +88,8 @@ public class ExecutionMenu extends JMenu implements ActionListener {
                 } else {
                     Olivia.textOutputter.println("Cannot select directory.");
                 }
-                execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment"));
+                execSegment.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("segment")&&segmentAllowed);
+                execDetect.setEnabled(outputScreen.getOliviaProcesses().getAvailableCommands().contains("detect")&&detectAllowed);
                 break;
             case "segment" :
                 /*if(pB.executeSegment(vM.getMainFilePath())==0){
@@ -86,7 +99,35 @@ public class ExecutionMenu extends JMenu implements ActionListener {
                 outputScreen.setUp("segment", vM.getMainFilePath());
                 //outputScreen.performSegment(vM.getMainFilePath());
                 break;
+            case "detect" :
+                /*if(pB.executeSegment(vM.getMainFilePath())==0){
+                    vM.getGUI().getOlivia().addNewSegmenterVisualisation("/home/oscar.garcia/NetBeansProjects/Olivia_public/olivia_public/jogl/results.xyz", "Segmentation Result");
+                };*/
+                outputScreen.setVisible(true);
+                outputScreen.setUp("detect", vM.getMainFilePath());
+                //outputScreen.performSegment(vM.getMainFilePath());
+                break;
         }
     }
+
+    public boolean isSegmentAllowed() {
+        return segmentAllowed;
+    }
+
+    public void setSegmentAllowed(boolean segmentAllowed) {
+        this.segmentAllowed = segmentAllowed;
+        execSegment.setEnabled(segmentAllowed);
+    }
+
+    public boolean isDetectAllowed() {
+        return detectAllowed;
+    }
+
+    public void setDetectAllowed(boolean detectAllowed) {
+        this.detectAllowed = detectAllowed;
+        execDetect.setEnabled(detectAllowed);
+    }
+    
+    
     
 }

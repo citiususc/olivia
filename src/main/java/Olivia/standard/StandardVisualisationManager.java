@@ -55,6 +55,7 @@ public class StandardVisualisationManager extends VisualisationManager<StandardV
         ExecutionMenu executionMenu = new ExecutionMenu(this);
         this.jMenu = executionMenu;
         this.jMenu.setText(this.name);
+        executionMenu.setDetectAllowed(false);
         jMenu.setEnabled(true);
     }
     

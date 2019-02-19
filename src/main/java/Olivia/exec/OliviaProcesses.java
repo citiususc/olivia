@@ -7,7 +7,6 @@ package Olivia.exec;
 
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -42,6 +41,9 @@ public class OliviaProcesses {
                 switch(fileEntry.getName()){
                     case "segment" :
                         availableCommands.add("segment");
+                        break;
+                    case "detect" :
+                        availableCommands.add("detect");
                         
                 }
             }
@@ -73,7 +75,7 @@ public class OliviaProcesses {
     }
     
     public int executeSegment(String filePath){
-        return executeSegment(filePath,getSegmentArgs());
+        return executeSegment(filePath,getArgsForCommand("segment"));
     }
     
     public int executeSegment(String filePath, String args){
@@ -94,18 +96,44 @@ public class OliviaProcesses {
         return 1;
     }
     
+    public int executeDetect(String filePath){
+        return executeDetect(filePath,getArgsForCommand("detect"));
+    }
+    
+    public int executeDetect(String filePath, String args){
+        //ProcessBuilder builder = new ProcessBuilder();
+        ExecutablesWorker worker;
+        outputScreen.setVisible(true);
+        if (isWindows) {
+            //builder.command("cmd.exe", "/c", "dir");
+            return -1;
+        } else {
+            //builder.command(executablesFolder + "segment", "-i" +filePath, "-n 1000000");
+            worker = new ExecutablesWorker(outputScreen, executablesFolder + "detect", "-i" +filePath, "-O"+outputFolder, args);
+        }
+        outputScreen.addText("Executing detection on " + filePath);
+        worker.addPropertyChangeListener(outputScreen);
+        //builder.directory(new File(System.getProperty("user.home")));
+        worker.execute();
+        return 1;
+    }
+    
     public String getArgsForCommand(String command){
         switch(command){
             case "segment" :
                 return "-n 1000000";
+            case "detect" :
+                return "";
             default :
                 return "";
         }
     }
     
+    /*
     public String getSegmentArgs(){
         return getArgsForCommand("segment");
     }
+    */
     
     
 }

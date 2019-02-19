@@ -9,6 +9,7 @@ import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
+import Olivia.exec.ExecutionMenu;
 import Olivia.extended.PointI;
 import Olivia.extended.IntensityColourArray;
 import com.jogamp.opengl.GL;
@@ -67,6 +68,11 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
         overlays = new OverlayArray<>(this);
         Olivia.textOutputter.println("Creating Control Pane for " + name);
         controlPane = new SegmenterControlPane(this);
+        ExecutionMenu executionMenu = new ExecutionMenu(this);
+        this.jMenu = executionMenu;
+        this.jMenu.setText(this.name);
+        executionMenu.setSegmentAllowed(false);
+        jMenu.setEnabled(true);
     }
 
     public void setGroups(SegmenterGroupArray<SegmenterGroup> groups) {
@@ -157,6 +163,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
 
     @Override
     public void readFromFiles(String filePath) throws FileNotFoundException, IOException {
+        this.mainFilePath = filePath;
         inputReader.readFromFiles(filePath, this);
         selectedFlags = new boolean[pointCloud.size()];
         flagSelectedPoints(selectedFlags);
