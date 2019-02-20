@@ -239,6 +239,9 @@ public class ExecutionOutputScreen extends JFrame implements PropertyChangeListe
                     case "segment":
                         oliviaProcesses.executeSegment(inputField.getText(),argsField.getText());
                         break;
+                    case "detect":
+                        oliviaProcesses.executeDetect(inputField.getText(),argsField.getText());
+                        break;
                 }
                 break;
             case "show":
