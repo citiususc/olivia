@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -70,7 +71,14 @@ public class ConsoleTextPane extends JScrollPane implements TextOutputter{
         StyleConstants.setForeground(style, color);
         try {
             doc.insertString(doc.getLength(), line, style);
-            this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
+            /**
+             * This sometimes gives an error when called from the OpenGLScreen as a bad thread
+             */
+            //this.getVerticalScrollBar().setValue(this.getVerticalScrollBar().getMaximum());
+            JScrollPane mypane = this;
+            SwingUtilities.invokeLater(() -> {
+                mypane.getVerticalScrollBar().setValue(mypane.getVerticalScrollBar().getMaximum());
+            });
         }
         catch (BadLocationException e) {
         }

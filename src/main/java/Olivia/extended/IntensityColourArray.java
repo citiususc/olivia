@@ -15,6 +15,7 @@ import Olivia.core.render.colours.PointColour;
  * @todo Handle intensity outliers
  */
 public class IntensityColourArray<P extends PointI> extends ColourArray {
+    protected float grad;
 
     public IntensityColourArray(final PointArray<P> points) {
         super(points);
@@ -35,19 +36,37 @@ public class IntensityColourArray<P extends PointI> extends ColourArray {
         }
 
         Olivia.textOutputter.println("Intensity between: " + min_i + " and " + max_i);
-        float grad = max_i - min_i;
+        this.grad = max_i - min_i;
+        
+        //long startTime = System.currentTimeMillis();
+        
+        //points.parallelStream().forEach(i -> calculateIntensity(i));
 
+        
         for (PointI point : points) {
             float r = 0.05f + point.getIntensity() / grad;
             float g = 0.05f + point.getIntensity() / grad;
             float b = 0.05f + point.getIntensity() / grad;
-            IntensityColourArray.this.add(new PointColour(r, g, b));
+            this.add(new PointColour(r, g, b));
         }
-        //Olivia.textOutputter.println("Loaded intensity colours");
+        
+        
+        Olivia.textOutputter.println("Loaded intensity colours");
         //return null;
         //}
         //};
 
         //worker.execute();
+        //long endTime = System.currentTimeMillis();
+        
+        //Olivia.textOutputter.println("Time required to calculate intensity colours : " + (endTime - startTime));
     }
+    /*
+    protected void calculateIntensity(PointI point){
+        float r = 0.05f + point.getIntensity() / grad;
+        float g = 0.05f + point.getIntensity() / grad;
+        float b = 0.05f + point.getIntensity() / grad;
+        this.add(new PointColour(r, g, b));
+    }
+    */
 }
