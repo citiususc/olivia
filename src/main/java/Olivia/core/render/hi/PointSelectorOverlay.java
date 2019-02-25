@@ -69,4 +69,12 @@ public class PointSelectorOverlay extends AnimatedOverlay{
         this.setPlay(true);
     }
     
+    @Override
+    public synchronized void moveTo(Point3D point) {
+        super.moveTo(point); //To change body of generated methods, choose Tools | Templates.
+        arrow.moveTo(point);
+        arrow2.moveTo(point);
+        highlight.moveTo(point);
+    }
+    
 }
