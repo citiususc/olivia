@@ -30,6 +30,7 @@ import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
+import java.nio.ByteBuffer;
 
 /**
  * This is the render screen, it takes care of most of the openGL operations It
@@ -435,6 +436,7 @@ public class OpenGLScreen implements GLEventListener {
     protected void initNEWT(GLAutoDrawable glad) {
         glad.getAnimator().setUpdateFPSFrames(1, null);
         gl2 = glad.getGL().getGL2();
+        Olivia.textOutputter.println("OpenGL version: "+ gl2.glGetString(GL.GL_VERSION));
         gl2.glShadeModel(GLLightingFunc.GL_SMOOTH);
         gl2.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl2.glClearDepth(1.0f);
@@ -442,7 +444,101 @@ public class OpenGLScreen implements GLEventListener {
         gl2.glDepthFunc(GL2.GL_LEQUAL);
         gl2.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         
+        // build and compile our shader program
+        // ------------------------------------
+        // vertex shader
+        /*int vertexShader = gl2.glCreateShader(GL2.GL_VERTEX_SHADER);
+        gl2.glShaderSource(vertexShader, 1, Shaders.VertexShader, null);
+        gl2.glCompileShader(vertexShader);
+        // check for shader compile errors
+        IntBuffer intBuffer = IntBuffer.allocate(1);
+        gl2.glGetShaderiv(vertexShader, GL2.GL_COMPILE_STATUS, intBuffer);
+        Olivia.textOutputter.println("Vertex shader compile status " + intBuffer.get(0));
+        if (intBuffer.get(0) != 1) {
+            gl2.glGetShaderiv(vertexShader, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		gl2.glGetShaderInfoLog(vertexShader, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}*/
+        // fragment shader
+        Shaders shaders = new Shaders();
+        int fragmentShader = gl2.glCreateShader(GL2.GL_FRAGMENT_SHADER);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_NOTHING, null);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_TO_RED, null);
+        gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_R_TO_G, null);
+        //gl2.glShaderSource(fragmentShader, 1, shaders.colorblindFilter(), null);
+        gl2.glCompileShader(fragmentShader);
+        IntBuffer  intBuffer = IntBuffer.allocate(1);
+        gl2.glGetShaderiv(fragmentShader, GL2.GL_COMPILE_STATUS, intBuffer);
+        Olivia.textOutputter.println("Fragment shader compile status " + intBuffer.get(0));
+        // check for shader compile errors
+        if (intBuffer.get(0) != 1) {
+            gl2.glGetShaderiv(fragmentShader, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		gl2.glGetShaderInfoLog(fragmentShader, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        // link shaders
+        shaderProgram = gl2.glCreateProgram();
+        //gl2.glAttachShader(shaderProgram, vertexShader);
+        gl2.glAttachShader(shaderProgram, fragmentShader);
+        gl2.glLinkProgram(shaderProgram);
+        // check for linking errors
+        intBuffer = IntBuffer.allocate(1);
+        gl2.glGetProgramiv(shaderProgram, GL2.GL_LINK_STATUS, intBuffer);
+        Olivia.textOutputter.println("Shader program link status " + intBuffer.get(0));
+        if (intBuffer.get(0) != 1) {
+            gl2.glGetProgramiv(shaderProgram, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		gl2.glGetProgramInfoLog(shaderProgram, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        gl2.glValidateProgram(shaderProgram);
+        intBuffer = IntBuffer.allocate(1);
+        gl2.glGetProgramiv(shaderProgram, GL2.GL_VALIDATE_STATUS, intBuffer);
+        Olivia.textOutputter.println("Shader program validate status " + intBuffer.get(0));
+	if (intBuffer.get(0) != 1) {
+            gl2.glGetProgramiv(shaderProgram, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		gl2.glGetProgramInfoLog(shaderProgram, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        int pos =  gl2.glGetAttribLocation(shaderProgram, "aPos");
+        int pos2 =  gl2.glGetAttribLocation(shaderProgram, "aColor");
+        Olivia.textOutputter.println("Pos " + pos + " " + pos2);
+        //gl2.glUseProgram(shaderProgram);
+        //gl2.glDeleteShader(vertexShader);
+        gl2.glDeleteShader(fragmentShader);
+        
         Olivia.textOutputter.println("Drawing...");
+    }
+    
+    protected int shaderProgram;
+    public void useShader(){
+        gl2.glUseProgram(shaderProgram);
+    }
+    public void stopUsingShader(){
+        gl2.glUseProgram(0);
+    }
+    
+    public int vertexShaderPosition(){
+        return gl2.glGetAttribLocation(shaderProgram, "aPos");
+    }
+    
+    public int colorShaderPosition(){
+        return gl2.glGetAttribLocation(shaderProgram, "aColor");
     }
 
     /**

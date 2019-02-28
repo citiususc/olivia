@@ -39,18 +39,33 @@ public class VBOManager {
      * @param rasterMode the raster mode (how the shapes will be drawn, just the points, with lines, wireframe, of faces filled )
      * @param size the size to draw the points and lines
      */
-    public static void draw(OpenGLScreen screen, int[] indices, int[] num, int renderMode, int rasterMode, int size) {
+    public static void draw(OpenGLScreen screen, int[] indices, int[] num, int[] vao, int renderMode, int rasterMode, int size) {
+        screen.getGl2().glBindVertexArray(vao[0]);
+        screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
+        
         screen.getGl2().glEnableClientState(GL2.GL_VERTEX_ARRAY);
         screen.getGl2().glEnableClientState(GL2.GL_COLOR_ARRAY);
-        screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
         screen.getGl2().glVertexPointer(3, GL.GL_FLOAT, 6 * Buffers.SIZEOF_FLOAT, 0);
         screen.getGl2().glColorPointer(3, GL.GL_FLOAT, 6 * Buffers.SIZEOF_FLOAT, 3 * Buffers.SIZEOF_FLOAT);
+        
+        /*
+        screen.getGl2().glVertexAttribPointer(screen.vertexShaderPosition(), 3, GL.GL_FLOAT, false, 6*Buffers.SIZEOF_FLOAT, 0);
+        screen.getGl2().glEnableVertexAttribArray(screen.vertexShaderPosition());
+        //screen.getGl2().glVertexAttribPointer(screen.colorShaderPosition(), 3, GL.GL_FLOAT, false, 6*Buffers.SIZEOF_FLOAT, 3*Buffers.SIZEOF_FLOAT);
+        //screen.getGl2().glEnableVertexAttribArray(screen.colorShaderPosition());
+        screen.getGl2().glVertexAttribPointer(1, 3, GL.GL_FLOAT, false, 6*Buffers.SIZEOF_FLOAT, 3*Buffers.SIZEOF_FLOAT);
+        screen.getGl2().glEnableVertexAttribArray(1);*/
+        screen.useShader();
+        
         screen.getGl2().glPointSize(size);
         screen.getGl2().glLineWidth(size);
         screen.getGl2().glPolygonMode(GL2.GL_FRONT_AND_BACK, rasterMode);
+        screen.getGl2().glBindVertexArray(vao[0]);
         screen.getGl2().glDrawArrays(renderMode, 0, num[0]);
+        screen.stopUsingShader();
         screen.getGl2().glDisableClientState(GL2.GL_VERTEX_ARRAY);
         screen.getGl2().glDisableClientState(GL2.GL_COLOR_ARRAY);
+        screen.getGl2().glBindVertexArray(0);
     }
    
     /**
@@ -150,12 +165,14 @@ public class VBOManager {
             long size = 0;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
+            int[] vao = new int[]{-1};
+            screen.getGl2().glGenVertexArrays(1, vao, 0);
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
             Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
-            points.setVboBuffer(points.size(),indices,vertices);
+            points.setVboBuffer(points.size(),indices,vertices,vao);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, colors, show);
@@ -178,12 +195,14 @@ public class VBOManager {
             long size;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
+            int[] vao = new int[]{-1};
+            screen.getGl2().glGenVertexArrays(1, vao, 0);
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
             Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
-            points.setVboBuffer(points.size(),indices,vertices);
+            points.setVboBuffer(points.size(),indices,vertices,vao);
             Olivia.textOutputter.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
@@ -207,12 +226,14 @@ public class VBOManager {
             long size = 0;
             int[] indices = new int[]{-1};
             int[] vertices = new int[]{points.size()};
+            int[] vao = new int[]{-1};
+            screen.getGl2().glGenVertexArrays(1, vao, 0);
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
             Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
-            points.setVboBuffer(points.size(),indices,vertices);
+            points.setVboBuffer(points.size(),indices,vertices,vao);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
             loadBuffer(points, fbuffer, show);
@@ -236,10 +257,12 @@ public class VBOManager {
             int[] vertices = new int[]{points.size()};
             screen.getGl2().glGenBuffers(1, indices, 0); //(number of buffer, buffers, offset)
             screen.getGl2().glBindBuffer(GL2.GL_ARRAY_BUFFER, indices[0]);
+            int[] vao = new int[]{-1};
+            screen.getGl2().glGenVertexArrays(1, vao, 0);
             size = (long) points.size() * 3L * (long)Buffers.SIZEOF_FLOAT * 2L;
             Olivia.textOutputter.println("GPU mem: " + size / 1e6 + "MB");
             screen.getGl2().glBufferData(GL2.GL_ARRAY_BUFFER, size, null, GL2.GL_STATIC_DRAW);
-            points.setVboBuffer(points.size(),indices,vertices);
+            points.setVboBuffer(points.size(),indices,vertices,vao);
             Olivia.textOutputter.println("vboBuffer set" + points.size() + " "+ indices[0]+ " "+vertices[0]);
             ByteBuffer bbuffer = screen.getGl2().glMapBuffer(GL2.GL_ARRAY_BUFFER, GL2.GL_WRITE_ONLY);
             FloatBuffer fbuffer = bbuffer.order(ByteOrder.nativeOrder()).asFloatBuffer();

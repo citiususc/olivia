@@ -37,6 +37,10 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      */
     protected int[] vboIndices = new int[]{-1};
     /**
+     * To use in rendering
+     */
+    protected int[] vao = new int[]{-1};
+    /**
     * Number of coloured point that fit in VBO buffer, to make sure the VBO buffer does not overflow. Should be the same as vboNumVertices, we keep it duplicated in case there are changes in the rendering mechanism
     */
     protected int vboBufferCapacity = -1;   
@@ -121,11 +125,12 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
      * @param indices The indices of the buffer
      * @param vertices The vertices of the buffer
      */
-    public void setVboBuffer(int capacity, int[] indices, int[] vertices){
+    public void setVboBuffer(int capacity, int[] indices, int[] vertices, int[] vao){
         if(!vboBuffer_alreadySet){
             this.vboBufferCapacity = capacity;
             this.vboIndices = indices;
             this.vboNumVertices = vertices;
+            this.vao = vao;
             vboBuffer_alreadySet = true;
         }else{
             Olivia.textOutputter.println("vboBuffer was already for " + this.vboBufferCapacity + " points, indices:" +this.vboIndices+ ", vertices: " + this.vboNumVertices +", will not be changed until destruction");
@@ -184,7 +189,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
                     doRepack = false;
                     VBOManager.repack(screen, this, colours);
                 }
-                VBOManager.draw(screen, vboIndices, vboNumVertices, renderMode, rasterMode, pointSize);
+                VBOManager.draw(screen, vboIndices, vboNumVertices,vao, renderMode, rasterMode, pointSize);
             }else{
                 if (!vboBuffer_alreadySet){ //First time
                     VBOManager.build(screen, this,colours, selected);
@@ -193,7 +198,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
                     VBOManager.repack(screen, this, colours, selected);
                 }
                 int[] vboSelectedVertices = new int[]{numSelected};
-                VBOManager.draw(screen, vboIndices, vboSelectedVertices, renderMode, rasterMode, pointSize);
+                VBOManager.draw(screen, vboIndices, vboSelectedVertices,vao, renderMode, rasterMode, pointSize);
                 selected = null;
                 numSelected = 0;
             }
@@ -216,7 +221,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
                     doRepack = false;
                     VBOManager.repack(screen, this);
                 }
-                VBOManager.draw(screen, vboIndices, vboNumVertices, renderMode, rasterMode, pointSize);
+                VBOManager.draw(screen, vboIndices, vboNumVertices,vao, renderMode, rasterMode, pointSize);
             }else{
                 if (!vboBuffer_alreadySet){ //First time
                     VBOManager.build(screen, this, selected);
@@ -225,7 +230,7 @@ public class PointArray<P extends Point3D_id> extends ArrayList<P> implements Re
                     VBOManager.repack(screen, this, selected);
                 }
                 int[] vboSelectedVertices = new int[]{numSelected};
-                VBOManager.draw(screen, vboIndices, vboSelectedVertices, renderMode, rasterMode, pointSize);
+                VBOManager.draw(screen, vboIndices, vboSelectedVertices,vao, renderMode, rasterMode, pointSize);
                 selected = null;
                 numSelected = 0;
             }
