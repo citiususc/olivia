@@ -281,7 +281,7 @@ public class Shaders {
                 filter = DEUTERANOPIA_VISION;
                 break;
             case DEUTERANOMALY:
-                filter = TRITANOPIA_VISION;
+                filter = DEUTERANOMALY_VISION;
                 break;
             case TRITANOPIA:
                 filter = TRITANOPIA_VISION;
