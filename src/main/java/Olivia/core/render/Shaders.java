@@ -5,6 +5,11 @@
  */
 package Olivia.core.render;
 
+import Olivia.core.Olivia;
+import com.jogamp.opengl.GL2;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
 /**
  *
  * @author oscar.garcia
@@ -88,10 +93,40 @@ public class Shaders {
         
     protected String blindnessFilterData = "";
     protected String blindnessFilterCode = "";
-    public static final int PROTANOPIA = 1;
-    public static final int DEUTERANOPIA = 2;
-    public static final int TRITANOPIA = 3;
+    public static final int NORMAL = 1;
+    public static final int PROTANOPIA = 2;
+    public static final int PROTANOMALY = 3;
+    public static final int DEUTERANOPIA = 4;
+    public static final int DEUTERANOMALY = 5;
+    public static final int TRITANOPIA = 6;
+    public static final int TRITANOMALY = 7;
+    protected String filter = "";
+    protected int[] shaderProgramArray;
+    protected OpenGLScreen screen;
+    protected int chosenShader;
     
+    protected static final String NORMAL_VISION= "const vec3 blindVisionR = vec3( 1.0,  0.0, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.0,  1.0,  0.0);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.0,  1.0);\n";
+    protected static final String PROTANOPIA_VISION= "const vec3 blindVisionR = vec3( 0.56667,  0.43333, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.55833,  0.44167,  0.0);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.24167,  0.75833);\n";
+    protected static final String PROTANOMALY_VISION= "const vec3 blindVisionR = vec3( 0.81667,  0.18333, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.33333,  0.66667,  0.0);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.125,  0.875);\n";
+    protected static final String DEUTERANOPIA_VISION= "const vec3 blindVisionR = vec3( 0.625,  0.375, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.70,  0.30,  0.0);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.30,  0.70);\n";
+    protected static final String DEUTERANOMALY_VISION= "const vec3 blindVisionR = vec3( 0.80,  0.20, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.0,  0.25833,  0.74167);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.14167,  0.85833);\n";
+    protected static final String TRITANOPIA_VISION= "const vec3 blindVisionR = vec3( 0.95,  0.05, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.0,  0.43333,  0.56667);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.475,  0.525);\n";
+    protected static final String TRITANOMALY_VISION= "const vec3 blindVisionR = vec3( 0.9667,  0.03333, 0.0);\n" +
+                            "const vec3 blindVisionG = vec3( 0.0,  0.73333,  0.26667);\n" +
+                            "const vec3 blindVisionB = vec3( 0.0, 0.18333,  0.81667);\n";
+    /*
     public Shaders(){
         int blindnessFilter=1;
         int blindnessVision=0;
@@ -149,9 +184,135 @@ public class Shaders {
         blindnessFilterCode = "fragColor = vec4(dot(fragColor, blindVisionR), dot(fragColor, blindVisionG), dot(fragColor, blindVisionB), fragColor.a);\n";
     }
     }
+    */
+    
+    public Shaders(OpenGLScreen screen){
+        this.chosenShader = 0;
+        this.screen = screen;
+        shaderProgramArray = new int[]{-1,-1,-1,-1,-1,-1,-1};
+        filter = NORMAL_VISION; 
+        for(int i = 0; i<7;i++){
+            this.changeVisionSimulation(i+1);
+            shaderProgramArray[i] = makeShaderProgram();
+        }
+    }
+    
+    public int getShader(){
+        return shaderProgramArray[chosenShader];
+    }
+    
+    public void chooseShader(int visionIssue){
+        chosenShader = visionIssue-1;
+    }
+    
+    protected int makeShaderProgram(){
+        int shaderProgram;
+        int fragmentShader = screen.getGl2().glCreateShader(GL2.GL_FRAGMENT_SHADER);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_NOTHING, null);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_TO_RED, null);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_R_TO_G, null);
+        screen.getGl2().glShaderSource(fragmentShader, 1, this.colorblindFilter(), null);
+        screen.getGl2().glCompileShader(fragmentShader);
+        IntBuffer  intBuffer = IntBuffer.allocate(1);
+        screen.getGl2().glGetShaderiv(fragmentShader, GL2.GL_COMPILE_STATUS, intBuffer);
+        Olivia.textOutputter.println("Fragment shader compile status " + intBuffer.get(0));
+        // check for shader compile errors
+        if (intBuffer.get(0) != 1) {
+            screen.getGl2().glGetShaderiv(fragmentShader, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		screen.getGl2().glGetShaderInfoLog(fragmentShader, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        // link shaders
+        shaderProgram = screen.getGl2().glCreateProgram();
+        //gl2.glAttachShader(shaderProgram, vertexShader);
+        screen.getGl2().glAttachShader(shaderProgram, fragmentShader);
+        screen.getGl2().glLinkProgram(shaderProgram);
+        // check for linking errors
+        intBuffer = IntBuffer.allocate(1);
+        screen.getGl2().glGetProgramiv(shaderProgram, GL2.GL_LINK_STATUS, intBuffer);
+        Olivia.textOutputter.println("Shader program link status " + intBuffer.get(0));
+        if (intBuffer.get(0) != 1) {
+            screen.getGl2().glGetProgramiv(shaderProgram, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		screen.getGl2().glGetProgramInfoLog(shaderProgram, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        screen.getGl2().glValidateProgram(shaderProgram);
+        intBuffer = IntBuffer.allocate(1);
+        screen.getGl2().glGetProgramiv(shaderProgram, GL2.GL_VALIDATE_STATUS, intBuffer);
+        Olivia.textOutputter.println("Shader program validate status " + intBuffer.get(0));
+	if (intBuffer.get(0) != 1) {
+            screen.getGl2().glGetProgramiv(shaderProgram, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+            int size = intBuffer.get(0);
+            if (size > 0) {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+		screen.getGl2().glGetProgramInfoLog(shaderProgram, size, intBuffer, byteBuffer);
+		Olivia.textOutputter.println(new String(byteBuffer.array()));
+            }
+	}
+        /*int pos =  screen.getGl2().glGetAttribLocation(shaderProgram, "aPos");
+        int pos2 =  screen.getGl2().glGetAttribLocation(shaderProgram, "aColor");
+        Olivia.textOutputter.println("Pos " + pos + " " + pos2);*/
+        //gl2.glUseProgram(shaderProgram);
+        //gl2.glDeleteShader(vertexShader);
+        screen.getGl2().glDeleteShader(fragmentShader);
+        return shaderProgram;
+    }
+    
+    protected void changeVisionSimulation(int visionIssue){
+        switch (visionIssue) {
+            case NORMAL:
+                filter = NORMAL_VISION;
+                break;
+            case PROTANOPIA:
+                filter = PROTANOPIA_VISION;
+                break;
+            case PROTANOMALY:
+                filter = PROTANOMALY_VISION;
+                break;
+            case DEUTERANOPIA:
+                filter = DEUTERANOPIA_VISION;
+                break;
+            case DEUTERANOMALY:
+                filter = TRITANOPIA_VISION;
+                break;
+            case TRITANOPIA:
+                filter = TRITANOPIA_VISION;
+                break;
+            case TRITANOMALY:
+                filter = TRITANOMALY_VISION;
+                break;
+            default:
+                filter = NORMAL_VISION;
+                break;
+        }
+    }
     
     public String[] colorblindFilter(){
         return new String []{
+            "#version 130\n"+
+            "out vec4 FragColor;\n"+
+            "\n"+
+            "\n"+
+            filter +
+            "void main()\n" +
+            "{\n" +
+            "  vec4 fragColor;\n" +
+            "  fragColor = gl_Color;\n" +
+            "  FragColor.r = fragColor.r * blindVisionR.x + fragColor.g * blindVisionR.y + fragColor.b * blindVisionR.z;\n" +
+            "  FragColor.g = fragColor.r * blindVisionG.x + fragColor.g * blindVisionG.y + fragColor.b * blindVisionG.z;\n" +
+            "  FragColor.b = fragColor.r * blindVisionB.x + fragColor.g * blindVisionB.y + fragColor.b * blindVisionB.z;\n" +
+            "  FragColor.a = fragColor.a;\n" +   
+            "}\n"
+        };
+        /*return new String []{
             "#version 130\n"+
             "out vec4 FragColor;\n"+
             "\n"+
@@ -166,7 +327,7 @@ public class Shaders {
            //blindnessVisionCode +
             "  FragColor = fragColor;                           \n" +
             "}                                                     \n"
-        };
+        };*/
         /*return new String []{
                         "attribute vec4 a_position;                            \n" +
             "attribute vec2 a_texCoord;                            \n" +

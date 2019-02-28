@@ -167,6 +167,14 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * A submenu to hold the render options
      */
     protected JMenu renderOptions;
+    protected JMenu colorblindOptions;
+    protected JMenuItem NORMAL;
+    protected JMenuItem PROTANOPIA;
+    protected JMenuItem PROTANOMALY;
+    protected JMenuItem DEUTERANOPIA;
+    protected JMenuItem DEUTERANOMALY;
+    protected JMenuItem TRITANOPIA;
+    protected JMenuItem TRITANOMALY;
     /**
      * The item to show (in the future toggle?) 3D rendering
      */
@@ -369,6 +377,15 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             showStats = addCheckBoxMenuItem("Show Stats", "Indicates wheter to show the stats of the render", "stats",false, true);
         }
         
+        colorblindOptions = addMenu("Colorblind Simulation", "Simulate colorblindness",true);
+        NORMAL = addMenuItem("Normal", "normal vision", "normalV", true);
+        PROTANOPIA  = addMenuItem("Protanopia", "Cannot see red", "protanopiaV", true);
+        PROTANOMALY  = addMenuItem("Protanomaly", "Problems seeing red", "protanomalyV", true);
+        DEUTERANOPIA  = addMenuItem("Deuteranopia", "Cannot see green", "deuteranopiaV", true);
+        DEUTERANOMALY  = addMenuItem("Deuteranomaly", "Problems seeing green", "deuteranomalyV", true);
+        TRITANOPIA  = addMenuItem("Tritanopia", "Cannot see blue", "tritanopiaV", true);
+        TRITANOMALY  = addMenuItem("Tritanomaly", "Problems seeing blue", "tritanomalyV", true);
+        
         optionsMenu.add(showConsoleFrame);
         optionsMenu.add(showSelectedPoint);
         optionsMenu.add(showOverlayOptions);
@@ -380,6 +397,14 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         renderOptions.add(smoothActive);
         renderOptions.add(showStats);
         optionsMenu.add(renderOptions);
+        colorblindOptions.add(NORMAL);
+        colorblindOptions.add(PROTANOPIA);
+        colorblindOptions.add(PROTANOMALY);
+        colorblindOptions.add(DEUTERANOPIA);
+        colorblindOptions.add(DEUTERANOMALY);
+        colorblindOptions.add(TRITANOPIA);
+        colorblindOptions.add(TRITANOMALY);
+        renderOptions.add(colorblindOptions);
         
         clearVisualisationMenu = new JMenu("");
         clearVisualisationMenu.getAccessibleContext().setAccessibleDescription("Menu for the especific visualisation being rendered");
@@ -684,6 +709,29 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
             case "stats":
                 gui.getActiveVisualisation().getRenderScreen().setShowStats(showStats.isSelected());
                 break;
+            case "normalV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(1);
+                break;
+            case "protanopiaV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(2);
+                break;
+            case "protanomalyV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(3);
+                break;
+            case "deuteranopiaV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(4);
+                break;
+            case "deuteranomalyV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(5);
+                break;
+            case "tritanopiaV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(6);
+                break;
+            case "tritanomalyV":
+                gui.getActiveVisualisation().getRenderScreen().changeVisionIssue(7);
+                break;
+               
+             
         }
     }
     

@@ -165,6 +165,8 @@ public class OpenGLScreen implements GLEventListener {
     
     protected boolean showStats;
     
+    protected Shaders shaders;
+    
     
     /**
      * Create a custom OpenGL capabilities mainly to enable stereoscopic 3D
@@ -464,12 +466,13 @@ public class OpenGLScreen implements GLEventListener {
             }
 	}*/
         // fragment shader
-        Shaders shaders = new Shaders();
-        int fragmentShader = gl2.glCreateShader(GL2.GL_FRAGMENT_SHADER);
+        //Shaders shaders = new Shaders();
+        //shaders.changeVisionSimulation(Shaders.PROTANOMALY);
+        /*int fragmentShader = gl2.glCreateShader(GL2.GL_FRAGMENT_SHADER);
         //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_NOTHING, null);
         //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_TO_RED, null);
-        gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_R_TO_G, null);
-        //gl2.glShaderSource(fragmentShader, 1, shaders.colorblindFilter(), null);
+        //gl2.glShaderSource(fragmentShader, 1, Shaders.FRAGMENT_SHADER_R_TO_G, null);
+        gl2.glShaderSource(fragmentShader, 1, shaders.colorblindFilter(), null);
         gl2.glCompileShader(fragmentShader);
         IntBuffer  intBuffer = IntBuffer.allocate(1);
         gl2.glGetShaderiv(fragmentShader, GL2.GL_COMPILE_STATUS, intBuffer);
@@ -521,24 +524,31 @@ public class OpenGLScreen implements GLEventListener {
         //gl2.glUseProgram(shaderProgram);
         //gl2.glDeleteShader(vertexShader);
         gl2.glDeleteShader(fragmentShader);
+        */
+        shaders = new Shaders(this);
         
         Olivia.textOutputter.println("Drawing...");
     }
     
-    protected int shaderProgram;
+    //protected int shaderProgram;
     public void useShader(){
-        gl2.glUseProgram(shaderProgram);
+        gl2.glUseProgram(shaders.getShader());
     }
     public void stopUsingShader(){
         gl2.glUseProgram(0);
     }
-    
+    /*
     public int vertexShaderPosition(){
         return gl2.glGetAttribLocation(shaderProgram, "aPos");
     }
     
     public int colorShaderPosition(){
         return gl2.glGetAttribLocation(shaderProgram, "aColor");
+    }
+    */
+    
+    public void changeVisionIssue(int visonIssue){
+        shaders.chooseShader(visonIssue);
     }
 
     /**
