@@ -3,6 +3,7 @@ package Olivia.core;
 import Olivia.basic.BasicVisualisationManager;
 import Olivia.classifier.ClassifierVisualisationManager;
 import Olivia.core.gui.MainFrame;
+import Olivia.generic.GenericVisualisationManager;
 import Olivia.scanlines.ScanlinesVisualisationManager;
 import Olivia.segmenter.SegmenterVisualisationManager;
 import Olivia.standard.StandardVisualisationManager;
@@ -213,6 +214,24 @@ public class Olivia {
         catch (IOException e) {
             textOutputter.println("Cannot add visualisation, cannot read from File" + e);
         }
+    }
+    
+    public void addNewGenericVisualisation(String filePath, String name, int decimation) {
+        try {
+            textOutputter.println("Creating Generic Visualisation");
+            GenericVisualisationManager visuMan = new GenericVisualisationManager(idCount++, gui, isStereo3D,filePath,name,decimation);
+            addNewVisualisationManager(visuMan);
+        }
+        catch (FileNotFoundException e) {
+            textOutputter.println("Cannot add visualisation, cannot read File" + e);
+        }
+        catch (IOException e) {
+            textOutputter.println("Cannot add visualisation, cannot read from File" + e);
+        }
+    }
+    
+    public void addNewGenericVisualisation(String filePath) {
+        addNewGenericVisualisation(filePath, "Generic" + (idCount+1), 1);
     }
     
     /**

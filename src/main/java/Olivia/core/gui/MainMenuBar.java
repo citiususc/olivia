@@ -39,6 +39,8 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      */
     protected JMenuItem openStandardVisualisation;
     //protected JMenuItem openStandardVisualisationG;
+    
+    protected JMenuItem openGenericVisualisation;
     /**
      * The item to open an scanline visualisation
      */
@@ -285,6 +287,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         //openBasicVisualisation = addMenuItem("Open Basic", "Opens a Basic Visualisation", "openBasic", true);
         //openEmptyVisualisation = addMenuItem("Open Empty", "Opens an Empty Visualisation (with no points)", "openEmpty", true);
         openStandardVisualisation = addMenuItem("Open Standard", "Opens a Standard Visualisation", "openStandard", true);
+        openGenericVisualisation = addMenuItem("Open Generic", "Opens a Generic Visualisation", "openGeneric", true);
         //openStandardVisualisationG = addMenuItem("Open Standard G", "Opens a Standard Visualisation with Guava", "openStandardG", true);
         openScanlineVisualisation = addMenuItem("Open Scanline", "Opens a Scanline Visualisation", "openScanline", true);
         openClassifierVisualisation = addMenuItem("Open Classifier", "Opens a Classifier Visualisation", "openClassifier", true);
@@ -294,6 +297,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         //fileMenu.add(openBasicVisualisation);
         //fileMenu.add(openEmptyVisualisation);
         fileMenu.add(openStandardVisualisation);
+        fileMenu.add(openGenericVisualisation);
         //fileMenu.add(openStandardVisualisationG);
         fileMenu.add(openScanlineVisualisation);
         fileMenu.add(openClassifierVisualisation);
@@ -472,6 +476,17 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileC.getSelectedFile();
                     gui.getOlivia().addNewStandardVisualisation(file.getAbsolutePath(),decimationFileCA.getDecimation());
+                } else {
+                    Olivia.textOutputter.println("Open command cancelled by user.");
+                }
+                fileC.setAccessory(defaultFileCA);
+                break;
+            case "openGeneric":
+                //fileC.setAccessory(decimationFileCA);
+                returnVal = fileC.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileC.getSelectedFile();
+                    gui.getOlivia().addNewGenericVisualisation(file.getAbsolutePath());
                 } else {
                     Olivia.textOutputter.println("Open command cancelled by user.");
                 }
