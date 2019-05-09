@@ -35,6 +35,7 @@ public class OliviaProcesses {
     protected void checkAvailableExecutables(){
         availableCommands = new ArrayList<>();
         File folder = new File(executablesFolder);
+        if(folder.isDirectory()!=true) return;
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
             }else {
@@ -44,6 +45,7 @@ public class OliviaProcesses {
                         break;
                     case "detect" :
                         availableCommands.add("detect");
+                        break;
                         
                 }
             }
