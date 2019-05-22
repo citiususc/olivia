@@ -5,11 +5,13 @@
  */
 package Olivia.generic;
 
+import Olivia.core.gui.GUIManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +31,11 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     //protected String[] coloursA;
     protected DefaultComboBoxModel<String> coloursModel;
     
+    protected JLabel labelFields;
+    protected JComboBox<String> comboFields;
+    protected DefaultComboBoxModel<String> fieldsModel;
+    protected JButton createRandomColourButton;
+    
     
     public GenericVisualisationControlPane(GenericVisualisationManager visualisationM) {
         this.visualisationM = visualisationM;
@@ -44,6 +51,24 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         
         this.add(labelColours);
         this.add(comboColours);
+        
+        fieldsModel = new DefaultComboBoxModel();
+        for(int i=0; i < visualisationM.getPointCloud().getNumberOfFields();i++){
+            fieldsModel.addElement(visualisationM.getPointCloud().getNames().get(i));
+        }
+        
+        labelFields = new JLabel("Fields");
+        comboFields = new JComboBox<>(fieldsModel);
+        comboFields.addActionListener(this);
+        labelFields.setLabelFor(comboFields);
+        
+        this.add(labelFields);
+        this.add(comboFields);     
+        
+        
+        createRandomColourButton = GUIManager.createButton("Create random colour", "Creates a random colour asignation depending on the field", "random_colour_button", this);
+        this.add(createRandomColourButton);
+        
     }
     
     public void AddColour(String name){
@@ -54,6 +79,11 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     @Override
     public void actionPerformed(ActionEvent e) {
         visualisationM.setColour(comboColours.getSelectedIndex());
+        switch (e.getActionCommand()) {
+            case "random_colour_button":
+                visualisationM.createRandomColourFromField(comboFields.getSelectedIndex());
+                break;
+        }
     }
     
 }
