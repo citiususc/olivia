@@ -20,6 +20,12 @@ public class PointColour {
         this.B = c;
     }
     
+    public PointColour(int a, int b, int c) {
+        this.R = a/32000.0f;
+        this.G = b/32000.0f;
+        this.B = c/32000.0f;
+    }
+    
     public PointColour(Color color) {
         this.R = color.getRed();
         this.G = color.getGreen();

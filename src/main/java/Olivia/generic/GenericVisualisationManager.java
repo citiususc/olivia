@@ -57,7 +57,7 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
         colours.add(new SingleColourArray(pointCloud,new PointColour(1.0f,0.0f,0.0f)));
         controlPane.AddColour("Red");
         for(int i=0; i< pointCloud.numberOfFields; i++){
-            if (pointCloud.getType(i) == GenericPointArray.COLOUR){
+            if ((pointCloud.getType(i) == GenericPointArray.COLOUR)||(pointCloud.getType(i) == GenericPointArray.COLOUR_INT)){
                 colours.add(new GenericColourArray(pointCloud.getFieldValues(i)));
                 controlPane.AddColour(pointCloud.getNames().get(i));
             }

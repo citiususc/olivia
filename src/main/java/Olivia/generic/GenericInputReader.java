@@ -68,6 +68,15 @@ public class GenericInputReader extends InputReader<GenericVisualisationManager>
                                     );
                             columns_read +=3;
                             break;
+                        case GenericPointArray.COLOUR_INT :
+                            points.addValue(field, new PointColour(
+                                                        Integer.parseInt(cols[columns_read]),
+                                                        Integer.parseInt(cols[columns_read+1]),
+                                                        Integer.parseInt(cols[columns_read+2])
+                                                    )
+                                    );
+                            columns_read +=3;
+                            break;
                         case GenericPointArray.POINT :
                             points.addValue(field, new Point3D_id(
                                                         Double.parseDouble(cols[columns_read]),

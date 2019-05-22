@@ -22,8 +22,9 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
     public static final int FLOAT = 3;
     public static final int DOUBLE = 4;
     public static final int COLOUR = 5;
-    public static final int POINT = 6;
-    public static final int UNKOWN = 7;
+    public static final int COLOUR_INT = 6;
+    public static final int POINT = 7;
+    public static final int UNKOWN = 8;
     
     public static final ArrayList<String> SUPPORTED_TYPES = new ArrayList<String>() {{
         add("STRING");
@@ -31,6 +32,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
         add("FLOAT");
         add("DOUBLE");
         add("COLOUR");
+        add("COLOUR_INT");
         add("POINT");
     }};
     
@@ -41,6 +43,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
             case "FLOAT" : return FLOAT;
             case "DOUBLE" : return DOUBLE;
             case "COLOUR" : return COLOUR;
+            case "COLOUR_INT" : return COLOUR_INT;
             case "POINT" : return POINT;
             case "UNKOWN" : return UNKOWN;
             default : return UNKOWN;
@@ -55,6 +58,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
             case FLOAT : return "FLOAT";
             case DOUBLE : return "DOUBLE";
             case COLOUR : return "COLOUR";
+            case COLOUR_INT : return "COLOUR_INT";
             case POINT : return "POINT";
             case UNKOWN : return "UNKOWN";
             default : return "UNKOWN";
@@ -68,6 +72,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
             case "FLOAT" : return 1;
             case "DOUBLE" : return 1;
             case "COLOUR" : return 3;
+            case "COLOURINT" : return 3;
             case "POINT" : return 3;
             case "UNKOWN" : return 1;
             default : return 1;
@@ -81,6 +86,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
             case FLOAT : return 1;
             case DOUBLE : return 1;
             case COLOUR : return 3;
+            case COLOUR_INT : return 3;
             case POINT : return 3;
             case UNKOWN : return 1;
             default : return 1;
@@ -161,6 +167,7 @@ public class GenericPointArray<P extends Point3D_id> extends PointArray<P>  {
             case FLOAT : return (value instanceof Float);
             case DOUBLE : return (value instanceof Double);
             case COLOUR : return (value instanceof PointColour);
+            case COLOUR_INT : return (value instanceof PointColour);
             case POINT : return (value instanceof Point3D_id);
             case UNKOWN : return false;
             default : return false;
