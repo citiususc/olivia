@@ -18,6 +18,7 @@ import Olivia.core.render.colours.PointColourPalette;
 import Olivia.core.render.colours.RGBLoopColourPalette;
 import Olivia.exec.ExecutionMenu;
 import Olivia.extended.PaletteColourArray;
+import Olivia.extended.PaletteGradientColourArray;
 import Olivia.extended.RandomPaletteColourArray;
 import Olivia.extended.SingleColourArray;
 import java.io.FileNotFoundException;
@@ -107,6 +108,23 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
     
     public void createClassificationColourFromField(int field){
         createPaletteColourFromField(field, new ClassificationPalette(), "Classification" );
+    }
+    
+    public void createGradientColourFromField(int field, PointColourPalette palette, String name){
+        if(field<0) return;
+        if(field>=this.pointCloud.getNumberOfFields()) return;
+        if( (pointCloud.getType(field)!=GenericPointArray.INT)&
+            (pointCloud.getType(field)!=GenericPointArray.FLOAT)&
+            (pointCloud.getType(field)!=GenericPointArray.DOUBLE)
+                ) return;
+        ArrayList<Number> indices = pointCloud.getFieldValues(field);
+        colours.add(new PaletteGradientColourArray(pointCloud,indices, palette));
+        controlPane.AddColour(name + " " + pointCloud.getNames().get(field));
+    }
+    
+    public void createGradientColourFromField(int field){
+        RGBLoopColourPalette palette = new RGBLoopColourPalette();
+        createGradientColourFromField(field,palette,"RGB gradient");
     }
     
 }

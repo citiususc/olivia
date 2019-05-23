@@ -36,6 +36,7 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     protected DefaultComboBoxModel<String> fieldsModel;
     protected JButton createRandomColourButton;
     protected JButton createClassificationColourButton;
+    protected JButton createGradientColourButton;
     
     
     public GenericVisualisationControlPane(GenericVisualisationManager visualisationM) {
@@ -76,6 +77,9 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         createClassificationColourButton = GUIManager.createButton("Create classification colour", "Creates a colour asignation depending on the field, with colours from estandard LiDAR classification fields", "class_colour_button", this);
         this.add(createClassificationColourButton);
         
+        createGradientColourButton = GUIManager.createButton("Create gradient colour", "Creates a gradient colour asignation depending on the field", "gradient_colour_button", this);
+        this.add(createGradientColourButton);
+        
     }
     
     public void AddColour(String name){
@@ -92,6 +96,9 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
                 break;
             case "class_colour_button":
                 visualisationM.createClassificationColourFromField(comboFields.getSelectedIndex());
+                break;
+            case "gradient_colour_button":
+                visualisationM.createGradientColourFromField(comboFields.getSelectedIndex());
                 break;
         }
     }
