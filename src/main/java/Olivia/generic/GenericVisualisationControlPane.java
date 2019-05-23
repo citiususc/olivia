@@ -48,6 +48,7 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         comboColours = new JComboBox<>(coloursModel);
         comboColours.addActionListener(this);
         labelColours.setLabelFor(comboColours);
+        comboColours.setLightWeightPopupEnabled(false);
         
         this.add(labelColours);
         this.add(comboColours);
@@ -61,6 +62,8 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         comboFields = new JComboBox<>(fieldsModel);
         comboFields.addActionListener(this);
         labelFields.setLabelFor(comboFields);
+        
+        comboFields.setLightWeightPopupEnabled(false);
         
         this.add(labelFields);
         this.add(comboFields);     

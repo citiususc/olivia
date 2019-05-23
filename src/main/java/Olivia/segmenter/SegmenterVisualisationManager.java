@@ -30,7 +30,7 @@ public class SegmenterVisualisationManager extends VisualisationManager<Segmente
 
     private SegmenterGroupArray<SegmenterGroup> groups;
     protected SegmenterInputReader inputReader;
-    protected ArrayList<ColourArray> colours;
+    protected ArrayList<ColourArray<PointColour>> colours;
     protected ArrayList<Integer> groupIds;
     protected int selectedColour;
     protected int numSelected;

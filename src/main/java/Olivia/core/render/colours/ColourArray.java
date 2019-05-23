@@ -11,7 +11,9 @@ import java.util.ArrayList;
  *
  * @author oscar.garcia
  */
-public class ColourArray extends ArrayList<PointColour> {
+public class ColourArray<P extends PointColour> extends ArrayList<P> {
+    
+    protected PointColourPalette<P> palette;
 
     /**
      * It needs a PointArray to be instantiated, it DOES NOT initialise all the
@@ -30,5 +32,13 @@ public class ColourArray extends ArrayList<PointColour> {
     
     public ColourArray() {
         super();
+    }
+    
+    public boolean hasPalette(){
+        return (palette!=null);
+    }
+    
+    public PointColourPalette<P> getPalette(){
+        return palette;
     }
 }

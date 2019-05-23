@@ -29,7 +29,7 @@ public class VertexOverlay<VM extends VisualisationManager> extends RenderableOv
 
     
     protected PointArray<Point3D_id> vertices;
-    protected ColourArray colours;
+    protected ColourArray<PointColour> colours;
     
     public VertexOverlay(VM visualisationM, String name, int renderMode, int rasterMode, PointColour defaultColour) {
         super(visualisationM, name, renderMode, rasterMode, defaultColour);

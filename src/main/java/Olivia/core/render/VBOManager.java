@@ -4,6 +4,7 @@ import Olivia.core.Olivia;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.ColourArray;
+import Olivia.core.render.colours.PointColour;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -75,7 +76,7 @@ public class VBOManager {
      * @param colors The colours of each vertex, must be the same size as the points
      * @param show An array with boolean flags indicating whether to load that vertex or not, must be the same size as the points
      */
-    private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray colors, boolean[] show) {
+    private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray<PointColour> colors, boolean[] show) {
         if (points.size() != colors.size()) {
             Olivia.textOutputter.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
@@ -100,7 +101,7 @@ public class VBOManager {
      * @param buffer the buffer, must be large enough to fit all the vertices (not checked directly)
      * @param colors The colours of each vertex, must be the same size as the points
      */
-    private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray colors) {
+    private static void loadBuffer(PointArray points, FloatBuffer buffer, ColourArray<PointColour> colors) {
         if (points.size() != colors.size()) {
             Olivia.textOutputter.println("Caution: Points and Colours do not match size: " + points.size() + " vs. " + colors.size() + ", VBO buffer at " + points.getVboBufferCapacity() );
         }
