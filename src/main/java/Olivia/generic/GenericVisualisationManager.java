@@ -11,10 +11,14 @@ import Olivia.core.VisualisationManager;
 import Olivia.core.data.Point3D_id;
 import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
+import Olivia.core.render.colours.ClassificationPalette;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
+import Olivia.core.render.colours.PointColourPalette;
+import Olivia.core.render.colours.RGBLoopColourPalette;
 import Olivia.exec.ExecutionMenu;
 import Olivia.extended.PaletteColourArray;
+import Olivia.extended.RandomPaletteColourArray;
 import Olivia.extended.SingleColourArray;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -86,13 +90,23 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
         pointCloud.doRepack();
     }
     
-    public void createRandomColourFromField(int field){
+    public void createPaletteColourFromField(int field, PointColourPalette palette, String name){
         if(field<0) return;
         if(field>=this.pointCloud.getNumberOfFields()) return;
         if(pointCloud.getType(field)!=GenericPointArray.INT) return;
         ArrayList<Integer> indices = pointCloud.getFieldValues(field);
-        colours.add(new PaletteColourArray(pointCloud,indices));
-        controlPane.AddColour("Random " + pointCloud.getNames().get(field));
+        colours.add(new PaletteColourArray(pointCloud,indices, palette));
+        controlPane.AddColour(name + " " + pointCloud.getNames().get(field));
+    }
+    
+    public void createRandomColourFromField(int field){
+        RGBLoopColourPalette palette = new RGBLoopColourPalette();
+        palette.shuffle(1);
+        createPaletteColourFromField(field, palette, "Random" );
+    }
+    
+    public void createClassificationColourFromField(int field){
+        createPaletteColourFromField(field, new ClassificationPalette(), "Classification" );
     }
     
 }
