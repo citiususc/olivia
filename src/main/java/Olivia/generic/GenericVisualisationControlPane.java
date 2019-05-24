@@ -28,7 +28,8 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         "RGB",
         "Classification",
         "Random",
-        "Greysacle"
+        "Greysacle",
+        "BlueRed"
     };
     
     protected JLabel labelColours;
@@ -104,6 +105,7 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     public void AddColour(String name){
         //colours.add(name);
         coloursModel.addElement(name);
+        comboColours.setSelectedIndex(coloursModel.getSize()-1);
     }
     
     @Override
@@ -120,6 +122,8 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
                         break;
                     case 3: visualisationM.createGreyscaleColourFromField(comboFields.getSelectedIndex());
                         break;
+                    case 4: visualisationM.createBlueRedColourFromField(comboFields.getSelectedIndex());
+                        break;
                 }
                 break;
             case "gradient_colour_button":
@@ -131,6 +135,8 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
                     case 2 : 
                         break;
                     case 3: visualisationM.createGreyscaleGradientFromField(comboFields.getSelectedIndex());
+                        break;
+                    case 4: visualisationM.createBlueRedGradientFromField(comboFields.getSelectedIndex());
                         break;
                 }
                 break;

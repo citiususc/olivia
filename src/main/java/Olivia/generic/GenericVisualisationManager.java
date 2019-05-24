@@ -17,6 +17,7 @@ import Olivia.core.render.colours.GreyScalePalette;
 import Olivia.core.render.colours.PointColour;
 import Olivia.core.render.colours.PointColourPalette;
 import Olivia.core.render.colours.RGBLoopColourPalette;
+import Olivia.core.render.colours.TwoColoursGradientPalette;
 import Olivia.exec.ExecutionMenu;
 import Olivia.extended.PaletteColourArray;
 import Olivia.extended.PaletteGradientColourArray;
@@ -121,6 +122,11 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
         createPaletteColourFromField(field, palette, "Geyscale" );
     }
     
+    public void createBlueRedColourFromField(int field){
+        TwoColoursGradientPalette palette = new TwoColoursGradientPalette(10);
+        createPaletteColourFromField(field, palette, "BlueRed" );
+    }
+    
     public void createGradientColourFromField(int field, PointColourPalette palette, String name){
         if(field<0) return;
         if(field>=this.pointCloud.getNumberOfFields()) return;
@@ -140,8 +146,13 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
     
     public void createGreyscaleGradientFromField(int field){
         GreyScalePalette palette = new GreyScalePalette(0.02f,0.05f);
-        Olivia.textOutputter.println("Geyscale gradient " + palette.size());
         createGradientColourFromField(field,palette,"Geyscale gradient");
+    }
+    
+    public void createBlueRedGradientFromField(int field){
+        TwoColoursGradientPalette palette = new TwoColoursGradientPalette(30);
+        Olivia.textOutputter.println("BlueRed gradient " + palette.size());
+        createGradientColourFromField(field,palette,"BlueRed gradient");
     }
     
 }
