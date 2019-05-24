@@ -14,6 +14,7 @@ public class RGBLoopColourPalette extends PointColourPalette<PointColour>{
     protected float step;
     
     public RGBLoopColourPalette(float step){
+        this.step = step;
         float r,g,b;
         
         r=0.0f;        

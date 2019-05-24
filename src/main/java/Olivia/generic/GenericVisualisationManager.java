@@ -13,6 +13,7 @@ import Olivia.core.gui.MainFrame;
 import Olivia.core.render.OpenGLScreen;
 import Olivia.core.render.colours.ClassificationPalette;
 import Olivia.core.render.colours.ColourArray;
+import Olivia.core.render.colours.GreyScalePalette;
 import Olivia.core.render.colours.PointColour;
 import Olivia.core.render.colours.PointColourPalette;
 import Olivia.core.render.colours.RGBLoopColourPalette;
@@ -59,8 +60,8 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
         jMenu.setEnabled(true);
         colours.add(new SingleColourArray(pointCloud,new PointColour(1.0f,1.0f,1.0f)));
         controlPane.AddColour("White");
-        colours.add(new SingleColourArray(pointCloud,new PointColour(1.0f,0.0f,0.0f)));
-        controlPane.AddColour("Red");
+        //colours.add(new SingleColourArray(pointCloud,new PointColour(1.0f,0.0f,0.0f)));
+        //controlPane.AddColour("Red");
         for(int i=0; i< pointCloud.numberOfFields; i++){
             if ((pointCloud.getType(i) == GenericPointArray.COLOUR)||(pointCloud.getType(i) == GenericPointArray.COLOUR_INT)){
                 colours.add(new GenericColourArray(pointCloud.getFieldValues(i)));
@@ -106,8 +107,18 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
         createPaletteColourFromField(field, palette, "Random" );
     }
     
+    public void createRGBColourFromField(int field){
+        RGBLoopColourPalette palette = new RGBLoopColourPalette(0.49f);
+        createPaletteColourFromField(field, palette, "RGB" );
+    }
+    
     public void createClassificationColourFromField(int field){
         createPaletteColourFromField(field, new ClassificationPalette(), "Classification" );
+    }
+    
+    public void createGreyscaleColourFromField(int field){
+        GreyScalePalette palette = new GreyScalePalette(0.1f,0.01f);
+        createPaletteColourFromField(field, palette, "Geyscale" );
     }
     
     public void createGradientColourFromField(int field, PointColourPalette palette, String name){
@@ -125,6 +136,12 @@ public class GenericVisualisationManager extends VisualisationManager<GenericVis
     public void createGradientColourFromField(int field){
         RGBLoopColourPalette palette = new RGBLoopColourPalette();
         createGradientColourFromField(field,palette,"RGB gradient");
+    }
+    
+    public void createGreyscaleGradientFromField(int field){
+        GreyScalePalette palette = new GreyScalePalette(0.02f,0.05f);
+        Olivia.textOutputter.println("Geyscale gradient " + palette.size());
+        createGradientColourFromField(field,palette,"Geyscale gradient");
     }
     
 }

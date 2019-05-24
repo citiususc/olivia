@@ -24,6 +24,13 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
 
     protected GenericVisualisationManager visualisationM;
     
+    public static final String[] SUPPORTED_PALETTES = new String[] {
+        "RGB",
+        "Classification",
+        "Random",
+        "Greysacle"
+    };
+    
     protected JLabel labelColours;
     protected JComboBox<String> comboColours;
     
@@ -34,9 +41,12 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     protected JLabel labelFields;
     protected JComboBox<String> comboFields;
     protected DefaultComboBoxModel<String> fieldsModel;
-    protected JButton createRandomColourButton;
-    protected JButton createClassificationColourButton;
+    protected JButton createDefinedColourButton;
+    //protected JButton createClassificationColourButton;
     protected JButton createGradientColourButton;
+    
+    protected JLabel labelPalettes;
+    protected JComboBox<String> comboPalettes; 
     
     
     public GenericVisualisationControlPane(GenericVisualisationManager visualisationM) {
@@ -71,11 +81,20 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
         this.add(comboFields);     
         
         
-        createRandomColourButton = GUIManager.createButton("Create random colour", "Creates a random colour asignation depending on the field", "random_colour_button", this);
-        this.add(createRandomColourButton);
+        labelPalettes = new JLabel("Palettes");
+        comboPalettes = new JComboBox<>(SUPPORTED_PALETTES);
+        comboPalettes.addActionListener(this);
+        labelPalettes.setLabelFor(comboPalettes);
+        comboPalettes.setLightWeightPopupEnabled(false);
         
-        createClassificationColourButton = GUIManager.createButton("Create classification colour", "Creates a colour asignation depending on the field, with colours from estandard LiDAR classification fields", "class_colour_button", this);
-        this.add(createClassificationColourButton);
+        this.add(labelPalettes);
+        this.add(comboPalettes); 
+        
+        createDefinedColourButton = GUIManager.createButton("Create defined colour", "Creates a defined colour asignation depending on the field and the palette", "defined_colour_button", this);
+        this.add(createDefinedColourButton);
+        
+        //createClassificationColourButton = GUIManager.createButton("Create classification colour", "Creates a colour asignation depending on the field, with colours from estandard LiDAR classification fields", "class_colour_button", this);
+        //this.add(createClassificationColourButton);
         
         createGradientColourButton = GUIManager.createButton("Create gradient colour", "Creates a gradient colour asignation depending on the field", "gradient_colour_button", this);
         this.add(createGradientColourButton);
@@ -91,14 +110,29 @@ public class GenericVisualisationControlPane extends JPanel implements ActionLis
     public void actionPerformed(ActionEvent e) {
         visualisationM.setColour(comboColours.getSelectedIndex());
         switch (e.getActionCommand()) {
-            case "random_colour_button":
-                visualisationM.createRandomColourFromField(comboFields.getSelectedIndex());
-                break;
-            case "class_colour_button":
-                visualisationM.createClassificationColourFromField(comboFields.getSelectedIndex());
+            case "defined_colour_button":
+                switch(comboPalettes.getSelectedIndex()){
+                    case 0 : visualisationM.createRGBColourFromField(comboFields.getSelectedIndex());
+                        break;
+                    case 1: visualisationM.createClassificationColourFromField(comboFields.getSelectedIndex());
+                        break;
+                    case 2 : visualisationM.createRandomColourFromField(comboFields.getSelectedIndex());
+                        break;
+                    case 3: visualisationM.createGreyscaleColourFromField(comboFields.getSelectedIndex());
+                        break;
+                }
                 break;
             case "gradient_colour_button":
-                visualisationM.createGradientColourFromField(comboFields.getSelectedIndex());
+                switch(comboPalettes.getSelectedIndex()){
+                    case 0 : visualisationM.createGradientColourFromField(comboFields.getSelectedIndex());
+                        break;
+                    case 1: 
+                        break;
+                    case 2 : 
+                        break;
+                    case 3: visualisationM.createGreyscaleGradientFromField(comboFields.getSelectedIndex());
+                        break;
+                }
                 break;
         }
     }
