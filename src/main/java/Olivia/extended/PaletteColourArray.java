@@ -9,10 +9,8 @@ import Olivia.core.data.PointArray;
 import Olivia.core.render.colours.ColourArray;
 import Olivia.core.render.colours.PointColour;
 import java.util.ArrayList;
-import java.util.Collections;
 import Olivia.core.Olivia;
 import Olivia.core.render.colours.PointColourPalette;
-import Olivia.core.render.colours.RGBLoopColourPalette;
 
 /**
  *

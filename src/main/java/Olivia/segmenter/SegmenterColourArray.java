@@ -9,6 +9,7 @@ import Olivia.core.render.colours.PointColour;
 import Olivia.extended.PointI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  * This class defines the colour of each segmentation group (random colours)
@@ -99,7 +100,7 @@ public class SegmenterColourArray extends ColourArray {
             r=r+step;
         }
         
-        Collections.shuffle(here_colours);
+        Collections.shuffle(here_colours, new Random(1));
         return here_colours;    
         
     }
