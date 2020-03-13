@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 /**
  * This class is used to render figures, graphs, shapes, animations or others on top of the point cloud; when extending from it the main method to override is drawShape(), which takes care of the rendering.
  * The class allow to define bounds, optionPanels or listen to action on the screen to control the Overlay from the GUI 
+ * Fires events:
+ * "moved" when moved by moveTo()
  * @author oscar.garcia
  * @param <VM> In case the overlay only works in a particular visualisation
  */
@@ -50,6 +52,11 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
     protected String name;
     
     /**
+     * Everyone listening for events, like pointSelected
+     */
+    protected ArrayList<ActionListener> listeners;
+    
+    /**
      * Creates a new Overlay, centerd in (0,0,0), with no OpenGL transformations and name Overlay
      * @param visualisationManager its visualisationManager
      */
@@ -69,6 +76,7 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
         this.transformations = new Transformations();
         transformations.setCentre(bounds.getCentre());
         optionPanels = new ArrayList<>();
+        listeners = new ArrayList<>();
     }
     
     /**
@@ -96,8 +104,39 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
     }
     
     /**
+     * Adds an ActionListener
+     *
+     * @param al The action listener
+     */
+    public void addActionListener(ActionListener al) {
+        listeners.add(al);
+    }
+
+    /**
+     * Removes an Action Listener
+     *
+     * @param al The action listener
+     */
+    public void removeActionListener(ActionListener al) {
+        listeners.remove(al);
+    }
+
+    /**
+     * Fires the ActionEvent "pointSelected" to all listeners Should be
+     * protected, but it is being called from the mouse listener
+     *
+     * @param name The name/identifier of the event
+     */
+    protected void fireEvent(String name) {
+        ActionEvent ae = new ActionEvent(this, ActionEvent.ACTION_FIRST, name);
+        for (ActionListener ac : listeners) {
+            ac.actionPerformed(ae);
+        }
+    }
+    
+    /**
      * This method may be called to draw, but is legacy, draw(OpenGLScreen renderScreen) should be used when possible,
-     * Draws the overlay in the renderScreen of the Ovelays visualisationManger
+     * Draws the overlay in the renderScreen of the Overlays visualisationManger
      */
     public void draw(){
         this.draw(visualisationManager.getRenderScreen());
@@ -154,17 +193,23 @@ public abstract class Overlay<VM extends VisualisationManager> implements Action
     
     /**
      * Moves the overlay somewhere, this should not change the transformations or do OpenGL operations, 
-     * but change insted the geometry of the Overlay; by deafult it just moves its bounds
+     * but change instead the geometry of the Overlay; by default it just moves its bounds
      * @param point 
      */
     @Override
     public synchronized void moveTo(Point3D point){
         bounds.moveTo(point);
+        this.fireEvent("moved");
+    }
+    
+    public synchronized void moveTo(double x, double y, double z){
+        Point3D point = new Point3D(x,y,z);
+        this.moveTo(point);
     }
     
     /**
      * Displaces the overlay by substracting (x,y,z) to its geometry, this should not change the transformations or do OpenGL operations, 
-     * but change insted the geometry of the Overlay; by deafult it just displaces its bounds
+     * but change instead the geometry of the Overlay; by deafult it just displaces its bounds
      * @param point 
      */
     @Override

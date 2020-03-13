@@ -73,7 +73,7 @@ public class Transformations {
         center[0] = 0;
         center[1] = 0;
         center[2] = 0;*/
-        centre = new Point3D();
+        centre = new Point3D(0.0,0.0,0.0);
     }
 
     /**
@@ -287,7 +287,7 @@ public class Transformations {
      * @param renderScreen The render screen
      */
     public void doTranslateAndRotate(OpenGLScreen renderScreen) {
-        //renderScreen.getGl2().glTranslated(-centre.getX(), -centre.getY(), -centre.getZ());
+        renderScreen.getGl2().glTranslated(centre.getX(), centre.getY(), centre.getZ());
         
         //renderScreen.getGl2().glTranslated(centre.getX(), centre.getY(), centre.getZ());
         
@@ -298,7 +298,7 @@ public class Transformations {
         renderScreen.getGl2().glRotatef(rotY, 0.0f, 1.0f, 0.0f);
         renderScreen.getGl2().glRotatef(rotZ, 0.0f, 0.0f, 1.0f);
 
-        //renderScreen.getGl2().glTranslated(centre.getX(), centre.getY(), centre.getZ());
+        renderScreen.getGl2().glTranslated(-centre.getX(), -centre.getY(), -centre.getZ());
         //renderScreen.getGl2().glTranslated(-centre.getX(), -centre.getY(), -centre.getZ());
     }
 

@@ -1,6 +1,8 @@
 package Olivia.core.gui;
 
 import Olivia.core.Olivia;
+import Olivia.extended.overlays.CircleShapeOverlay;
+import Olivia.extended.overlays.CubeShapeOverlay;
 import Olivia.extended.overlays.VertexAnimatedOverlay;
 import Olivia.extended.overlays.VertexOverlay;
 import java.awt.event.ActionEvent;
@@ -102,6 +104,18 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
      * The item to draw animated circles
      */
     protected JMenuItem drawAnimatedCircles;
+    /**
+     * The menu for the basic shapes
+     */
+    protected JMenu shapesMenu;
+    /**
+     * The item to draw a circle
+     */
+    protected JMenuItem drawCircle;
+    /**
+     * The item to draw a circle
+     */
+    protected JMenuItem drawCube;
     /**
      * The item to clear all the overlays
      */
@@ -324,11 +338,18 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
         drawCircles = addMenuItem("Circles", "", "drawCircles", true);
         drawAnimatedCircles = addMenuItem("Animated Circles", "", "drawAnimatedCircles", true);
         clearAll = addMenuItem("Clear All", "Remove all drawings", "clearAll", false);
+        
+        shapesMenu = addMenu("Basic Shapes", "Basic Shapes Menu", true);
+        drawCircle = addMenuItem("Circle", "", "drawCircle", true);
+        drawCube = addMenuItem("Cube", "", "drawCube", true);
 
         drawMenu.add(drawVertex);
         drawMenu.add(drawAnimatedVertex);
         drawMenu.add(drawCircles);
         drawMenu.add(drawAnimatedCircles);
+        shapesMenu.add(drawCircle);
+        shapesMenu.add(drawCube);
+        drawMenu.add(shapesMenu);
         drawMenu.add(clearAll);
 
         // Camera menu. To change all related with the camera movement
@@ -663,6 +684,16 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
                 } else {
                     Olivia.textOutputter.println("Open command cancelled by user.");
                 }
+                break;
+            case "drawCircle":
+                CircleShapeOverlay circleOverlay = new CircleShapeOverlay(gui.getActiveVisualisation());
+                gui.getActiveVisualisation().addOverlay(circleOverlay);
+                circleOverlay.moveTo(0.0, 0.0, 0.0);       
+                break;
+            case "drawCube":
+                CubeShapeOverlay cubeOverlay = new CubeShapeOverlay(gui.getActiveVisualisation());
+                gui.getActiveVisualisation().addOverlay(cubeOverlay);
+                cubeOverlay.moveTo(0.0, 0.0, 0.0);
                 break;
             case "clearAll":
                 //renderScreen.getVisualisation().getGeometry().removeGeometry();

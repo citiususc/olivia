@@ -79,7 +79,7 @@ public class OpenGLScreen implements GLEventListener {
     protected NEWTZoomGestureHandler gestureHandlerNEWT;
     protected NEWTScrollGestureHandler scrollHandlerNEWT;
     /**
-     * An overlay to show a posiiton on hte screen, maily used for mirroring
+     * An overlay to show a position on the screen, mainly used for mirroring
      */
     protected PositionShowOverlay positionOverlay;
     /**

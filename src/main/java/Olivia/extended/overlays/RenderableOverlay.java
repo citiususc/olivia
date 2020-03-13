@@ -17,7 +17,7 @@ import java.awt.Color;
  * @author oscar.garcia
  * @param <VM> The visualisation it is using
  */
-public abstract class RenderableOverlay<VM extends VisualisationManager> extends Overlay<VM> implements RenderOptions{
+public abstract class RenderableOverlay<VM extends VisualisationManager> extends MouseMoveableOverlay<VM> implements RenderOptions{
 
     /**
      * The dault colour to be used
