@@ -11,9 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GraphiteSkin;
-
+import org.pushingpixels.substance.api.SubstanceCortex;
 /**
  * Here be main Here is where new visualisation are added, for now.
  *
@@ -43,8 +42,8 @@ public class Olivia {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                SubstanceLookAndFeel.setSkin(new GraphiteSkin());
-                //String path = System.getProperty("user.dir");
+            SubstanceCortex.GlobalScope.setSkin(new GraphiteSkin());         
+            	//String path = System.getProperty("user.dir");
                 //File file = new File(path);
                 for (int i = args.length - 1; i >= 0; i--) {
                     switch (args[i]) {
