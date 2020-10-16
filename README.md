@@ -12,20 +12,24 @@
 - [Authorship](#authorship)
 
 ## Install
-First install the Oracle JDK 8 or superior and Maven.
+First install a Java JDK and Maven.
 ```bash
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt update
-sudo apt install oracle-java8-installer maven
+sudo apt install openjdk-14-jdk maven
 ```
 Then download the source code:
 ```bash
 git clone https://github.com/citiususc/olivia
 ```
-Finally, inside the root folder run:
+Inside the root folder run:
 ```bash
 mvn package
 ```
+Finally, upgrade JogAmp to the lastest version:
+```bash
+chmod +x upgrade-jogamp.sh
+./upgrade-jogamp.sh
+```
+
 The executable *Olivia.jar* will be generated inside the *target* folder.
 
 ## Usage
